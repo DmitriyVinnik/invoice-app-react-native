@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "react-native run-android",
+    "server": "node backend/app.js",
     "test": "jest",
-    "server": "node backend/app.js"
+    "basicstart": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
