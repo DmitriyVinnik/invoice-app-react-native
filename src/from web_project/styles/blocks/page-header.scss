@@ -1,0 +1,17 @@
+.page-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgb(40, 54, 69),
+      rgba(40, 54, 69, 0.6)
+    );
+}

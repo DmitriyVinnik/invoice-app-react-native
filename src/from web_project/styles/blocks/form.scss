@@ -1,0 +1,55 @@
+.form__btn-wraper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  &--one-btn {
+    justify-content: center;
+    width: auto;
+  }
+}
+
+.form__title {
+  display: block;
+  margin: 0 0 5px;
+
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+
+  &--small {
+    font-size: 20px;
+  }
+}
+
+.form__invoice {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form__invoice-total {
+  display: block;
+  margin-bottom: 10px;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.form__invoice-item-list {
+  padding: 10px;
+  margin: 0;
+
+  list-style-type: none;
+}
+
+.form__invoice-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form__invoice-item-quantity {
+  margin-left: auto;
+}

@@ -1,0 +1,39 @@
+.entity-list {
+  width: 1000px;
+  padding: 0;
+  margin: 0 auto;
+
+  list-style-type: none;
+
+  &--sub {
+    width: 800px;
+  }
+}
+
+.entity-list__item {
+  padding: 20px;
+  margin-bottom: 10px;
+
+  text-align: center;
+
+  background-color: rgba(40, 54, 69, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease-out;
+
+  &:hover,
+  &:focus {
+    transform: scale(1.1, 1.1);
+  }
+
+  &--active {
+    color: #a61b9e;
+  }
+}
+
+.entity-list__sub-item {
+  //padding: 5px;
+  margin-bottom: 5px;
+}

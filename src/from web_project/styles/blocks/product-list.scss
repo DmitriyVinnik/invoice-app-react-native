@@ -1,0 +1,34 @@
+.product-list {
+  display: flex;
+  padding: 0;
+  margin: 0 auto;
+
+  list-style-type: none;
+}
+
+.product-list__item {
+  font-size: 18px;
+
+  &:nth-child(1) {
+    width: 500px;
+
+    text-align: left;
+  }
+
+  &:nth-child(2) {
+    width: 100px;
+
+    text-align: left;
+  }
+
+  &:nth-child(3) {
+    width: 400px;
+
+    text-align: right;
+  }
+}
+
+.product-list__title {
+  font-weight: 600;
+}
+
