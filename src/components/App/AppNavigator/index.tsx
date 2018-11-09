@@ -12,6 +12,6 @@ const Navigator = createBottomTabNavigator({
 
 export default class AppNavigator extends React.Component {
   render() {
-    return <Navigator />
+    return <Navigator/>;
   }
 }
