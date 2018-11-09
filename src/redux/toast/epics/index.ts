@@ -2,62 +2,62 @@ import {Action} from 'redux';
 import {Observable} from 'rxjs';
 import {ofType} from 'redux-observable';
 import {map} from 'rxjs/operators';
-import * as customers from '../../request/nested-states/customers/AC';
+// import * as customers from '../../request/nested-states/customers/AC';
 import * as products from '../../request/nested-states/products/AC';
 import * as invoices from '../../request/nested-states/invoices/AC';
 import * as invoiceItems from '../../request/nested-states/invoiceItems/AC';
 import * as fromActions from '../AC';
 
-const showCustomerSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-    ofType<customers.RequestActionsSuccess>(
-        customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS,
-        customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_SUCCESS,
-        customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_SUCCESS,
-    ),
-    map((action) => {
-
-        switch (action.type) {
-            case customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS: {
-                const name = action.payload.data.name;
-                const message = `Customer: ${name} created successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            case customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_SUCCESS: {
-                const name = action.payload.data.name;
-                const message = `Customer: ${name} updated successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            case customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_SUCCESS: {
-                const name = action.payload.data.name;
-                const message = `Customer: ${name} deleted successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            default:
-                return null;
-        }
-    })
-);
-
-const showCustomerErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-    ofType<customers.RequestActionsFail>(
-        customers.customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_FAIL,
-        customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_FAIL,
-        customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_FAIL,
-        customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_FAIL,
-    ),
-    map((action) => {
-        const requestError = action.payload.errors;
-        const error = `something went wrong while processing customers request! Error: ${requestError}`;
-
-        return fromActions.Actions.showToast(null, error)
-    })
-);
+// const showCustomerSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
+//     ofType<customers.RequestActionsSuccess>(
+//         customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS,
+//         customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_SUCCESS,
+//         customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_SUCCESS,
+//     ),
+//     map((action) => {
+//
+//         switch (action.type) {
+//             case customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS: {
+//                 const name = action.payload.data.name;
+//                 const message = `Customer: ${name} created successfully`;
+//
+//                 return fromActions.Actions.showToast(message)
+//             }
+//
+//             case customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_SUCCESS: {
+//                 const name = action.payload.data.name;
+//                 const message = `Customer: ${name} updated successfully`;
+//
+//                 return fromActions.Actions.showToast(message)
+//             }
+//
+//             case customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_SUCCESS: {
+//                 const name = action.payload.data.name;
+//                 const message = `Customer: ${name} deleted successfully`;
+//
+//                 return fromActions.Actions.showToast(message)
+//             }
+//
+//             default:
+//                 return null;
+//         }
+//     })
+// );
+//
+// const showCustomerErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
+//     ofType<customers.RequestActionsFail>(
+//         customers.customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_FAIL,
+//         customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_FAIL,
+//         customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_FAIL,
+//         customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_FAIL,
+//     ),
+//     map((action) => {
+//         const requestError = action.payload.errors;
+//         const error = `something went wrong while processing customers request! Error: ${requestError}`;
+//
+//         return fromActions.Actions.showToast(null, error)
+//     })
+// );
 
 const showProductSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<products.RequestActionsSuccess>(
@@ -142,8 +142,8 @@ const showInvoiceErrorRequestToastEpic = (action$: Observable<Action>) => action
 
 
 export const toastEpics = [
-    showCustomerSuccessRequestToastEpic,
-    showCustomerErrorRequestToastEpic,
+    // showCustomerSuccessRequestToastEpic,
+    // showCustomerErrorRequestToastEpic,
     showProductSuccessRequestToastEpic,
     showProductErrorRequestToastEpic,
     showInvoiceSuccessRequestToastEpic,

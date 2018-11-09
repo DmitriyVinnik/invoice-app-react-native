@@ -64,15 +64,15 @@ const submitProductFormsEpic = (action$: Observable<Action>) => action$.pipe(
             }
 
             case fromActions.ActionTypes.PRODUCTS_SUBMIT_CHANGE_FORM: {
-                const {data, id} = action.payload;
+                const {data, _id} = action.payload;
 
-                return productsRequestAC.productsPut.Actions.productsPut(data, id)
+                return productsRequestAC.productsPut.Actions.productsPut(data, _id)
             }
 
             case fromActions.ActionTypes.PRODUCTS_SUBMIT_DELETE_FORM: {
-                const {id} = action.payload;
+                const {_id} = action.payload;
 
-                return productsRequestAC.productsDelete.Actions.productsDelete(id)
+                return productsRequestAC.productsDelete.Actions.productsDelete(_id)
             }
 
             default:

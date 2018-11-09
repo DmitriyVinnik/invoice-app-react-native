@@ -20,7 +20,7 @@ class ProductsService implements RequestServiceProducts {
 
   public putProduct(payload: RequestPayloadProducts) {
     return ajax.put(
-      apiEndpoint + 'products/' + payload.id,
+      apiEndpoint + 'products/' + payload._id,
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
@@ -29,7 +29,7 @@ class ProductsService implements RequestServiceProducts {
   }
 
   public deleteProduct(payload: RequestPayloadProducts) {
-    return ajax.delete(apiEndpoint + 'products/' + payload.id)
+    return ajax.delete(apiEndpoint + 'products/' + payload._id)
   }
 }
 

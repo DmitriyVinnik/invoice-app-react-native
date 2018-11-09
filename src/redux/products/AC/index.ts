@@ -23,8 +23,8 @@ export const Actions = {
     loadAllProducts: () => {
         return createAction(ActionTypes.PRODUCTS_LOAD_ALL)
     },
-    selectProduct: (data: Product[], id: number) => {
-        return createAction(ActionTypes.PRODUCTS_SELECT_ACTIVE, {data, id})
+    selectProduct: (data: Product[], _id: number) => {
+        return createAction(ActionTypes.PRODUCTS_SELECT_ACTIVE, {data, _id})
     },
     resetSelectionProduct: () => {
         return createAction(ActionTypes.PRODUCTS_RESET_SELECTION_ACTIVE)
@@ -32,11 +32,11 @@ export const Actions = {
     submitProductAddForm: (data: ProductDataForServer) => {
         return createAction(ActionTypes.PRODUCTS_SUBMIT_ADD_FORM, {data})
     },
-    submitProductChangeForm: (data: ProductDataForServer, id: number) => {
-        return createAction(ActionTypes.PRODUCTS_SUBMIT_CHANGE_FORM, {data, id})
+    submitProductChangeForm: (data: ProductDataForServer, _id: number) => {
+        return createAction(ActionTypes.PRODUCTS_SUBMIT_CHANGE_FORM, {data, _id})
     },
-    submitProductDeleteForm: (id: number) => {
-        return createAction(ActionTypes.PRODUCTS_SUBMIT_DELETE_FORM, {id})
+    submitProductDeleteForm: (_id: number) => {
+        return createAction(ActionTypes.PRODUCTS_SUBMIT_DELETE_FORM, {_id})
     },
 };
 

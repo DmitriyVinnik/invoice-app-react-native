@@ -23,8 +23,8 @@ export const Actions = {
     loadAllInvoices: () => {
         return createAction(ActionTypes.INVOICES_LOAD_ALL)
     },
-    selectInvoice: (data: Invoice[], id: number) => {
-        return createAction(ActionTypes.INVOICES_SELECT_ACTIVE, {data, id})
+    selectInvoice: (data: Invoice[], _id: number) => {
+        return createAction(ActionTypes.INVOICES_SELECT_ACTIVE, {data, _id})
     },
     resetSelectionInvoice: () => {
         return createAction(ActionTypes.INVOICES_RESET_SELECTION_ACTIVE)
@@ -32,11 +32,11 @@ export const Actions = {
     submitInvoiceAddForm: (data: InvoiceDataForServer, total: number) => {
         return createAction(ActionTypes.INVOICES_SUBMIT_ADD_FORM, {data, total})
     },
-    submitInvoiceChangeForm: (data: InvoiceDataForServer, total: number, id: number) => {
-        return createAction(ActionTypes.INVOICES_SUBMIT_CHANGE_FORM, {data, total, id})
+    submitInvoiceChangeForm: (data: InvoiceDataForServer, total: number, _id: number) => {
+        return createAction(ActionTypes.INVOICES_SUBMIT_CHANGE_FORM, {data, total, _id})
     },
-    submitInvoiceDeleteForm: (id: number) => {
-        return createAction(ActionTypes.INVOICES_SUBMIT_DELETE_FORM, {id})
+    submitInvoiceDeleteForm: (_id: number) => {
+        return createAction(ActionTypes.INVOICES_SUBMIT_DELETE_FORM, {_id})
     },
 };
 

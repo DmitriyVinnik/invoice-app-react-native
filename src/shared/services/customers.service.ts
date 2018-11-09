@@ -20,7 +20,7 @@ class CustomersService implements RequestServiceCustomers {
 
   public putCustomer(payload: RequestPayloadCustomers) {
     return ajax.put(
-      apiEndpoint + 'customers/' + payload.id,
+      apiEndpoint + 'customers/' + payload._id,
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
@@ -29,7 +29,7 @@ class CustomersService implements RequestServiceCustomers {
   }
 
   public deleteCustomer(payload: RequestPayloadCustomers) {
-    return ajax.delete(apiEndpoint + 'customers/' + payload.id)
+    return ajax.delete(apiEndpoint + 'customers/' + payload._id)
   }
 }
 

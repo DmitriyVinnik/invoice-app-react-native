@@ -9,8 +9,8 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    invoicesPut: (data: InvoiceDataForServer, id: number) => {
-        return createAction(ActionTypes.INVOICES_PUT, {data, id})
+    invoicesPut: (data: InvoiceDataForServer, _id: number) => {
+        return createAction(ActionTypes.INVOICES_PUT, {data, _id})
     },
     invoicesPutSuccess: (data: Invoice) => {
         return createAction(ActionTypes.INVOICES_PUT_SUCCESS, {data})

@@ -16,7 +16,7 @@ interface PutPayload extends GetPayload {
 }
 
 interface DeletePayload extends GetPayload {
-  id: number[],
+  _id: number[],
 }
 
 interface RequestServiceInvoiceItems {
@@ -51,7 +51,7 @@ class InvoiceItemsService implements RequestServiceInvoiceItems {
     const {data, invoice_id} = payload;
     const arrayObservable = data.map<Observable<AjaxResponse>>((elem) => {
       return ajax.put(
-        apiEndpoint + 'invoices/' + invoice_id + '/items/' + elem.id,
+        apiEndpoint + 'invoices/' + invoice_id + '/items/' + elem._id,
         JSON.stringify(elem),
         {
           'Content-Type': 'application/json; charset=utf-8',
@@ -63,8 +63,8 @@ class InvoiceItemsService implements RequestServiceInvoiceItems {
   }
 
   public deleteInvoiceItem(payload: DeletePayload) {
-    const {id, invoice_id} = payload;
-    const arrayObservable = id.map<Observable<AjaxResponse>>((idItem) => {
+    const {_id, invoice_id} = payload;
+    const arrayObservable = _id.map<Observable<AjaxResponse>>((idItem) => {
       return ajax.delete(apiEndpoint + 'invoices/' + invoice_id + '/items/' + idItem)
     });
 

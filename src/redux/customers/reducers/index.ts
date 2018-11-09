@@ -10,7 +10,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Cust
 
             return {
                 ...state,
-                data: unionBy(newData, state.data, 'id')
+                data: unionBy(newData, state.data, '_id')
             };
         }
 
@@ -18,7 +18,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Cust
             return {
                 ...state,
                 data: state.data.filter(
-                    (elem) => elem.id !== action.payload.data.id
+                    (elem) => elem._id !== action.payload.data._id
                 ),
                 activeCustomerId: null,
             };
@@ -27,7 +27,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Cust
         case fromActions.ActionTypes.CUSTOMERS_SELECT_ACTIVE: {
             return {
                 ...state,
-                activeCustomerId: action.payload.id,
+                activeCustomerId: action.payload._id,
             };
         }
 

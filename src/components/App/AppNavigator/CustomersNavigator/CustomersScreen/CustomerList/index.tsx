@@ -17,17 +17,13 @@ export default class CustomerList extends Component<OwnProps> {
     const {loadCustomers} = this.props;
 
     loadCustomers();
-    console.log('-------------mount list')
-    fetch('http://localhost:8000/api/customers/')
-      .then((response) => response.json())
-      .then((responseJson) => console.log('--------loaded',responseJson))
   }
 
-  private keyExtractor = (item: CustomerInterface) => `${item.id}`;
+  private keyExtractor = (item: CustomerInterface) => `${item._id}`;
 
   private renderItem: ListRenderItem<CustomerInterface> = ({item}) => (
     <Customer
-      id={item.id}
+      _id={item._id}
       name={item.name}
       address={item.address}
       phone={item.phone}

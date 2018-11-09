@@ -53,53 +53,53 @@ const updateInvoiceItemsDataEpic = (action$: Observable<Action>) => action$.pipe
 const afterSuccesPostInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
     ofType<RequestInvoicePostSuccess>(invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS),
     map((action) => {
-        const {id} = action.payload.data;
+        const {_id} = action.payload.data;
 
         let formData: InvoiceItemDataForServer[] = [];
         let dataForServer: InvoiceItemDataForServer[] = [];
         if (state$.value.form.invoiceAdd.values) {
             formData = state$.value.form.invoiceAdd.values.invoiceItems;
             dataForServer = formData.map<InvoiceItemDataForServer>((elem) => {
-                elem.invoice_id = id;
+                elem.invoice_id = _id;
 
                 return elem
             })
         }
 
-        return invoiceItemsRequestAC.invoiceItemsPost.Actions.invoiceItemsPost(dataForServer, id)
+        return invoiceItemsRequestAC.invoiceItemsPost.Actions.invoiceItemsPost(dataForServer, _id)
     })
 );
 
 const afterSuccessDeleteInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
     ofType<RequestInvoiceDeleteSuccess>(invoicesRequestAC.invoicesDelete.ActionTypes.INVOICES_DELETE_SUCCESS),
     map((action) => {
-        const {id} = action.payload.data;
+        const {_id} = action.payload.data;
 
         let dataForServer: number[] = [];
         if (state$.value.invoiceItems.data) {
             dataForServer = state$.value.invoiceItems.data
-                .filter((dataElem) => dataElem.invoice_id === id)
-                .map<number>((elem) => elem.id)
+                .filter((dataElem) => dataElem.invoice_id === _id)
+                .map<number>((elem) => elem._id)
         }
 
-        return invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(dataForServer, id)
+        return invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(dataForServer, _id)
     })
 );
 
 // const postInvoiceItemsAfterSuccessPutInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
 //     ofType<RequestInvoicePutSuccess>(invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_SUCCESS),
 //     map((action) => {
-//         const {id} = action.payload.data;
+//         const {_id} = action.payload.data;
 //
 //         let formData: InvoiceItem[] = [];
 //         let dataForServer: InvoiceItemDataForServer[] = [];
 //         if (state$.value.form.invoiceAdd.values) {
 //             formData = state$.value.form.invoiceAdd.values.invoiceItems;
-//             dataForServer = formData.filter((formElem) => !formElem.id)
+//             dataForServer = formData.filter((formElem) => !formElem._id)
 //         }
 //         console.log('-------------post', dataForServer)
 //         return dataForServer ?
-//             invoiceItemsRequestAC.invoiceItemsPost.Actions.invoiceItemsPost(dataForServer, id) :
+//             invoiceItemsRequestAC.invoiceItemsPost.Actions.invoiceItemsPost(dataForServer, _id) :
 //             {}
 //     })
 // );
@@ -107,9 +107,9 @@ const afterSuccessDeleteInvoiceEpic = (action$: Observable<Action>, state$: Stat
 // const deleteInvoiceItemsAfterSuccessPutInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
 //     ofType<RequestInvoicePutSuccess>(invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_SUCCESS),
 //     map((action) => {
-//         const {id} = action.payload.data;
+//         const {_id} = action.payload.data;
 //         const stateData: InvoiceItem[] = state$.value.invoiceItems.data.filter(
-//             (stateElem) => stateElem.invoice_id === id
+//             (stateElem) => stateElem.invoice_id === _id
 //         );
 //         let formData: InvoiceItem[] = [];
 //         let dataForServer: number[] = [];
@@ -119,17 +119,17 @@ const afterSuccessDeleteInvoiceEpic = (action$: Observable<Action>, state$: Stat
 //             dataForServer = stateData
 //                 .filter((stateElem) => {
 //                         const isInFormData = formData.find(
-//                             (formElem) => formElem.id === stateElem.id
+//                             (formElem) => formElem._id === stateElem._id
 //                         );
 //
 //                         return !isInFormData
 //                     }
 //                 )
-//                 .map<number>((elem) => elem.id)
+//                 .map<number>((elem) => elem._id)
 //         }
 //         console.log('-------------delete', dataForServer)
 //         return dataForServer ?
-//             invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(dataForServer, id) :
+//             invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(dataForServer, _id) :
 //             {}
 //     })
 // );
@@ -137,7 +137,7 @@ const afterSuccessDeleteInvoiceEpic = (action$: Observable<Action>, state$: Stat
 // const putInvoiceItemsAfterSuccessPutInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
 //     ofType<RequestInvoicePutSuccess>(invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_SUCCESS),
 //     map((action) => {
-//         const invoice_id = action.payload.data.id;
+//         const invoice_id = action.payload.data._id;
 //         const stateData: InvoiceItem[] = state$.value.invoiceItems.data.filter(
 //             (stateElem) => stateElem.invoice_id === invoice_id
 //         );
@@ -147,10 +147,10 @@ const afterSuccessDeleteInvoiceEpic = (action$: Observable<Action>, state$: Stat
 //         if (state$.value.form.invoiceAdd.values) {
 //             formData = state$.value.form.invoiceAdd.values.invoiceItems;
 //             dataForServer = formData
-//                 .filter((formElem) => !!formElem.id)
+//                 .filter((formElem) => !!formElem._id)
 //                 .filter((formElem) => {
 //                     const formElemInState = stateData.find(
-//                         (stateElem) => formElem.id === stateElem.id
+//                         (stateElem) => formElem._id === stateElem._id
 //                     );
 //
 //                     return !(formElemInState && isEqual(formElemInState, formElem));
@@ -183,8 +183,8 @@ const submitInvoiceItemsEpic = (action$: Observable<Action>) => action$.pipe(
             }
 
             case fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE: {
-                const {id, invoice_id} = action.payload;
-                return invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(id, invoice_id)
+                const {_id, invoice_id} = action.payload;
+                return invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(_id, invoice_id)
             }
 
             default:

@@ -6,7 +6,7 @@ export default createStackNavigator({
   CustomersScreen: {
     screen: CustomersScreen,
     navigationOptions: {
-      title: 'Customers'
-    }
+      title: 'Customers',
+    },
   },
-})
+});

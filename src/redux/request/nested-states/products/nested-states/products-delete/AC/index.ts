@@ -9,8 +9,8 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    productsDelete: (id: number) => {
-        return createAction(ActionTypes.PRODUCTS_DELETE, {id})
+    productsDelete: (_id: number) => {
+        return createAction(ActionTypes.PRODUCTS_DELETE, {_id})
     },
     productsDeleteSuccess: (data: Product) => {
         return createAction(ActionTypes.PRODUCTS_DELETE_SUCCESS, {data})

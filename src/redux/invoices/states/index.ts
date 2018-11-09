@@ -5,7 +5,7 @@ export interface InvoiceDataForServer {
 }
 
 export interface Invoice extends InvoiceDataForServer{
-    id: number,
+    _id: number,
 }
 
 export interface InvoicesState {

@@ -5,7 +5,7 @@ export interface CustomerDataForServer {
 }
 
 export interface Customer extends CustomerDataForServer{
-    id: number,
+    _id: number,
 }
 
 export interface CustomersState {

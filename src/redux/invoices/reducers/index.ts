@@ -11,7 +11,7 @@ export function reducer(state = initialState, action: fromActions.Actions | Requ
 
             return {
                 ...state,
-                data: unionBy(newData, state.data, 'id')
+                data: unionBy(newData, state.data, '_id')
             };
         }
 
@@ -19,7 +19,7 @@ export function reducer(state = initialState, action: fromActions.Actions | Requ
             return {
                 ...state,
                 data: state.data.filter(
-                    (elem) => elem.id !== action.payload.data.id
+                    (elem) => elem._id !== action.payload.data._id
                 ),
                 activeInvoiceId: null,
             };
@@ -28,7 +28,7 @@ export function reducer(state = initialState, action: fromActions.Actions | Requ
         case fromActions.ActionTypes.INVOICES_SELECT_ACTIVE: {
             return {
                 ...state,
-                activeInvoiceId: action.payload.id,
+                activeInvoiceId: action.payload._id,
             };
         }
 

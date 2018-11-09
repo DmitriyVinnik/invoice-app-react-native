@@ -20,7 +20,7 @@ class InvoicesService implements RequestServiceInvoices {
 
   public putInvoice(payload: RequestPayloadInvoices) {
     return ajax.put(
-      apiEndpoint + 'invoices/' + payload.id,
+      apiEndpoint + 'invoices/' + payload._id,
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
@@ -29,7 +29,7 @@ class InvoicesService implements RequestServiceInvoices {
   }
 
   public deleteInvoice(payload: RequestPayloadInvoices) {
-    return ajax.delete(apiEndpoint + 'invoices/' + payload.id)
+    return ajax.delete(apiEndpoint + 'invoices/' + payload._id)
   }
 }
 

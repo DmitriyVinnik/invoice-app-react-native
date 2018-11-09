@@ -27,8 +27,8 @@ export const Actions = {
     submitPutInvoiceItem: (data: InvoiceItem[], invoice_id: number) => {
         return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_PUT, {data, invoice_id})
     },
-    submitDeleteInvoiceItem: (id: number[], invoice_id: number) => {
-        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE, {id, invoice_id})
+    submitDeleteInvoiceItem: (_id: number[], invoice_id: number) => {
+        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE, {_id, invoice_id})
     },
 };
 

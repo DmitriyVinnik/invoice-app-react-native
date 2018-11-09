@@ -23,8 +23,8 @@ export const Actions = {
     loadAllCustomers: () => {
         return createAction(ActionTypes.CUSTOMERS_LOAD_ALL)
     },
-    selectCustomer: (data: Customer[], id: number) => {
-        return createAction(ActionTypes.CUSTOMERS_SELECT_ACTIVE, {data, id})
+    selectCustomer: (data: Customer[], _id: number) => {
+        return createAction(ActionTypes.CUSTOMERS_SELECT_ACTIVE, {data, _id})
     },
     resetSelectionCustomer: () => {
         return createAction(ActionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE)
@@ -32,11 +32,11 @@ export const Actions = {
     submitCustomerAddForm: (data: CustomerDataForServer) => {
         return createAction(ActionTypes.CUSTOMERS_SUBMIT_ADD_FORM, {data})
     },
-    submitCustomerChangeForm: (data: CustomerDataForServer, id: number) => {
-        return createAction(ActionTypes.CUSTOMERS_SUBMIT_CHANGE_FORM, {data, id})
+    submitCustomerChangeForm: (data: CustomerDataForServer, _id: number) => {
+        return createAction(ActionTypes.CUSTOMERS_SUBMIT_CHANGE_FORM, {data, _id})
     },
-    submitCustomerDeleteForm: (id: number) => {
-        return createAction(ActionTypes.CUSTOMERS_SUBMIT_DELETE_FORM, {id})
+    submitCustomerDeleteForm: (_id: number) => {
+        return createAction(ActionTypes.CUSTOMERS_SUBMIT_DELETE_FORM, {_id})
     },
 };
 

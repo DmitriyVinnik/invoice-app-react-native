@@ -4,7 +4,7 @@ export interface ProductDataForServer {
 }
 
 export interface Product extends ProductDataForServer{
-    id: number,
+    _id: number,
 }
 
 export interface ProductsState {

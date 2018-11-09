@@ -10,7 +10,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
 
             return {
                 ...state,
-                data: unionBy(newData, state.data, 'id')
+                data: unionBy(newData, state.data, '_id')
             };
         }
 
@@ -19,7 +19,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
                 ...state,
                 data: state.data.filter(
                     (stateElem) => {
-                        const isNeedDelete = !!action.payload.data.find((actionElem) => actionElem.id === stateElem.id);
+                        const isNeedDelete = !!action.payload.data.find((actionElem) => actionElem._id === stateElem._id);
                         return !isNeedDelete
                     }
                 )
