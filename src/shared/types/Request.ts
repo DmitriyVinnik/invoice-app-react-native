@@ -3,7 +3,6 @@ import {AjaxResponse} from "rxjs/ajax";
 import {CustomerDataForServer} from "../../redux/customers/states";
 import {ProductDataForServer} from "../../redux/products/states";
 import {InvoiceDataForServer} from "../../redux/invoices/states";
-// import {InvoiceItemDataForServer} from "../../redux/invoiceItems/states";
 
 interface RequestPayload {
     errors?: string,
@@ -21,11 +20,6 @@ export interface RequestPayloadProducts extends RequestPayload {
 export interface RequestPayloadInvoices extends RequestPayload {
     data?: InvoiceDataForServer,
 }
-
-// export interface RequestPayloadInvoiceItems extends RequestPayload {
-//     data: InvoiceItemDataForServer[],
-//     invoice_id: number,
-// }
 
 export interface RequestServiceCustomers {
     postCustomer(payload: RequestPayloadCustomers): Observable<AjaxResponse>;
@@ -47,11 +41,3 @@ export interface RequestServiceInvoices {
     putInvoice(payload: RequestPayloadInvoices): Observable<AjaxResponse>;
     deleteInvoice(payload: RequestPayloadInvoices): Observable<AjaxResponse>;
 }
-
-// export interface RequestServiceInvoiceItems {
-//     postInvoiceItem(payload: RequestPayloadInvoiceItems): Observable<AjaxResponse[]>;
-//     getInvoiceItem(payload?: RequestPayloadInvoiceItems): Observable<AjaxResponse>;
-//     putInvoiceItem(payload: RequestPayloadInvoiceItems): Observable<AjaxResponse>;
-//     deleteInvoiceItem(payload: RequestPayloadInvoiceItems): Observable<AjaxResponse>;
-// }
-

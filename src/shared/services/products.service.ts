@@ -1,37 +1,36 @@
-import {ajax} from 'rxjs/ajax';
-import {RequestPayloadProducts, RequestServiceProducts} from '../types/Request'
-
-const PRODUCTS_URL = 'http://localhost:8000/api/products/';
+import { ajax } from 'rxjs/ajax';
+import { apiEndpoint } from '../constants/env.constants';
+import { RequestPayloadProducts, RequestServiceProducts } from '../types/Request'
 
 class ProductsService implements RequestServiceProducts {
 
-    public postProduct(payload: RequestPayloadProducts) {
-        return ajax.post(
-            PRODUCTS_URL,
-            JSON.stringify(payload.data),
-            {
-                'Content-Type': 'application/json; charset=utf-8',
-            }
-        )
-    }
+  public postProduct(payload: RequestPayloadProducts) {
+    return ajax.post(
+      apiEndpoint + 'products/',
+      JSON.stringify(payload.data),
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+    )
+  }
 
-    public getProduct() {
-        return ajax.get(PRODUCTS_URL)
-    }
+  public getProduct() {
+    return ajax.get(apiEndpoint + 'products/')
+  }
 
-    public putProduct(payload: RequestPayloadProducts) {
-        return ajax.put(
-            PRODUCTS_URL + payload.id,
-            JSON.stringify(payload.data),
-            {
-                'Content-Type': 'application/json; charset=utf-8',
-            }
-        )
-    }
+  public putProduct(payload: RequestPayloadProducts) {
+    return ajax.put(
+      apiEndpoint + 'products/' + payload.id,
+      JSON.stringify(payload.data),
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+    )
+  }
 
-    public deleteProduct(payload: RequestPayloadProducts) {
-        return ajax.delete(PRODUCTS_URL + payload.id)
-    }
+  public deleteProduct(payload: RequestPayloadProducts) {
+    return ajax.delete(apiEndpoint + 'products/' + payload.id)
+  }
 }
 
 export default new ProductsService();

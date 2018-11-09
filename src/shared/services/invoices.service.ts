@@ -1,37 +1,36 @@
-import {ajax} from 'rxjs/ajax';
-import {RequestPayloadInvoices, RequestServiceInvoices} from '../types/Request'
-
-const INVOICES_URL = 'http://localhost:8000/api/invoices/';
+import { ajax } from 'rxjs/ajax';
+import { apiEndpoint } from '../constants/env.constants';
+import { RequestPayloadInvoices, RequestServiceInvoices } from '../types/Request'
 
 class InvoicesService implements RequestServiceInvoices {
 
-    public postInvoice(payload: RequestPayloadInvoices) {
-        return ajax.post(
-            INVOICES_URL,
-            JSON.stringify(payload.data),
-            {
-                'Content-Type': 'application/json; charset=utf-8',
-            }
-        )
-    }
+  public postInvoice(payload: RequestPayloadInvoices) {
+    return ajax.post(
+      apiEndpoint + 'invoices/',
+      JSON.stringify(payload.data),
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+    )
+  }
 
-    public getInvoice() {
-        return ajax.get(INVOICES_URL)
-    }
+  public getInvoice() {
+    return ajax.get(apiEndpoint + 'invoices/')
+  }
 
-    public putInvoice(payload: RequestPayloadInvoices) {
-        return ajax.put(
-            INVOICES_URL + payload.id,
-            JSON.stringify(payload.data),
-            {
-                'Content-Type': 'application/json; charset=utf-8',
-            }
-        )
-    }
+  public putInvoice(payload: RequestPayloadInvoices) {
+    return ajax.put(
+      apiEndpoint + 'invoices/' + payload.id,
+      JSON.stringify(payload.data),
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+    )
+  }
 
-    public deleteInvoice(payload: RequestPayloadInvoices) {
-        return ajax.delete(INVOICES_URL + payload.id)
-    }
+  public deleteInvoice(payload: RequestPayloadInvoices) {
+    return ajax.delete(apiEndpoint + 'invoices/' + payload.id)
+  }
 }
 
 export default new InvoicesService();
