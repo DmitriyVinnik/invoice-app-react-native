@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import InvoicesList from './InvoicesList';
-import InvoiceAddForm from './InvoiceAddForm';
-import InvoiceChangeForm from './InvoiceChangeForm';
-import InvoiceDeleteForm from './InvoiceDeleteForm';
+import Index from './InvoiceList/index';
+import InvoiceAddForm from '../InvoiceAddScreen/index';
+import InvoiceChangeForm from '../InvoiceChangeScreen/index';
+import InvoiceDeleteForm from '../InvoiceDeleteScreen/index';
 import EditPanel from '../../shared/EditPanel';
-import CustomerSelectElement from './CustomerSelectElement';
+import CustomerSelectElement from '../CustomerSelectScreen/index';
 
-import {Actions} from '../../../../redux/invoices/AC/index';
-import * as productsActions from '../../../../redux/products/AC/index';
+import {Actions} from '../../../../../redux/invoices/AC/index';
+import * as productsActions from '../../../../../redux/products/AC/index';
 import {destroy} from 'redux-form';
 
 import {Dispatch} from 'redux';
-import {RootState} from '../../../../redux/store';
-import {InvoicesRequestState} from '../../../../redux/request/nested-states/invoices/states/index';
-import {InvoicesState} from '../../../../redux/invoices/states/index';
-import {CustomersState} from "../../../../redux/customers/states/index";
+import {RootState} from '../../../../../redux/store';
+import {InvoicesRequestState} from '../../../../../redux/request/nested-states/invoices/states/index';
+import {InvoicesState} from '../../../../../redux/invoices/states/index';
+import {CustomersState} from "../../../../../redux/customers/states/index";
 
 interface StateProps {
     invoices: InvoicesState,
@@ -124,7 +124,7 @@ class InvoicesPage extends Component<Props, State> {
                         _id={activeInvoice._id}
                         handleSubmit={this.handleSubmitInvoiceDeleteForm}
                     />}
-                    <InvoicesList
+                    <Index
                         invoicesRequest={invoicesRequests.invoicesGet}
                         invoicesData={invoices.data}
                         activeCustomerId={activeCustomerId}

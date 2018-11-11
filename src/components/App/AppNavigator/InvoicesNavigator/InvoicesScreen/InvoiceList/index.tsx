@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Invoice from './Invoice';
-import {Invoice as InvoiceInterface} from '../../../../redux/invoices/states/index';
-import {RequestNestedState} from '../../../../redux/request/nested-states/invoices/states/index';
+import Invoice from '../Invoice/index';
+import {Invoice as InvoiceInterface} from '../../../../../../redux/invoices/states/index';
+import {RequestNestedState} from '../../../../../../redux/request/nested-states/invoices/states/index';
 
 export interface OwnProps {
     invoicesData: InvoiceInterface[],
@@ -11,7 +11,7 @@ export interface OwnProps {
     loadProducts(): void,
 }
 
-export default class InvoicesList extends Component<OwnProps> {
+export default class Index extends Component<OwnProps> {
 
     public componentDidMount() {
         this.props.loadInvoices();

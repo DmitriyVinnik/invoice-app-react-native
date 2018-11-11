@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {InvoiceItem as InvoiceItemInterface} from '../../../../../redux/invoiceItems/states/index';
+import {InvoiceItem as InvoiceItemInterface} from '../../../../../../redux/invoiceItems/states/index';
 
 type OwnProps = InvoiceItemInterface
 

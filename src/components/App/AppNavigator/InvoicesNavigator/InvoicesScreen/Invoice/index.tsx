@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import InvoiceItemsList from "./invoiceItems/InvoiceItemsList";
-import {Actions} from '../../../../redux/invoices/AC/index';
-import * as invoiceItemsActions from '../../../../redux/invoiceItems/AC/index';
+import InvoiceItemsList from "../InvoiceItemsList/index";
+import {Actions} from '../../../../../../redux/invoices/AC/index';
+import * as invoiceItemsActions from '../../../../../../redux/invoiceItems/AC/index';
 
 import {Dispatch} from 'redux';
-import {Invoice as InvoiceInterface} from '../../../../redux/invoices/states/index';
-import {RootState} from '../../../../redux/store';
-import {InvoiceItemsState} from "../../../../redux/invoiceItems/states/index";
-import {InvoiceItemsRequestState} from "../../../../redux/request/nested-states/invoiceItems/states/index";
+import {Invoice as InvoiceInterface} from '../../../../../../redux/invoices/states/index';
+import {RootState} from '../../../../../../redux/store';
+import {InvoiceItemsState} from "../../../../../../redux/invoiceItems/states/index";
+import {InvoiceItemsRequestState} from "../../../../../../redux/request/nested-states/invoiceItems/states/index";
 
 type OwnProps = InvoiceInterface
 

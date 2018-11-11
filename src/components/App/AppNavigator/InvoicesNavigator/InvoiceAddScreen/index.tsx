@@ -1,13 +1,12 @@
 import React from 'react';
-import {isEqual} from "lodash-es";
 import {compose, Dispatch} from 'redux'
 import {connect} from 'react-redux';
 import {
-    reduxForm, Field, FieldArray, initialize,
-    InjectedFormProps, FormErrors, FormAction, getFormValues,
+    reduxForm, Field, FieldArray, initialize, getFormValues,
+    InjectedFormProps, FormErrors, FormAction,
 } from 'redux-form';
 import FormField from '../../shared/FormField';
-import InvoiceItemFieldsArray from './invoiceItems/InvoiceItemFieldsArray';
+import InvoiceItemFieldsArray from '../../../../../shared/components/InvoiceItemFieldsArray';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,133 +14,86 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import {Invoice, InvoiceDataForServer} from '../../../../redux/invoices/states/index';
-import {InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState} from '../../../../redux/invoiceItems/states/index';
-import {Product, ProductsState} from "../../../../redux/products/states/index";
-import {RootState} from "../../../../redux/store";
+import {InvoiceDataForServer} from '../../../../../redux/invoices/states/index';
+import {InvoiceItemDataForServer} from '../../../../../redux/invoiceItems/states/index';
+import {Product, ProductsState} from "../../../../../redux/products/states/index";
+import {RootState} from "../../../../../redux/store";
 
-import {Actions} from "../../../../redux/invoices/AC/index";
-import {Actions as invoiceItemsActions} from "../../../../redux/invoiceItems/AC/index";
+import {Actions} from "../../../../../redux/invoices/AC/index";
 
 interface FormData extends InvoiceDataForServer {
-    invoiceItems: InvoiceItem[]
+    invoiceItems: InvoiceItemDataForServer[]
 }
 
 export interface OwnProps {
     isVisible: boolean,
     isLoading: boolean,
     errors: string | null,
-    activeInvoice: Invoice,
-    activeCustomerId: number,
+    activeCustomerId?: number,
 
     handleClose(): void,
 }
 
 interface StateProps {
     products: ProductsState,
-    invoiceItems: InvoiceItemsState,
     formValues: FormData,
 }
 
 interface DispatchProps {
-    initializeForm(values: FormData): void,
+    initializeForm(values: FormData): void
 
-    submitForm(data: FormData, total: number, _id: number): void,
-
-    submitAddInvoiceItem(data: InvoiceItemDataForServer[], invoice_id: number): void,
-
-    submitPutInvoiceItem(data: InvoiceItem[], invoice_id: number): void,
-
-    submitDeleteInvoiceItem(_id: number[], invoice_id: number): void,
+    submitForm(data: FormData, total: number): void
 }
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedFormProps<FormData, OwnProps>
 
-class InvoiceChangeForm extends React.Component<Props> {
+class InvoiceAddForm extends React.Component<Props> {
 
     public componentDidMount() {
-        this.setFormValues();
+        this.setFormValues()
     }
 
     public componentDidUpdate(prevProps: Props) {
-        if (prevProps.activeInvoice !== this.props.activeInvoice) {
+        if (prevProps.activeCustomerId !== this.props.activeCustomerId) {
             this.setFormValues()
-        }
-
-        if (this.props.isVisible && !prevProps.isVisible) {
-            this.setFormValues();
         }
     }
 
     public handleSubmitForm = (values: FormData): void => {
-        const {
-            submitAddInvoiceItem, submitPutInvoiceItem, submitDeleteInvoiceItem,
-            activeInvoice, submitForm, invoiceItems: {data}
-        } = this.props;
-        const forPostInvoiceItems = values.invoiceItems.filter((formElem) => !formElem._id);
-        const forDeleteInvoiceItems = data
-            .filter((stateElem) => stateElem.invoice_id === activeInvoice._id)
-            .filter(
-                (activeInvoiceItem) => {
-                    const isInFormData = values.invoiceItems.find(
-                        (formElem) => formElem._id === activeInvoiceItem._id
-                    );
-                    return !isInFormData
-                }
-            )
-            .map<number>((elem) => elem._id)
-        ;
-        const forPutInvoiceItems = values.invoiceItems
-            .filter((formElem) => !!formElem._id)
-            .filter((formElem) => {
-                const formElemInState = data.find(
-                    (stateElem) => formElem._id === stateElem._id
-                );
-
-                return !(formElemInState && isEqual(formElemInState, formElem));
-            });
-
-        submitForm(values, this.getTotalPrice(), activeInvoice._id);
-
-        if (forPostInvoiceItems) {
-            submitAddInvoiceItem(forPostInvoiceItems, activeInvoice._id)
-        }
-
-        if (forPutInvoiceItems) {
-            submitPutInvoiceItem(forPutInvoiceItems, activeInvoice._id)
-        }
-
-        if (forDeleteInvoiceItems) {
-            submitDeleteInvoiceItem(forDeleteInvoiceItems, activeInvoice._id)
-        }
-
-        this.props.handleClose();
+        this.props.submitForm(values, this.getTotalPrice());
     };
 
     public render() {
         const {
             isVisible, handleSubmit, isLoading, errors, products, activeCustomerId, pristine,
-            handleClose,
+            handleClose
         } = this.props;
 
         return (
             <Dialog
                 open={isVisible}
                 onClose={handleClose}
-                aria-labelledby="customer-change-dialog-title"
+                aria-labelledby="invoice-add-dialog-title"
             >
                 <DialogTitle
-                    _id="customer-change-dialog-title"
+                    _id="invoice-add-dialog-title"
                     className='form__title'
                 >
-                    <span className='form__title'>Change invoice.</span>
+                    <span className='form__title'>Addition new invoice.</span>
                     <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
                 </DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSubmit(this.handleSubmitForm)}>
-                        {errors && (<span className='error error--field'>Error: {errors}</span>)}
-                        <section>
-                            <strong>{`Invoice's total: ${this.getTotalPrice()}`}</strong>
+                    <form
+                        onSubmit={handleSubmit(this.handleSubmitForm)}
+                        autoComplete='off'
+                    >
+                        {errors && (<span>Error: {errors}</span>)}
+                        <section className='form__invoice'>
+                            <strong
+                                className='form__invoice-total'
+                            >
+                                {`Invoice's total: ${this.getTotalPrice()}`}
+                            </strong>
                             <Field
                                 name='discount'
                                 component={FormField}
@@ -149,8 +101,8 @@ class InvoiceChangeForm extends React.Component<Props> {
                                 step='0.01'
                                 min='0'
                                 _id='add-invoice-discount'
-                                labelText="Invoice's discount: "
-                                placeholder='From 0 to 1'
+                                labelText="Discount: "
+                                placeholder='0 to 1'
                             />
                         </section>
                         <FieldArray
@@ -184,24 +136,22 @@ class InvoiceChangeForm extends React.Component<Props> {
     }
 
     private setFormValues() {
-        const {activeInvoice, invoiceItems} = this.props;
+        const {activeCustomerId} = this.props;
 
-        const initialInvoiceItems = invoiceItems.data.filter(
-            (invoiceItem) => invoiceItem.invoice_id === activeInvoice._id
-        );
+        if (activeCustomerId) {
+            const initialFormValue: FormData = {
+                customer_id: activeCustomerId,
+                discount: 0,
+                total: 0,
+                invoiceItems: [],
+            };
 
-        const initialFormValue: FormData = {
-            discount: activeInvoice.discount,
-            customer_id: activeInvoice.customer_id,
-            total: activeInvoice.total,
-            invoiceItems: initialInvoiceItems,
-        };
-
-        this.props.initializeForm(initialFormValue)
+            this.props.initializeForm(initialFormValue)
+        }
     }
 
     private getTotalPrice() {
-        const {formValues, products, activeInvoice, dirty} = this.props;
+        const {formValues, products} = this.props;
 
         let priceWithoutDiscount = 0;
         let priceTotal = 0;
@@ -225,7 +175,7 @@ class InvoiceChangeForm extends React.Component<Props> {
             priceTotal = Math.round(priceWithoutDiscount * (1 - formValues.discount) * 100) / 100;
         }
 
-        return dirty ? priceTotal : activeInvoice.total
+        return priceTotal
     }
 }
 
@@ -269,34 +219,24 @@ const validate = (values: FormData) => {
 
 const mapStateToProps = (state: RootState): StateProps => ({
     products: state.products,
-    invoiceItems: state.invoiceItems,
-    formValues: getFormValues('invoiceChange')(state) as FormData
+    formValues: getFormValues('invoiceAdd')(state) as FormData,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
     {
         initializeForm: (values) => {
-            dispatch(initialize('invoiceChange', values));
+            dispatch(initialize('invoiceAdd', values));
         },
-        submitForm: (data, total, _id) => {
-            dispatch(Actions.submitInvoiceChangeForm(data, total, _id));
-        },
-        submitAddInvoiceItem: (data, invoice_id) => {
-            dispatch(invoiceItemsActions.submitAddInvoiceItem(data, invoice_id));
-        },
-        submitPutInvoiceItem: (data, invoice_id) => {
-            dispatch(invoiceItemsActions.submitPutInvoiceItem(data, invoice_id));
-        },
-        submitDeleteInvoiceItem: (_id, invoice_id) => {
-            dispatch(invoiceItemsActions.submitDeleteInvoiceItem(_id, invoice_id));
+        submitForm: (data, total) => {
+            dispatch(Actions.submitInvoiceAddForm(data, total));
         },
     }
 );
 
 export default compose(
     reduxForm<FormData, OwnProps>({
-        form: 'invoiceChange',
+        form: 'invoiceAdd',
         validate,
     }),
     connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)
-)(InvoiceChangeForm);
+)(InvoiceAddForm);

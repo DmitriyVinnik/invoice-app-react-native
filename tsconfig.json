@@ -39,6 +39,6 @@
     "jest",
     "src/setupTests.ts",
     "backend",
-    "src/from web_project"
+    "src/from_web_project"
   ]
 }

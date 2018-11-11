@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {WrappedFieldProps} from 'redux-form';
-import {ProductsState} from "../../../../../redux/products/states/index";
+import {ProductsState} from "../../../redux/products/states/index";
 
 import {createStyles, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';

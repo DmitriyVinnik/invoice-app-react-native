@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import InvoiceItem from './InvoiceItem';
-import {InvoiceItem as InvoiceItemInterface} from '../../../../../redux/invoiceItems/states/index';
-import {RequestNestedState} from '../../../../../redux/request/nested-states/invoiceItems/states/index';
+import InvoiceItem from '../InvoiceItem/index';
+import {InvoiceItem as InvoiceItemInterface} from '../../../../../../redux/invoiceItems/states/index';
+import {RequestNestedState} from '../../../../../../redux/request/nested-states/invoiceItems/states/index';
 
 export interface OwnProps {
     invoiceItemsData: InvoiceItemInterface[],
