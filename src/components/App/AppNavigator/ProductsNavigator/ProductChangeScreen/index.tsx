@@ -1,154 +1,133 @@
 import React from 'react';
-import {compose, Dispatch} from 'redux';
-import {connect} from 'react-redux';
-import {reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize} from 'redux-form';
-import FormField from '../../shared/FormField';
+import { compose, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize } from 'redux-form';
+import FormField from '../../../../../shared/components/FormField';
+import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
 
-import {Product, ProductDataForServer} from '../../../../redux/products/states/index';
+import { Product, ProductDataForServer } from '../../../../../redux/products/states';
+import { Error } from '../../../../../shared/types/Request';
 
-type FormData = ProductDataForServer
+type FormData = ProductDataForServer;
 
 export interface OwnProps {
-    isVisible: boolean,
-    isLoading: boolean,
-    errors: string | null,
-    activeProduct?: Product,
-
-    handleClose(): void,
+  isVisible: boolean;
+  isLoading: boolean;
+  errors: Error | null;
+  activeProduct?: Product;
+  handleClose(): void;
+  submitForm(values: FormData): void;
 }
 
 interface DispatchProps {
-    initializeForm: (values: FormData) => void
+  initializeForm: (values: FormData) => void;
 }
 
-type Props = OwnProps & DispatchProps & InjectedFormProps<FormData, OwnProps>
+const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
+  {
+    initializeForm: (values) => {
+      dispatch(initialize('productChange', values));
+    },
+  }
+);
+
+type Props = OwnProps & DispatchProps & InjectedFormProps<FormData, OwnProps>;
 
 class ProductChangeForm extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props)
+
+  public componentDidMount() {
+    this.setFormValues();
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (prevProps.activeProduct !== this.props.activeProduct) {
+      this.setFormValues();
     }
+  }
 
-    public componentDidMount() {
-        this.setFormValues()
+  public render() {
+    const {isVisible, handleSubmit, isLoading, errors, pristine, handleClose, submitForm} = this.props;
+
+    return (
+      <Modal
+        animationType='slide'
+        transparent={false}
+        visible={isVisible}
+        onRequestClose={handleClose}
+      >
+        <View>
+          <Text>Change product.</Text>
+        </View>
+        <View>
+          <View>
+            {errors && <ErrorRequestView errors={errors}/>}
+            <Field
+              name='name'
+              component={FormField}
+              labelText='Product`s name: '
+            />
+            <Field
+              name='price'
+              component={FormField}
+              keyboard='number'
+              labelText='Product`s price: '
+              placeholder='decimal'
+            />
+            <View>
+              <TouchableOpacity
+                onPress={handleClose}
+              >
+                <Text>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleSubmit(submitForm)}
+                disabled={pristine || isLoading}
+              >
+                <Text>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+
+  private setFormValues() {
+    const {activeProduct} = this.props;
+
+    if (activeProduct) {
+      const initialFormValue: FormData = {
+        name: activeProduct.name,
+        price: activeProduct.price,
+      };
+
+      this.props.initializeForm(initialFormValue);
     }
-
-    public componentDidUpdate(prevProps: Props) {
-        if (prevProps.activeProduct !== this.props.activeProduct) {
-            this.setFormValues()
-        }
-    }
-
-    public render() {
-        const {isVisible, handleSubmit, isLoading, errors, handleClose} = this.props;
-
-        return (
-            <Dialog
-                open={isVisible}
-                onClose={handleClose}
-                aria-labelledby="product-change-dialog-title"
-            >
-                <DialogTitle
-                    _id="product-change-dialog-title"
-                    className='form__title'
-                >
-                    <span className='form__title'>Change product.</span>
-                </DialogTitle>
-                <DialogContent>
-                    <form
-                        onSubmit={handleSubmit}
-                        autoComplete="off"
-                    >
-                        {errors && (<span className='errors'>Error: {errors}</span>)}
-                        <Field
-                            name='name'
-                            component={FormField}
-                            type='text'
-                            _id='change-product-name'
-                            labelText="Product's name: "
-                        />
-                        <Field
-                            name='price'
-                            component={FormField}
-                            type='number'
-                            step={0.01}
-                            _id='change-product-price'
-                            labelText="Product's price: "
-                            placeholder='decimal'
-                        />
-                        <DialogActions>
-                            <div className='form__btn-wraper'>
-                                <Button
-                                    onClick={handleClose}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    type='submit'
-                                    disabled={isLoading}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Submit
-                                </Button>
-                            </div>
-                        </DialogActions>
-                    </form>
-                </DialogContent>
-            </Dialog>
-        );
-    }
-
-    private setFormValues() {
-        const {activeProduct} = this.props;
-
-        if (activeProduct) {
-            const initialFormValue: FormData = {
-                name: activeProduct.name,
-                price: activeProduct.price,
-            };
-
-            this.props.initializeForm(initialFormValue)
-        }
-    }
+  }
 }
 
 const validate = (values: FormData): FormErrors => {
-    const error: FormErrors<FormData> = {};
+  const error: FormErrors<FormData> = {};
 
-    if (!values.name) {
-        error.name = 'Required';
-    }
+  if (!values.name) {
+    error.name = 'Required';
+  }
 
-    if (!values.price) {
-        error.price = 'Required';
-    } else if (((values.price * 100) % 100) % 1 !== 0) {
-        error.price = 'Price must be in decimal format'
-    }
+  if (!values.price) {
+    error.price = 'Required';
+  } else if (((values.price * 100) % 100) % 1 !== 0) {
+    error.price = 'Price must be in decimal format';
+  }
 
-    return error;
+  return error;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
-    {
-        initializeForm: (values) => {
-            dispatch(initialize('productChange', values));
-        }
-    }
-);
-
-
 export default compose(
-    reduxForm<FormData, OwnProps>({
-        form: 'productChange',
-        validate,
-    }),
-    connect<DispatchProps>(null, mapDispatchToProps)
+  reduxForm<FormData, OwnProps>({
+    form: 'productChange',
+    validate,
+  }),
+  connect<DispatchProps>(null, mapDispatchToProps),
 )(ProductChangeForm);

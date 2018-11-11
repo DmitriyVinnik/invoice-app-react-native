@@ -4,11 +4,12 @@ import Customer from '../Customer';
 
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/customers/states';
+import ErrorRequestView from '../../../../../../shared/components/ErrorRequestView';
 
 export interface OwnProps {
-  customersData: CustomerInterface[],
+  customersData: CustomerInterface[];
   customersRequest: RequestNestedState;
-  loadCustomers(): void,
+  loadCustomers(): void;
 }
 
 export default class CustomerList extends Component<OwnProps> {
@@ -28,7 +29,7 @@ export default class CustomerList extends Component<OwnProps> {
       address={item.address}
       phone={item.phone}
     />
-  );
+  )
 
   public render() {
     const {customersRequest: {errors, loading, loaded}, customersData} = this.props;
@@ -36,7 +37,7 @@ export default class CustomerList extends Component<OwnProps> {
     if (errors) {
       return (
         <View>
-          <Text>Error: {errors}</Text>
+          <ErrorRequestView errors={errors}/>
         </View>
       );
     } else if (loading) {
@@ -50,15 +51,15 @@ export default class CustomerList extends Component<OwnProps> {
         <View>
           <Text>Something went wrong! Customers have not loaded, try reloading the page</Text>
         </View>
-      )
+      );
     }
 
     return (
-      <FlatList<CustomerInterface>
+      <FlatList
         data={customersData}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
       />
-    )
+    );
   }
 }

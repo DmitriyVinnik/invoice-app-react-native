@@ -25,6 +25,14 @@ interface DispatchProps {
   initializeForm: (values: FormData) => void;
 }
 
+const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
+  {
+    initializeForm: (values) => {
+      dispatch(initialize('customerChange', values));
+    },
+  }
+);
+
 type Props = OwnProps & DispatchProps & InjectedFormProps<FormData, OwnProps>;
 
 class CustomerChangeForm extends React.Component<Props> {
@@ -120,14 +128,6 @@ const validate = (values: FormData): FormErrors => {
 
   return error;
 };
-
-const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
-  {
-    initializeForm: (values) => {
-      dispatch(initialize('customerChange', values));
-    },
-  }
-);
 
 export default compose(
   reduxForm<FormData, OwnProps>({

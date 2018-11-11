@@ -22,41 +22,41 @@ const CustomerDeleteScreen: React.SFC<Props> = (props: Props) => {
   const {name, isVisible, isLoading, errors, handleSubmit, handleClose} = props;
 
   return (
-    <View>
-      <Modal
-        animationType='slide'
-        transparent={false}
-        visible={isVisible}
-        onRequestClose={handleClose}
-      >
+    <Modal
+      animationType='slide'
+      transparent={false}
+      visible={isVisible}
+      onRequestClose={handleClose}
+    >
+      <View>
+        <Text>Delete customer.</Text>
+      </View>
+      <View>
         <View>
-          <Text>Delete customer.</Text>
-        </View>
-        <View>
+          {errors && <ErrorRequestView errors={errors}/>}
+          {
+            name &&
+          <Text>
+            You really want to delete the customer:
+            <Text> {name}</Text>
+          </Text>
+          }
           <View>
-            {errors && <ErrorRequestView errors={errors}/>}
-            {name &&
-            <Text>
-                You really want to delete the customer:
-                <Text> {name}</Text>
-            </Text>}
-            <View>
-              <TouchableOpacity
-                onPress={handleClose}
-              >
-                <Text>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                disabled={isLoading}
-                onPress={handleSubmit}
-              >
-                <Text>Delete</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={handleClose}
+            >
+              <Text>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              disabled={isLoading}
+              onPress={handleSubmit}
+            >
+              <Text>Delete</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 

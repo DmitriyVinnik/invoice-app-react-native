@@ -1,57 +1,64 @@
-import React, {Component} from 'react';
-import Product from '../Product/index';
-import {Product as ProductInterface} from '../../../../../redux/products/states/index';
-import {RequestNestedState} from '../../../../../redux/request/nested-states/products/states/index';
+import React, { Component } from 'react';
+import { View, Text, FlatList, ListRenderItem } from 'react-native';
+import Product from '../Product';
+
+import { Product as ProductInterface } from '../../../../../../redux/products/states';
+import { RequestNestedState } from '../../../../../../redux/request/nested-states/products/states';
+import ErrorRequestView from '../../../../../../shared/components/ErrorRequestView';
 
 export interface OwnProps {
-    productsData: ProductInterface[],
-    productsRequest: RequestNestedState;
-    loadProducts(): void,
+  productsData: ProductInterface[];
+  productsRequest: RequestNestedState;
+  loadProducts(): void;
 }
 
 export default class ProductList extends Component<OwnProps> {
 
-    public componentDidMount() {
-        const {loadProducts} = this.props;
+  public componentDidMount() {
+    const {loadProducts} = this.props;
 
-        loadProducts();
+    loadProducts();
+  }
+
+  private keyExtractor = (item: ProductInterface) => `${item._id}`;
+
+  private renderItem: ListRenderItem<ProductInterface> = ({item}) => (
+    <Product
+      _id={item._id}
+      name={item.name}
+      price={item.price}
+    />
+  )
+
+  public render() {
+    const {productsRequest: {errors, loading, loaded}, productsData} = this.props;
+
+    if (errors) {
+      return (
+        <View>
+          <ErrorRequestView errors={errors}/>
+        </View>
+      );
+    } else if (loading) {
+      return (
+        <View>
+          <Text>Wait a second, loading...</Text>
+        </View>
+      );
+    } else if (!loaded) {
+      return (
+        <View>
+          <Text>Something went wrong! Products have not loaded, try reloading the page</Text>
+        </View>
+      );
     }
 
-    public render() {
-        const {productsRequest: {errors, loading, loaded}, productsData} = this.props;
-        let productItems: React.ReactNode | null;
-
-        if (productsData) {
-            productItems = productsData.map(product => (
-                <Product
-                    _id={product._id}
-                    name={product.name}
-                    price={product.price}
-                    key={product._id}
-                />
-            ));
-        } else {
-            productItems = null;
-        }
-
-        if (errors) {
-            return (
-                <p className='errors'>Error: {errors}</p>
-            );
-        } else if (loading) {
-            return (
-                <p className='loader'>Wait a second, loading...</p>
-            );
-        } else  if (!loaded) {
-            return (
-                <p className='errors'>Something went wrong! Products have not loaded, try reloading the page</p>
-            )
-        }
-
-        return (
-            <ul className='entity-list'>
-                {productItems}
-            </ul>
-        )
-    }
+    return (
+      <FlatList
+        data={productsData}
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+      />
+    );
+  }
 }

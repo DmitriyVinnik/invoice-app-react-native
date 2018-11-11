@@ -6,7 +6,7 @@ export default createStackNavigator({
   ProductsScreen: {
     screen: ProductsScreen,
     navigationOptions: {
-      title: 'Products'
-    }
+      title: 'Products',
+    },
   },
-})
+});

@@ -7,19 +7,19 @@ import { Dispatch } from 'redux';
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
 import { RootState } from '../../../../../../redux/store';
 
-type OwnProps = CustomerInterface
+type OwnProps = CustomerInterface;
 
 interface StateProps {
-  activeCustomerId: number | null,
-  customersData: CustomerInterface[],
+  activeCustomerId: number | null;
+  customersData: CustomerInterface[];
 }
 
 interface DispatchProps {
-  selectActiveCustomer(data: CustomerInterface[], _id: number): void,
-  resetSelectionActiveCustomer(): void,
+  selectActiveCustomer(data: CustomerInterface[], _id: number): void;
+  resetSelectionActiveCustomer(): void;
 }
 
-type Props = StateProps & DispatchProps & OwnProps
+type Props = StateProps & DispatchProps & OwnProps;
 
 const mapStateToProps = (state: RootState): StateProps => ({
   activeCustomerId: state.customers.activeCustomerId,
@@ -84,11 +84,11 @@ class Customer extends React.Component<Props> {
 }
 
 export default connect<StateProps, DispatchProps, OwnProps, RootState>(
-  mapStateToProps, mapDispatchToProps
-)(Customer)
+  mapStateToProps, mapDispatchToProps,
+)(Customer);
 
 const style = StyleSheet.create({
   active: {
-    backgroundColor: 'red'
+    backgroundColor: 'red',
   },
 });

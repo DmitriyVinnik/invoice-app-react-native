@@ -1,26 +1,27 @@
-import {ActionsUnion} from '../../../../../../../shared/types/ActionsUnion';
-import {createAction} from '../../../../../../../shared/helpers/createAction';
-import {InvoiceDataForServer, Invoice} from '../../../../../../invoices/states';
+import { ActionsUnion } from '../../../../../../../shared/types/ActionsUnion';
+import { createAction } from '../../../../../../../shared/helpers/createAction';
+import { InvoiceDataForServer, Invoice } from '../../../../../../invoices/states';
+import { Error } from '../../../../../../../shared/types/Request';
 
 export enum ActionTypes {
-    INVOICES_PUT = 'INVOICES_PUT',
-    INVOICES_PUT_SUCCESS = 'INVOICES_PUT_SUCCESS',
-    INVOICES_PUT_FAIL = 'INVOICES_PUT_FAIL',
+  INVOICES_PUT = 'INVOICES_PUT',
+  INVOICES_PUT_SUCCESS = 'INVOICES_PUT_SUCCESS',
+  INVOICES_PUT_FAIL = 'INVOICES_PUT_FAIL',
 }
 
 export const Actions = {
-    invoicesPut: (data: InvoiceDataForServer, _id: number) => {
-        return createAction(ActionTypes.INVOICES_PUT, {data, _id})
-    },
-    invoicesPutSuccess: (data: Invoice) => {
-        return createAction(ActionTypes.INVOICES_PUT_SUCCESS, {data})
-    },
-    invoicesPutFail: (errors: string) => {
-        return createAction(ActionTypes.INVOICES_PUT_FAIL, {errors})
-    },
+  invoicesPut: (data: InvoiceDataForServer, _id: number) => {
+    return createAction(ActionTypes.INVOICES_PUT, {data, _id});
+  },
+  invoicesPutSuccess: (data: Invoice) => {
+    return createAction(ActionTypes.INVOICES_PUT_SUCCESS, {data});
+  },
+  invoicesPutFail: (errors: Error) => {
+    return createAction(ActionTypes.INVOICES_PUT_FAIL, {errors});
+  },
 };
 
 const putSuccess = {putSuccess: Actions.invoicesPutSuccess};
 
-export type Actions = ActionsUnion<typeof Actions>
-export type PutSuccess = ActionsUnion<typeof putSuccess>
+export type Actions = ActionsUnion<typeof Actions>;
+export type PutSuccess = ActionsUnion<typeof putSuccess>;
