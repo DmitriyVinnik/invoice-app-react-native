@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, KeyboardTypeOptions } from 'react-native';
 import { WrappedFieldProps } from 'redux-form';
-import RegularText from '../RegularText/index';
+import RegularText from '../RegularText';
 import style from './style';
 
 export interface OwnProps {

@@ -11,7 +11,7 @@ const ErrorRequestView: React.SFC<OwnProps> = (props: OwnProps) => {
 
   return (
     <View>
-      <Text>
+      <Text style={{color: 'red'}}>
         Error: {Array.isArray(errors.message) ? errors.message.join(', ') : errors.message}
       </Text>
     </View>

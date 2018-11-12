@@ -1,8 +1,8 @@
 import React from 'react';
 import {Field, WrappedFieldArrayProps, WrappedFieldProps} from 'redux-form';
 import FormField from '../../../shared/FormField';
-import ProductSelectElement from './ProductSelectScreen/index';
-import {ProductsState} from "../../redux/products/states/index";
+import ProductSelectElement from '../ProductSelectElement/index';
+import {ProductsState} from "../../../redux/products/states/index";
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';

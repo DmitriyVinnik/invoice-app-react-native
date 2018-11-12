@@ -1,71 +1,66 @@
 import React from 'react';
+import {
+  View, Text, Modal,
+  GestureResponderEvent,
+} from 'react-native';
+import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import RegularText from '../../../../../shared/components/RegularText';
+import RegularButton from '../../../../../shared/components/RegularButton';
+import style from './style';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import { Error } from '../../../../../shared/types/Request';
 
 export interface OwnProps {
-    isVisible: boolean,
-    isLoading: boolean,
-    errors: string | null,
-    _id: number | null,
-
-    handleSubmit(evt: React.FormEvent<HTMLFormElement>): void,
-
-    handleClose(): void,
+  isVisible: boolean;
+  isLoading: boolean;
+  errors: Error | null;
+  _id: number | null;
+  handleSubmit(evt: GestureResponderEvent): void;
+  handleClose(): void;
 }
 
-type Props = OwnProps
+type Props = OwnProps;
 
 const InvoiceDeleteForm: React.SFC<Props> = (props: Props) => {
-    const {_id, isVisible, isLoading, errors, handleSubmit, handleClose} = props;
+  const {_id, isVisible, isLoading, errors, handleSubmit, handleClose} = props;
 
-    return (
-        <Dialog
-            open={isVisible}
-            onClose={handleClose}
-            aria-labelledby="customer-delete-dialog-title"
-        >
-            <DialogTitle
-                _id="customer-delete-dialog-title"
-                className='form__title'
-            >
-                <span className='form__title'>Delete invoice.</span>
-            </DialogTitle>
-            <DialogContent>
-                <form onSubmit={handleSubmit}>
-                    {errors && (<span className='errors'>Error: {errors}</span>)}
-                    {_id &&
-                    <DialogContentText>
-                        You really want to delete the invoice - ID:
-                        <span className='form__title form__title--small'> {_id}</span>
-                    </DialogContentText>}
-                    <DialogActions>
-                        <div className='form__btn-wraper'>
-                            <Button
-                                onClick={handleClose}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                type='submit'
-                                disabled={isLoading}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Delete
-                            </Button>
-                        </div>
-                    </DialogActions>
-                </form>
-            </DialogContent>
-        </Dialog>
-    );
+  return (
+    <Modal
+      animationType='slide'
+      transparent={false}
+      visible={isVisible}
+      onRequestClose={handleClose}
+    >
+      <View style={style.container}>
+        <View style={style.headerWraper}>
+          <RegularText>
+            <Text style={style.textTitle}>Delete invoice.</Text>
+          </RegularText>
+        </View>
+        <View style={style.contentWraper}>
+          {errors && <ErrorRequestView errors={errors}/>}
+          {
+            _id &&
+            <RegularText>
+              You really want to delete the invoice - ID:
+              <Text style={style.textTitle}> {_id}</Text>
+            </RegularText>
+          }
+        </View>
+        <View style={style.buttonWraper}>
+          <RegularButton
+            onPress={handleClose}
+            title='Cancel'
+          />
+          <RegularButton
+            onPress={handleSubmit}
+            title='Delete'
+            disabled={isLoading}
+          />
+        </View>
+      </View>
+    </Modal>
+  );
 };
 
 export default InvoiceDeleteForm;

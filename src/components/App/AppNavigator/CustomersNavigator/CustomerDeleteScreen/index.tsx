@@ -42,8 +42,8 @@ const CustomerDeleteScreen: React.SFC<Props> = (props: Props) => {
           {
             name &&
             <RegularText>
-                You really want to delete the customer:
-                <Text style={style.textTitle}> {name}</Text>
+              You really want to delete the customer:
+              <Text style={style.textTitle}> {name}</Text>
             </RegularText>
           }
         </View>

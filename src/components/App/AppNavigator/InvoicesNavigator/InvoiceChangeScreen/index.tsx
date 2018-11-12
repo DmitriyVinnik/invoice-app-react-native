@@ -7,7 +7,7 @@ import {
     InjectedFormProps, FormErrors, FormAction, getFormValues,
 } from 'redux-form';
 import FormField from '../../shared/FormField';
-import InvoiceItemFieldsArray from '../../../../../shared/components/InvoiceItemFieldsArray';
+import InvoiceItemFieldsArray from '../../../../../shared/components/InvoiceItemFieldsArray/index';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';

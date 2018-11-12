@@ -15,3 +15,16 @@ export interface ProductsFormData {
   name: string;
   price: string;
 }
+
+export interface InvoiceItemsFormData {
+  invoice_id: number;
+  product_id: number;
+  quantity: string;
+}
+
+export interface InvoicesFormData {
+  discount: string;
+  total: number;
+  customer_id: number;
+  invoiceItems: InvoiceItemsFormData[];
+}
