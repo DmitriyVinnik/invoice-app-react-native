@@ -17,7 +17,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  selectActiveCustomer(data: CustomerInterface[], _id: number): void;
+  selectActiveCustomer(_id: number): void;
   resetSelectionActiveCustomer(): void;
 }
 
@@ -30,8 +30,8 @@ const mapStateToProps = (state: RootState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
   {
-    selectActiveCustomer: (data, _id) => {
-      dispatch(Actions.selectCustomer(data, _id));
+    selectActiveCustomer: (_id) => {
+      dispatch(Actions.selectCustomer(_id));
     },
     resetSelectionActiveCustomer: () => {
       dispatch(Actions.resetSelectionCustomer());
@@ -42,11 +42,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
 class Customer extends React.Component<Props> {
   render() {
     const {
-      _id, name, address, phone, activeCustomerId, customersData,
+      _id, name, address, phone, activeCustomerId, /*customersData,*/
       resetSelectionActiveCustomer, selectActiveCustomer,
     } = this.props;
     const onClickCustomer = (): void => {
-      selectActiveCustomer(customersData, _id);
+      selectActiveCustomer(_id);
     };
     const isCustomerActive = activeCustomerId === _id;
     const onReClickCustomer = (): void => {

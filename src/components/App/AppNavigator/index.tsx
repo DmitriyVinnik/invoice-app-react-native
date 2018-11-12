@@ -2,12 +2,14 @@ import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import CustomersNavigator from './CustomersNavigator';
 import ProductsNavigator from './ProductsNavigator';
+import InvoicesNavigator from './InvoicesNavigator';
 
 const Navigator = createBottomTabNavigator({
+  Invoices: InvoicesNavigator,
   Customers: CustomersNavigator,
   Products: ProductsNavigator,
 }, {
-  initialRouteName: 'Customers',
+  initialRouteName: 'Invoices',
   tabBarOptions: {
     activeTintColor: '#fff',
     activeBackgroundColor: '#5d0756',

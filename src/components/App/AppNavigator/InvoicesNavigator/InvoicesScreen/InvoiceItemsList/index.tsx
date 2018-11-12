@@ -1,63 +1,75 @@
-import React, {Component} from 'react';
-import InvoiceItem from '../InvoiceItem/index';
-import {InvoiceItem as InvoiceItemInterface} from '../../../../../../redux/invoiceItems/states/index';
-import {RequestNestedState} from '../../../../../../redux/request/nested-states/invoiceItems/states/index';
+import React, { Component } from 'react';
+import { View, FlatList, ActivityIndicator, ListRenderItem } from 'react-native';
+import InvoiceItem from '../InvoiceItem';
+import RegularText from '../../../../../../shared/components/RegularText';
+import ErrorRequestView from '../../../../../../shared/components/ErrorRequestView';
+import style from './style';
+
+import { InvoiceItem as InvoiceItemInterface } from '../../../../../../redux/invoiceItems/states';
+import { RequestNestedState } from '../../../../../../redux/request/nested-states/invoiceItems/states';
 
 export interface OwnProps {
-    invoiceItemsData: InvoiceItemInterface[],
-    invoiceItemsRequest: RequestNestedState;
-    activeInvoiceId: number | null;
-
-    loadInvoiceItems(invoice_id: number): void,
+  invoiceItemsData: InvoiceItemInterface[];
+  invoiceItemsRequest: RequestNestedState;
+  activeInvoiceId: number | null;
+  loadInvoiceItems(invoice_id: number): void;
 }
 
 export default class InvoiceItemsList extends Component<OwnProps> {
 
-    public componentDidMount() {
-        const {activeInvoiceId, loadInvoiceItems} = this.props;
+  public componentDidMount() {
+    const {activeInvoiceId, loadInvoiceItems} = this.props;
 
-        if (activeInvoiceId) {
-            loadInvoiceItems(activeInvoiceId);
-        }
+    if (activeInvoiceId) {
+      loadInvoiceItems(activeInvoiceId);
+    }
+  }
+
+  private keyExtractor = (item: InvoiceItemInterface) => `${item._id}`;
+
+  private renderItem: ListRenderItem<InvoiceItemInterface> = ({item}) => (
+    <InvoiceItem
+      _id={item._id}
+      invoice_id={item.invoice_id}
+      product_id={item.product_id}
+      quantity={item.quantity}
+    />
+  )
+
+  public render() {
+    const {invoiceItemsRequest: {errors, loading, loaded}, invoiceItemsData, activeInvoiceId} = this.props;
+    const filteredInvoiceItems = invoiceItemsData.filter(
+      (invoiceItem) => invoiceItem.invoice_id === activeInvoiceId,
+    );
+
+    if (errors) {
+      return (
+        <View>
+          <ErrorRequestView errors={errors}/>
+        </View>
+      );
+    } else if (loading) {
+      return (
+        <View style={style.loader}>
+          <RegularText>Wait a second, loading...</RegularText>
+          <ActivityIndicator/>
+        </View>
+      );
+    } else if (!loaded) {
+      return (
+        <View>
+          <RegularText>Something went wrong! Customers have not loaded, try reloading app</RegularText>
+        </View>
+      );
     }
 
-    public render() {
-        const {invoiceItemsRequest: {errors, loading, loaded}, invoiceItemsData, activeInvoiceId} = this.props;
-        let invoiceItemElements: React.ReactNode | null;
-        if (invoiceItemsData) {
-            invoiceItemElements = invoiceItemsData.filter(
-                (invoiceItem) => invoiceItem.invoice_id === activeInvoiceId
-            ).map(invoiceItem => (
-                <InvoiceItem
-                    _id={invoiceItem._id}
-                    invoice_id={invoiceItem.invoice_id}
-                    product_id={invoiceItem.product_id}
-                    quantity={invoiceItem.quantity}
-                    key={invoiceItem._id}
-                />
-            ));
-        } else {
-            invoiceItemElements = null;
-        }
-
-        if (errors) {
-            return (
-                <p className='errors'>Error: {errors}</p>
-            );
-        } else if (loading) {
-            return (
-                <p className='loader'>Wait a second, loading...</p>
-            );
-        } else if (!loaded) {
-            return (
-                <p className='errors'>Something went wrong! InvoiceItems have not loaded, try reloading the page</p>
-            )
-        }
-
-        return (
-            <ul className='entity-list entity-list--sub'>
-                {invoiceItemElements}
-            </ul>
-        )
-    }
+    return (
+      <FlatList
+        style={style.list}
+        data={filteredInvoiceItems}
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+      />
+    );
+  }
 }
