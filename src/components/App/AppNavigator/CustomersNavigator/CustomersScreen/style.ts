@@ -6,13 +6,14 @@ const style = StyleSheet.create({
   },
   list: {
     marginTop: 10,
-    marginBottom: 30,
+    // marginBottom: 30,
   },
   editPanel: {
     position: 'absolute',
+    padding: 10,
     bottom: 0,
-    left: 10,
-    right: 10,
+    left: 0,
+    right: 0,
   },
 });
 

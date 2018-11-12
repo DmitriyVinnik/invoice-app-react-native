@@ -8,6 +8,22 @@ const Navigator = createBottomTabNavigator({
   Products: ProductsNavigator,
 }, {
   initialRouteName: 'Customers',
+  tabBarOptions: {
+    activeTintColor: '#fff',
+    activeBackgroundColor: '#5d0756',
+    inactiveTintColor: 'gray',
+    tabStyle: {
+      height: 30,
+    },
+    labelStyle: {
+      fontFamily: 'Arial',
+      fontSize: 16,
+      fontWeight: '700',
+    },
+    style: {
+      height: 30,
+    },
+  },
 });
 
 export default class AppNavigator extends React.Component {
