@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
+import RegularButton from '../RegularButton';
+import style from './style';
 
 export interface OwnProps {
   labelButton: string;
@@ -16,27 +18,24 @@ const EditPanel: React.SFC<OwnProps> = (props: OwnProps) => {
   } = props;
 
   return (
-    <View>
-      <TouchableOpacity
+    <View style={style.container}>
+      <RegularButton
         onPress={onAddButtonClick}
-      >
-        <Text>{`Add new ${labelButton}`}</Text>
-      </TouchableOpacity>
+        title={`Add new ${labelButton}`}
+      />
       {
         activeId &&
-        <TouchableOpacity
+        <RegularButton
             onPress={onChangeButtonClick}
-        >
-            <Text>{`Change ${labelButton}`}</Text>
-        </TouchableOpacity>
+            title={`Change ${labelButton}`}
+        />
       }
       {
         activeId &&
-        <TouchableOpacity
+        <RegularButton
             onPress={onDeleteButtonClick}
-        >
-            <Text>{`Delete ${labelButton}`}</Text>
-        </TouchableOpacity>
+            title={`Delete ${labelButton}`}
+        />
       }
     </View>
   );

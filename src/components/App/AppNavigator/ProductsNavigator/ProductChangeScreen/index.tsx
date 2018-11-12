@@ -2,15 +2,17 @@ import React from 'react';
 import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, Modal } from 'react-native';
 import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize } from 'redux-form';
-import FormField from '../../../../../shared/components/FormField';
+import FormField from '../../../../../shared/components/FormField/index';
 import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import RegularText from '../../../../../shared/components/RegularText';
+import RegularButton from '../../../../../shared/components/RegularButton';
+import style from './style';
 
-import { Product, ProductDataForServer } from '../../../../../redux/products/states';
+import { Product } from '../../../../../redux/products/states';
+import { ProductsFormData } from '../../../../../redux/form/states';
 import { Error } from '../../../../../shared/types/Request';
-
-type FormData = ProductDataForServer;
 
 export interface OwnProps {
   isVisible: boolean;
@@ -18,11 +20,11 @@ export interface OwnProps {
   errors: Error | null;
   activeProduct?: Product;
   handleClose(): void;
-  submitForm(values: FormData): void;
+  submitForm(values: ProductsFormData): void;
 }
 
 interface DispatchProps {
-  initializeForm: (values: FormData) => void;
+  initializeForm: (values: ProductsFormData) => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
@@ -33,7 +35,7 @@ const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
   }
 );
 
-type Props = OwnProps & DispatchProps & InjectedFormProps<FormData, OwnProps>;
+type Props = OwnProps & DispatchProps & InjectedFormProps<ProductsFormData, OwnProps>;
 
 class ProductChangeForm extends React.Component<Props> {
 
@@ -57,11 +59,13 @@ class ProductChangeForm extends React.Component<Props> {
         visible={isVisible}
         onRequestClose={handleClose}
       >
-        <View>
-          <Text>Change product.</Text>
-        </View>
-        <View>
-          <View>
+        <View style={style.container}>
+          <View style={style.headerWraper}>
+            <RegularText>
+              <Text style={style.textTitle}>Addition new product.</Text>
+            </RegularText>
+          </View>
+          <View style={style.fieldWraper}>
             {errors && <ErrorRequestView errors={errors}/>}
             <Field
               name='name'
@@ -71,23 +75,21 @@ class ProductChangeForm extends React.Component<Props> {
             <Field
               name='price'
               component={FormField}
-              keyboard='number'
+              keyboard='numeric'
               labelText='Product`s price: '
               placeholder='decimal'
             />
-            <View>
-              <TouchableOpacity
-                onPress={handleClose}
-              >
-                <Text>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleSubmit(submitForm)}
-                disabled={pristine || isLoading}
-              >
-                <Text>Submit</Text>
-              </TouchableOpacity>
-            </View>
+          </View>
+          <View style={style.buttonWraper}>
+            <RegularButton
+              onPress={handleClose}
+              title='Cancel'
+            />
+            <RegularButton
+              onPress={handleSubmit(submitForm)}
+              title='Submit'
+              disabled={pristine || isLoading}
+            />
           </View>
         </View>
       </Modal>
@@ -98,9 +100,9 @@ class ProductChangeForm extends React.Component<Props> {
     const {activeProduct} = this.props;
 
     if (activeProduct) {
-      const initialFormValue: FormData = {
+      const initialFormValue: ProductsFormData = {
         name: activeProduct.name,
-        price: activeProduct.price,
+        price: `${activeProduct.price}`,
       };
 
       this.props.initializeForm(initialFormValue);
@@ -108,8 +110,8 @@ class ProductChangeForm extends React.Component<Props> {
   }
 }
 
-const validate = (values: FormData): FormErrors => {
-  const error: FormErrors<FormData> = {};
+const validate = (values: ProductsFormData): FormErrors => {
+  const error: FormErrors<ProductsFormData> = {};
 
   if (!values.name) {
     error.name = 'Required';
@@ -117,7 +119,7 @@ const validate = (values: FormData): FormErrors => {
 
   if (!values.price) {
     error.price = 'Required';
-  } else if (((values.price * 100) % 100) % 1 !== 0) {
+  } else if (((+values.price * 100) % 100) % 1 !== 0) {
     error.price = 'Price must be in decimal format';
   }
 
@@ -125,7 +127,7 @@ const validate = (values: FormData): FormErrors => {
 };
 
 export default compose(
-  reduxForm<FormData, OwnProps>({
+  reduxForm<ProductsFormData, OwnProps>({
     form: 'productChange',
     validate,
   }),

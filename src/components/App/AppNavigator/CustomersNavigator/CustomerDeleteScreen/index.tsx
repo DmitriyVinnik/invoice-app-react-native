@@ -1,9 +1,12 @@
 import React from 'react';
 import {
-  View, Text, TouchableOpacity, Modal,
+  View, Text, Modal,
   GestureResponderEvent,
 } from 'react-native';
 import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import RegularText from '../../../../../shared/components/RegularText';
+import RegularButton from '../../../../../shared/components/RegularButton';
+import style from './style';
 
 import { Error } from '../../../../../shared/types/Request';
 
@@ -28,32 +31,32 @@ const CustomerDeleteScreen: React.SFC<Props> = (props: Props) => {
       visible={isVisible}
       onRequestClose={handleClose}
     >
-      <View>
-        <Text>Delete customer.</Text>
-      </View>
-      <View>
-        <View>
+      <View style={style.container}>
+        <View style={style.headerWraper}>
+          <RegularText>
+            <Text style={style.textTitle}>Delete customer.</Text>
+          </RegularText>
+        </View>
+        <View style={style.contentWraper}>
           {errors && <ErrorRequestView errors={errors}/>}
           {
             name &&
-          <Text>
-            You really want to delete the customer:
-            <Text> {name}</Text>
-          </Text>
+            <RegularText>
+                You really want to delete the customer:
+                <Text style={style.textTitle}> {name}</Text>
+            </RegularText>
           }
-          <View>
-            <TouchableOpacity
-              onPress={handleClose}
-            >
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={isLoading}
-              onPress={handleSubmit}
-            >
-              <Text>Delete</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+        <View style={style.buttonWraper}>
+          <RegularButton
+            onPress={handleClose}
+            title='Cancel'
+          />
+          <RegularButton
+            onPress={handleSubmit}
+            title='Delete'
+            disabled={isLoading}
+          />
         </View>
       </View>
     </Modal>

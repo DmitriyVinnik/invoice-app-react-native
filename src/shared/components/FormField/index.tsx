@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, KeyboardTypeOptions } from 'react-native';
 import { WrappedFieldProps } from 'redux-form';
+import RegularText from '../RegularText/index';
+import style from './style';
 
 export interface OwnProps {
   labelText: string;
@@ -18,7 +20,7 @@ export const FormField: React.SFC<Props> = (props: Props) => {
 
   return (
     <View>
-      <Text>{labelText}</Text>
+      <RegularText>{labelText}</RegularText>
       <TextInput
         placeholder={placeholder}
         editable={editable}
@@ -27,8 +29,9 @@ export const FormField: React.SFC<Props> = (props: Props) => {
         onBlur={input.onBlur}
         onFocus={input.onFocus as any}
         value={input.value}
+        style={style.textInput}
       />
-      {touched && (error && <Text style={{color: 'red'}}>{error}</Text>)}
+      {touched && (error && <Text style={style.errorText}>{error}</Text>)}
     </View>
   );
 };

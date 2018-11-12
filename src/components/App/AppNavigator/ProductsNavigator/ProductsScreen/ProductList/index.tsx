@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, ListRenderItem } from 'react-native';
+import { View, FlatList, ActivityIndicator, ListRenderItem } from 'react-native';
 import Product from '../Product';
+import RegularText from '../../../../../../shared/components/RegularText';
+import style from './style';
 
 import { Product as ProductInterface } from '../../../../../../redux/products/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/products/states';
@@ -41,20 +43,22 @@ export default class ProductList extends Component<OwnProps> {
       );
     } else if (loading) {
       return (
-        <View>
-          <Text>Wait a second, loading...</Text>
+        <View style={style.loader}>
+          <RegularText>Wait a second, loading...</RegularText>
+          <ActivityIndicator/>
         </View>
       );
     } else if (!loaded) {
       return (
         <View>
-          <Text>Something went wrong! Products have not loaded, try reloading the page</Text>
+          <RegularText>Something went wrong! Products have not loaded, try reloading app</RegularText>
         </View>
       );
     }
 
     return (
       <FlatList
+        style={style.list}
         data={productsData}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}

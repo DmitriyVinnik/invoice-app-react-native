@@ -3,10 +3,11 @@ import { GestureResponderEvent, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import CustomerList from './CustomerList';
-import EditPanel from '../../../../../shared/components/EditPanel';
+import EditPanel from '../../../../../shared/components/EditPanel/index';
 import CustomerDeleteScreen from '../CustomerDeleteScreen';
 import CustomerAddScreen from '../CustomerAddScreen';
 import CustomerChangeScreen from '../CustomerChangeScreen';
+import style from './style';
 
 import { CustomerDataForServer, CustomersState } from '../../../../../redux/customers/states';
 import { CustomersRequestState } from '../../../../../redux/request/nested-states/customers/states';
@@ -124,42 +125,46 @@ class CustomersScreen extends React.Component<Props, State> {
     );
 
     return (
-      <View>
-        <CustomerList
-          customersRequest={customersRequests.customersGet}
-          customersData={customers.data}
-          loadCustomers={loadCustomers}
-        />
-        <EditPanel
-          labelButton='customer'
-          activeId={customers.activeCustomerId}
-          onAddButtonClick={this.toggleCustomerAddForm}
-          onChangeButtonClick={this.toggleCustomerChangeform}
-          onDeleteButtonClick={this.toggleCustomerDeleteForm}
-        />
-        <CustomerAddScreen
-          isVisible={isVisibleAddForm}
-          handleClose={this.toggleCustomerAddForm}
-          isLoading={customersRequests.customersPost.loading}
-          errors={customersRequests.customersPost.errors}
-          submitForm={this.handleSubmitCustomerAddForm}
-        />
-        <CustomerChangeScreen
-          isVisible={isVisibleChangeForm}
-          handleClose={this.toggleCustomerChangeform}
-          isLoading={customersRequests.customersPut.loading}
-          errors={customersRequests.customersPut.errors}
-          submitForm={this.handleSubmitCustomerChangeForm}
-          activeCustomer={activeCustomer}
-        />
-        <CustomerDeleteScreen
-          isVisible={isVisibleDeleteForm}
-          handleClose={this.toggleCustomerDeleteForm}
-          isLoading={customersRequests.customersDelete.loading}
-          errors={customersRequests.customersDelete.errors}
-          name={activeCustomer ? activeCustomer.name : null}
-          handleSubmit={this.handleSubmitCustomerDeleteForm}
-        />
+      <View style={style.container}>
+        <View style={style.list}>
+          <CustomerList
+            customersRequest={customersRequests.customersGet}
+            customersData={customers.data}
+            loadCustomers={loadCustomers}
+          />
+        </View>
+        <View style={style.editPanel}>
+          <EditPanel
+            labelButton='customer'
+            activeId={customers.activeCustomerId}
+            onAddButtonClick={this.toggleCustomerAddForm}
+            onChangeButtonClick={this.toggleCustomerChangeform}
+            onDeleteButtonClick={this.toggleCustomerDeleteForm}
+          />
+          <CustomerAddScreen
+            isVisible={isVisibleAddForm}
+            handleClose={this.toggleCustomerAddForm}
+            isLoading={customersRequests.customersPost.loading}
+            errors={customersRequests.customersPost.errors}
+            submitForm={this.handleSubmitCustomerAddForm}
+          />
+          <CustomerChangeScreen
+            isVisible={isVisibleChangeForm}
+            handleClose={this.toggleCustomerChangeform}
+            isLoading={customersRequests.customersPut.loading}
+            errors={customersRequests.customersPut.errors}
+            submitForm={this.handleSubmitCustomerChangeForm}
+            activeCustomer={activeCustomer}
+          />
+          <CustomerDeleteScreen
+            isVisible={isVisibleDeleteForm}
+            handleClose={this.toggleCustomerDeleteForm}
+            isLoading={customersRequests.customersDelete.loading}
+            errors={customersRequests.customersDelete.errors}
+            name={activeCustomer ? activeCustomer.name : null}
+            handleSubmit={this.handleSubmitCustomerDeleteForm}
+          />
+        </View>
       </View>
     );
   }

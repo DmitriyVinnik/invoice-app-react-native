@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from '../../../../../../redux/customers/AC';
+import RegularText from '../../../../../../shared/components/RegularText';
+import style from './style';
 
 import { Dispatch } from 'redux';
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
@@ -53,30 +55,30 @@ class Customer extends React.Component<Props> {
 
     return (
       <TouchableOpacity
+        style={
+          isCustomerActive ?
+            [style.container, style.active] :
+            style.container
+        }
         onPress={!isCustomerActive ? onClickCustomer : onReClickCustomer}
       >
-        <View style={isCustomerActive && style.active}>
-          <View>
-            <Text>Name:
-              <Text> {name}</Text>
-            </Text>
-            <Text>
-              _id:
-              <Text> {_id}</Text>
-            </Text>
-          </View>
-          <View>
-            <Text>
-              Address:
-              <Text> {address}</Text>
-            </Text>
-          </View>
-          <View>
-            <Text>
-              Phone:
-              <Text> {phone}</Text>
-            </Text>
-          </View>
+        <View>
+          <RegularText>
+            Name:
+            <Text style={style.text}> {name}</Text>
+          </RegularText>
+          <RegularText>
+            id:
+            <Text style={style.text}> {_id}</Text>
+          </RegularText>
+          <RegularText>
+            Address:
+            <Text style={style.text}> {address}</Text>
+          </RegularText>
+          <RegularText>
+            Phone:
+            <Text style={style.text}> {phone}</Text>
+          </RegularText>
         </View>
       </TouchableOpacity>
     );
@@ -86,9 +88,3 @@ class Customer extends React.Component<Props> {
 export default connect<StateProps, DispatchProps, OwnProps, RootState>(
   mapStateToProps, mapDispatchToProps,
 )(Customer);
-
-const style = StyleSheet.create({
-  active: {
-    backgroundColor: 'red',
-  },
-});

@@ -1,5 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import RegularText from '../../../../../../shared/components/RegularText';
+import style from './style';
+
 import { connect } from 'react-redux';
 import { Actions } from '../../../../../../redux/products/AC';
 
@@ -52,21 +55,26 @@ const Product: React.SFC<Props> = (props: Props) => {
 
   return (
     <TouchableOpacity
+      style={
+        isProductActive ?
+          [style.container, style.active] :
+          style.container
+      }
       onPress={!isProductActive ? onClickProduct : onReClickProduct}
     >
-      <View style={isProductActive && style.active}>
-        <Text>
+      <View>
+        <RegularText>
           Name:
-          <Text> {name}</Text>
-        </Text>
-        <Text>
+          <Text style={style.text}> {name}</Text>
+        </RegularText>
+        <RegularText>
           Price:
-          <Text> {price}</Text>
-        </Text>
-        <Text>
-          _id:
-          <Text> {_id}</Text>
-        </Text>
+          <Text style={style.text}> {price}</Text>
+        </RegularText>
+        <RegularText>
+          id:
+          <Text style={style.text}> {_id}</Text>
+        </RegularText>
       </View>
     </TouchableOpacity>
   );
@@ -75,9 +83,3 @@ const Product: React.SFC<Props> = (props: Props) => {
 export default connect<StateProps, DispatchProps>(
   mapStateToProps, mapDispatchToProps,
 )(Product);
-
-const style = StyleSheet.create({
-  active: {
-    backgroundColor: 'red',
-  },
-});

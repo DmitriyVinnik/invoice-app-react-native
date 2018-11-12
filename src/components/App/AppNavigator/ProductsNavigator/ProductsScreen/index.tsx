@@ -7,6 +7,7 @@ import ProductAddScreen from '../ProductAddScreen';
 import ProductChangeScreen from '../ProductChangeScreen';
 import ProductDeleteScreen from '../ProductDeleteScreen';
 import EditPanel from '../../../../../shared/components/EditPanel';
+import style from './style';
 
 import { destroy } from 'redux-form';
 import { Actions } from '../../../../../redux/products/AC';
@@ -15,6 +16,7 @@ import { Dispatch } from 'redux';
 import { RootState } from '../../../../../redux/store';
 import { ProductsRequestState } from '../../../../../redux/request/nested-states/products/states';
 import { ProductDataForServer, ProductsState } from '../../../../../redux/products/states';
+import { ProductsFormData } from '../../../../../redux/form/states';
 
 interface StateProps {
   products: ProductsState;
@@ -72,15 +74,24 @@ class ProductsScreen extends Component<Props, State> {
     };
   }
 
-  public handleSubmitProductAddForm = (values: ProductDataForServer): void => {
-    this.props.submitAddForm(values);
+  public handleSubmitProductAddForm = (values: ProductsFormData): void => {
+    const valuesForServer: ProductDataForServer = {
+      ...values,
+      price: +values.price,
+    };
+
+    this.props.submitAddForm(valuesForServer);
   }
 
-  public handleSubmitProductChangeForm = (values: ProductDataForServer): void => {
+  public handleSubmitProductChangeForm = (values: ProductsFormData): void => {
     const {products: {activeProductId}, submitChangeForm} = this.props;
+    const valuesForServer: ProductDataForServer = {
+      ...values,
+      price: +values.price,
+    };
 
     if (activeProductId) {
-      submitChangeForm(values, activeProductId);
+      submitChangeForm(valuesForServer, activeProductId);
     }
   }
 
@@ -124,42 +135,46 @@ class ProductsScreen extends Component<Props, State> {
     );
 
     return (
-      <View>
-        <ProductList
-          productsRequest={productsRequests.productsGet}
-          productsData={products.data}
-          loadProducts={loadProducts}
-        />
-        <EditPanel
-          labelButton='product'
-          onAddButtonClick={this.toggleProductAddForm}
-          onChangeButtonClick={this.toggleProductChangeForm}
-          onDeleteButtonClick={this.toggleProductDeleteForm}
-          activeId={products.activeProductId}
-        />
-        <ProductAddScreen
-          isVisible={isVisibleAddForm}
-          handleClose={this.toggleProductAddForm}
-          isLoading={productsRequests.productsPost.loading}
-          errors={productsRequests.productsPost.errors}
-          submitForm={this.handleSubmitProductAddForm}
-        />
-        <ProductChangeScreen
-          isVisible={isVisibleChangeForm}
-          handleClose={this.toggleProductChangeForm}
-          isLoading={productsRequests.productsPut.loading}
-          errors={productsRequests.productsPut.errors}
-          submitForm={this.handleSubmitProductChangeForm}
-          activeProduct={activeProduct}
-        />
-        <ProductDeleteScreen
-          isVisible={isVisibleDeleteForm}
-          handleClose={this.toggleProductDeleteForm}
-          isLoading={productsRequests.productsDelete.loading}
-          errors={productsRequests.productsDelete.errors}
-          name={activeProduct ? activeProduct.name : null}
-          handleSubmit={this.handleSubmitProductDeleteForm}
-        />
+      <View style={style.container}>
+        <View style={style.list}>
+          <ProductList
+            productsRequest={productsRequests.productsGet}
+            productsData={products.data}
+            loadProducts={loadProducts}
+          />
+        </View>
+        <View style={style.editPanel}>
+          <EditPanel
+            labelButton='product'
+            onAddButtonClick={this.toggleProductAddForm}
+            onChangeButtonClick={this.toggleProductChangeForm}
+            onDeleteButtonClick={this.toggleProductDeleteForm}
+            activeId={products.activeProductId}
+          />
+          <ProductAddScreen
+            isVisible={isVisibleAddForm}
+            handleClose={this.toggleProductAddForm}
+            isLoading={productsRequests.productsPost.loading}
+            errors={productsRequests.productsPost.errors}
+            submitForm={this.handleSubmitProductAddForm}
+          />
+          <ProductChangeScreen
+            isVisible={isVisibleChangeForm}
+            handleClose={this.toggleProductChangeForm}
+            isLoading={productsRequests.productsPut.loading}
+            errors={productsRequests.productsPut.errors}
+            submitForm={this.handleSubmitProductChangeForm}
+            activeProduct={activeProduct}
+          />
+          <ProductDeleteScreen
+            isVisible={isVisibleDeleteForm}
+            handleClose={this.toggleProductDeleteForm}
+            isLoading={productsRequests.productsDelete.loading}
+            errors={productsRequests.productsDelete.errors}
+            name={activeProduct ? activeProduct.name : null}
+            handleSubmit={this.handleSubmitProductDeleteForm}
+          />
+        </View>
       </View>
     );
   }

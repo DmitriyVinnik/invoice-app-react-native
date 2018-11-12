@@ -2,10 +2,13 @@ import React from 'react';
 import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, Modal } from 'react-native';
 import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize } from 'redux-form';
-import FormField from '../../../../../shared/components/FormField';
+import FormField from '../../../../../shared/components/FormField/index';
 import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import RegularText from '../../../../../shared/components/RegularText';
+import RegularButton from '../../../../../shared/components/RegularButton';
+import style from './style';
 
 import { CustomerDataForServer, Customer } from '../../../../../redux/customers/states';
 import { Error } from '../../../../../shared/types/Request';
@@ -57,39 +60,41 @@ class CustomerChangeForm extends React.Component<Props> {
         visible={isVisible}
         onRequestClose={handleClose}
       >
-        <View>
-          <Text>Change customer.</Text>
-        </View>
-        <View>
-          {errors && <ErrorRequestView errors={errors}/>}
-          <Field
-            name='name'
-            component={FormField}
-            labelText='Customer`s name: '
-          />
-          <Field
-            name='address'
-            component={FormField}
-            labelText='Customer`s address: '
-          />
-          <Field
-            name='phone'
-            component={FormField}
-            type='number'
-            labelText='Customer`s phone: '
-          />
-          <View>
-            <TouchableOpacity
+        <View style={style.container}>
+          <View style={style.headerWraper}>
+            <RegularText>
+              <Text style={style.textTitle}>Change customer.</Text>
+            </RegularText>
+          </View>
+          <View style={style.fieldWraper}>
+            {errors && <ErrorRequestView errors={errors}/>}
+            <Field
+              name='name'
+              component={FormField}
+              labelText='Customer`s name: '
+            />
+            <Field
+              name='address'
+              component={FormField}
+              labelText='Customer`s address: '
+            />
+            <Field
+              name='phone'
+              component={FormField}
+              keyboard='numeric'
+              labelText='Customer`s phone: '
+            />
+          </View>
+          <View style={style.buttonWraper}>
+            <RegularButton
               onPress={handleClose}
-            >
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+              title='Cancel'
+            />
+            <RegularButton
               onPress={handleSubmit(submitForm)}
+              title='Submit'
               disabled={pristine || isLoading}
-            >
-              <Text>Submit</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       </Modal>

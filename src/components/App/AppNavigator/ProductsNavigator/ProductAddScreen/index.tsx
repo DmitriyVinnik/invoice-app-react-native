@@ -1,24 +1,25 @@
 import React from 'react';
 import { reduxForm, Field, InjectedFormProps, FormErrors } from 'redux-form';
 
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
-import FormField from '../../../../../shared/components/FormField';
+import { View, Text, Modal } from 'react-native';
+import FormField from '../../../../../shared/components/FormField/index';
 import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import RegularText from '../../../../../shared/components/RegularText';
+import RegularButton from '../../../../../shared/components/RegularButton';
+import style from './style';
 
-import { ProductDataForServer } from '../../../../../redux/products/states';
+import { ProductsFormData } from '../../../../../redux/form/states';
 import { Error } from '../../../../../shared/types/Request';
-
-type FormData = ProductDataForServer;
 
 export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
   errors: Error | null;
   handleClose(): void;
-  submitForm(values: FormData): void;
+  submitForm(values: ProductsFormData): void;
 }
 
-type Props = OwnProps & InjectedFormProps<FormData, OwnProps>;
+type Props = OwnProps & InjectedFormProps<ProductsFormData, OwnProps>;
 
 const ProductAddForm: React.SFC<Props> = (props: Props) => {
   const {isVisible, handleSubmit, isLoading, errors, handleClose, pristine, submitForm} = props;
@@ -30,11 +31,13 @@ const ProductAddForm: React.SFC<Props> = (props: Props) => {
       visible={isVisible}
       onRequestClose={handleClose}
     >
-      <View>
-        <Text>Addition new product.</Text>
-      </View>
-      <View>
-        <View>
+      <View style={style.container}>
+        <View style={style.headerWraper}>
+          <RegularText>
+            <Text style={style.textTitle}>Addition new product.</Text>
+          </RegularText>
+        </View>
+        <View style={style.fieldWraper}>
           {errors && <ErrorRequestView errors={errors}/>}
           <Field
             name='name'
@@ -44,31 +47,29 @@ const ProductAddForm: React.SFC<Props> = (props: Props) => {
           <Field
             name='price'
             component={FormField}
-            keyboard='number'
+            keyboard='numeric'
             labelText='Product`s price: '
             placeholder='decimal'
           />
-          <View>
-            <TouchableOpacity
-              onPress={handleClose}
-            >
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              disabled={pristine || isLoading}
-              onPress={handleSubmit(submitForm)}
-            >
-              <Text>Submit</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+        <View style={style.buttonWraper}>
+          <RegularButton
+            onPress={handleClose}
+            title='Cancel'
+          />
+          <RegularButton
+            onPress={handleSubmit(submitForm)}
+            title='Submit'
+            disabled={pristine || isLoading}
+          />
         </View>
       </View>
     </Modal>
   );
 };
 
-const validate = (values: FormData) => {
-  const error: FormErrors<FormData> = {};
+const validate = (values: ProductsFormData) => {
+  const error: FormErrors<ProductsFormData> = {};
 
   if (!values.name) {
     error.name = 'Required';
@@ -76,14 +77,14 @@ const validate = (values: FormData) => {
 
   if (!values.price) {
     error.price = 'Required';
-  } else if (((values.price * 100) % 100) % 1 !== 0) {
+  } else if (((+values.price * 100) % 100) % 1 !== 0) {
     error.price = 'Price must be in decimal format';
   }
 
   return error;
 };
 
-export default reduxForm<FormData, OwnProps>({
+export default reduxForm<ProductsFormData, OwnProps>({
   form: 'productAdd',
   validate,
 })(ProductAddForm);

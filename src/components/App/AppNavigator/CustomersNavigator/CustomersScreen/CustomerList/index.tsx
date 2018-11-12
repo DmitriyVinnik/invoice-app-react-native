@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, ListRenderItem } from 'react-native';
+import { View, FlatList, ActivityIndicator, ListRenderItem } from 'react-native';
 import Customer from '../Customer';
+import RegularText from '../../../../../../shared/components/RegularText';
+import style from './style';
 
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/customers/states';
@@ -42,20 +44,22 @@ export default class CustomerList extends Component<OwnProps> {
       );
     } else if (loading) {
       return (
-        <View>
-          <Text>Wait a second, loading...</Text>
+        <View style={style.loader}>
+          <RegularText>Wait a second, loading...</RegularText>
+          <ActivityIndicator/>
         </View>
       );
     } else if (!loaded) {
       return (
         <View>
-          <Text>Something went wrong! Customers have not loaded, try reloading the page</Text>
+          <RegularText>Something went wrong! Customers have not loaded, try reloading app</RegularText>
         </View>
       );
     }
 
     return (
       <FlatList
+        style={style.list}
         data={customersData}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
