@@ -3,13 +3,15 @@ import { View, Text } from 'react-native';
 import RegularText from '../../../../../../shared/components/RegularText';
 import style from './style';
 
-import { InvoiceItem as InvoiceItemInterface } from '../../../../../../redux/invoiceItems/states';
-
-type OwnProps = InvoiceItemInterface;
+interface OwnProps {
+  _id: number;
+  productName?: string;
+  quantity: number;
+}
 
 const InvoiceItem: React.SFC<OwnProps> = (props: OwnProps) => {
   const {
-    _id, quantity, invoice_id, product_id,
+    _id, quantity, productName,
   } = props;
 
   return (
@@ -18,13 +20,13 @@ const InvoiceItem: React.SFC<OwnProps> = (props: OwnProps) => {
         InvoiceItem _id:
         <Text style={style.text}> {_id}</Text>
       </RegularText>
+      {/*<RegularText>*/}
+      {/*Invoice _id:*/}
+      {/*<Text style={style.text}> {invoice_id}</Text>*/}
+      {/*</RegularText>*/}
       <RegularText>
-        Invoice _id:
-        <Text style={style.text}> {invoice_id}</Text>
-      </RegularText>
-      <RegularText>
-        Product _id:
-        <Text style={style.text}> {product_id}</Text>
+        Product:
+        <Text style={style.text}> {productName}</Text>
       </RegularText>
       <RegularText>
         Quantity:

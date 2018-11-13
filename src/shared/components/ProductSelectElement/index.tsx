@@ -1,5 +1,6 @@
 import React from 'react';
 import { Picker, View, Text } from 'react-native';
+import RegularText from '../../../shared/components/RegularText';
 import style from './style';
 
 import { WrappedFieldProps } from 'redux-form';
@@ -7,8 +8,6 @@ import { ProductsState } from '../../../redux/products/states';
 
 interface OwnProps {
   products: ProductsState;
-  _id: string;
-  label: string;
 }
 
 type Props = OwnProps & WrappedFieldProps;
@@ -22,7 +21,7 @@ const ProductSelectElement: React.SFC<Props> = (props: Props) => {
   };
   const pickerItems = products.data.map(product => (
     <Picker.Item
-      label={`id: ${product._id}, ${product.name} - price ${product.price}`}
+      label={`${product.name} - price ${product.price}`}
       value={product._id}
       key={product._id}
     />
@@ -30,8 +29,14 @@ const ProductSelectElement: React.SFC<Props> = (props: Props) => {
 
   return (
     <View style={style.container}>
+      <View>
+        <View>
+          <RegularText>Product:</RegularText>
+        </View>
+        {touched && (error && <Text style={style.errorText}>{error}</Text>)}
+      </View>
       <Picker
-        selectedValue={products.activeProductId ? products.activeProductId : 'none'}
+        selectedValue={input.value}
         style={style.picker}
         onValueChange={handleChange}
       >
@@ -42,7 +47,6 @@ const ProductSelectElement: React.SFC<Props> = (props: Props) => {
         />
         {pickerItems}
       </Picker>
-      {touched && (error && <Text style={style.errorText}>{error}</Text>)}
     </View>
   );
 

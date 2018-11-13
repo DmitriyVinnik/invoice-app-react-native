@@ -7,10 +7,12 @@ const style = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
   },
   errorText: {
+    fontSize: 10,
     color: 'red',
   },
 });

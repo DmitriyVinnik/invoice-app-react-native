@@ -18,6 +18,10 @@ const style = StyleSheet.create({
   text: {
     fontWeight: '700',
   },
+  headerWraper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default style;

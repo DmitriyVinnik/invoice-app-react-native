@@ -14,13 +14,13 @@ import RegularText from '../../../../../shared/components/RegularText';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import style from './style';
 
+import { Actions } from '../../../../../redux/invoices/AC';
+
 import { InvoiceDataForServer } from '../../../../../redux/invoices/states';
 import { Product, ProductsState } from '../../../../../redux/products/states';
 import { RootState } from '../../../../../redux/store';
 import { Error } from '../../../../../shared/types/Request';
 import { InvoicesFormData, InvoiceItemsFormData } from '../../../../../redux/form/states';
-
-import { Actions } from '../../../../../redux/invoices/AC';
 
 export interface OwnProps {
   isVisible: boolean;
@@ -96,22 +96,24 @@ class InvoiceAddForm extends React.Component<Props> {
           <View style={style.headerWraper}>
             <RegularText>
               <Text style={style.textTitle}>Addition new invoice.</Text>
-              <Text>{`Invoice's customer ID: ${activeCustomerId}`}</Text>
             </RegularText>
+            <RegularText>{`Invoice's customer ID: ${activeCustomerId}`}</RegularText>
           </View>
           <View style={style.fieldWraper}>
             {errors && <ErrorRequestView errors={errors}/>}
             <View>
               <RegularText>
-                <Text style={style.textTitle}>`Invoice's total: ${this.getTotalPrice()}`</Text>
+                <Text style={style.textTitle}>{`Invoice's total: ${this.getTotalPrice()}`}</Text>
               </RegularText>
-              <Field
-                name='discount'
-                component={FormField}
-                keyboard='numeric'
-                labelText='Discount: '
-                placeholder='0 to 1'
-              />
+              <View style={style.discountWraper}>
+                <Field
+                  name='discount'
+                  component={FormField}
+                  keyboard='numeric'
+                  labelText='Discount: '
+                  placeholder='0 to 99'
+                />
+              </View>
             </View>
             <FieldArray
               name='invoiceItems'
@@ -172,7 +174,7 @@ class InvoiceAddForm extends React.Component<Props> {
         return 0;
       }, 0);
 
-      priceTotal = Math.round(priceWithoutDiscount * (1 - +formValues.discount) * 100) / 100;
+      priceTotal = Math.round(priceWithoutDiscount * (100 - +formValues.discount)) / 100;
     }
 
     return priceTotal;
@@ -184,8 +186,8 @@ const validate = (values: InvoicesFormData) => {
 
   if (!values.discount) {
     errors.discount = 'Required';
-  } else if (+values.discount > 1 || +values.discount < 0) {
-    errors.discount = 'Discount must be in range from 0 to 1';
+  } else if (+values.discount > 100 || +values.discount < 0) {
+    errors.discount = 'Must be in range from 0 to 99';
   }
 
   if (!values.invoiceItems || !values.invoiceItems.length) {

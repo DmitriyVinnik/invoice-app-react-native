@@ -7,10 +7,9 @@ const style = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 10,
-    borderWidth: 2,
+    borderBottomWidth: 2,
     borderStyle: 'solid',
-    borderColor: '#cf0ec1',
-    borderRadius: 5,
+    borderBottomColor: '#5d0756',
   },
   active: {
     backgroundColor: '#cf0ec1',

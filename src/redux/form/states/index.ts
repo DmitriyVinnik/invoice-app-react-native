@@ -20,6 +20,7 @@ export interface InvoiceItemsFormData {
   invoice_id: number;
   product_id: number;
   quantity: string;
+  _id: number;
 }
 
 export interface InvoicesFormData {

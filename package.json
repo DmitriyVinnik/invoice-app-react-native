@@ -36,6 +36,7 @@
     "@types/lodash-es": "^4.17.1",
     "@types/react": "^16.4.18",
     "@types/react-native": "^0.57.7",
+    "@types/react-native-vector-icons": "^4.6.4",
     "@types/react-navigation": "^2.13.1",
     "@types/react-redux": "^6.0.9",
     "@types/redux-form": "^7.4.11",

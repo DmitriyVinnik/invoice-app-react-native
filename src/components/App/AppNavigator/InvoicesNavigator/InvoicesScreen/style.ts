@@ -3,10 +3,16 @@ import {StyleSheet} from 'react-native';
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
+  },
+  customerSelectWraper: {
+    height: 60,
+  },
+  contentWraper: {
+    flex: 1,
   },
   list: {
     marginTop: 10,
-    // marginBottom: 30,
   },
   editPanel: {
     position: 'absolute',

@@ -5,6 +5,9 @@ const style = StyleSheet.create({
     width: '60%',
     height: 60,
   },
+  pickerWraper: {
+    flexDirection: 'row',
+  },
   container: {
     flex: 1,
     alignItems: 'center',

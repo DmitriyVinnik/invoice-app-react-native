@@ -1,78 +1,78 @@
 import React from 'react';
-import {Field, WrappedFieldArrayProps, WrappedFieldProps} from 'redux-form';
-import FormField from '../../../shared/FormField';
-import ProductSelectElement from '../ProductSelectElement/index';
-import {ProductsState} from "../../../redux/products/states/index";
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Field, WrappedFieldArrayProps, WrappedFieldProps } from 'redux-form';
+import FormField from '../../../shared/components/FormField';
+import ProductSelectElement from '../ProductSelectElement';
+import RegularText from '../../../shared/components/RegularText';
+import style from './style';
 
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { ProductsState } from '../../../redux/products/states';
 
 export interface OwnProps {
-    products: ProductsState
+  products: ProductsState;
 }
 
-type Props = OwnProps & WrappedFieldProps & WrappedFieldArrayProps<any>
+type Props = OwnProps & WrappedFieldProps & WrappedFieldArrayProps<any>;
 
 const InvoiceItemFieldsArray: React.SFC<Props> = (props: Props) => {
-    const {fields, products, meta: {error}} = props;
-    const handleAddButtonClick = () => fields.push({});
+  const {fields, products, meta: {error}} = props;
+  const handleAddButtonClick = () => fields.push({});
 
-    return (
-        <section>
-            <h3 className='form__title'>Invoice Items (II): </h3>
-            <div className='form__btn-wraper form__btn-wraper--one-btn'>
-                <Button
-                    onClick={handleAddButtonClick}
-                    variant="contained"
-                    color="primary"
+  return (
+    <View style={style.container}>
+      <RegularText>
+        <Text style={style.textTitle}>Invoice Items (II): </Text>
+      </RegularText>
+      <View style={style.buttonAddWraper}>
+        <TouchableOpacity
+          onPress={handleAddButtonClick}
+          style={style.buttonAdd}
+        >
+          <Text style={style.buttonAddTitle}>Add new invoice item</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView contentContainerStyle={style.invoiceItemsList}>
+        {fields.map((productItem, index) => {
+          const handleRemoveButtonClick = () => fields.remove(index);
+
+          return (
+            <View
+              key={index}
+              style={style.invoiceItemWraper}
+            >
+              <View style={style.invoiceItemsCountWraper}>
+                <RegularText>{`II №${index + 1}: `}</RegularText>
+              </View>
+              <View style={style.productWraper}>
+                <Field
+                  name={`${productItem}.product_id`}
+                  component={ProductSelectElement}
+                  products={products}
+                />
+              </View>
+              <Field
+                name={`${productItem}.quantity`}
+                component={FormField}
+                keyboard='numeric'
+                labelText='Quantity: '
+              />
+              <View style={style.buttonRemoveWraper}>
+                <TouchableOpacity
+                  onPress={handleRemoveButtonClick}
                 >
-                    <AddIcon/>
-                    Add new invoice item
-                </Button>
-            </div>
-            <ul className='form__invoice-item-list'>
-                {fields.map((productItem, index) => {
-                    const handleRemoveButtonClick = () => fields.remove(index);
-
-                    return (
-                        <li
-                            className='form__invoice-item'
-                            key={index}
-                        >
-                            <h4>{`II #${index + 1}: `}</h4>
-                            <Field
-                                name={`${productItem}.product_id`}
-                                component={ProductSelectElement}
-                                products={products}
-                                _id='add-invoiceItem-product'
-                                label='Product: '
-                            />
-                            <div className='form__invoice-item-quantity'>
-                                <Field
-                                    name={`${productItem}.quantity`}
-                                    component={FormField}
-                                    type='number'
-                                    min='1'
-                                    _id='add-invoiceItem-quantity'
-                                    labelText="Quantity: "
-                                />
-                            </div>
-                            <IconButton
-                                aria-label="Delete"
-                                title="Remove invoice item"
-                                onClick={handleRemoveButtonClick}
-                            >
-                                <DeleteIcon/>
-                            </IconButton>
-                        </li>
-                    );
-                })}
-                {error && <li className="error">{error}</li>}
-            </ul>
-        </section>
-    );
+                  <View style={style.iconTrashWraper}>
+                    <Icon name='trash' size={25}/>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          );
+        })}
+        {error && <Text style={style.errorText}>{error}</Text>}
+      </ScrollView>
+    </View>
+  );
 };
 
 export default InvoiceItemFieldsArray;

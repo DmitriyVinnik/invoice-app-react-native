@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
   errorText: {
+    width: '50%',
     color: 'red',
+    fontSize: 10,
   },
   textInput: {
     width: '50%',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Picker, View } from 'react-native';
+import { Picker, View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from '../../../../../redux/customers/AC';
 import RegularText from '../../../../../shared/components/RegularText';
@@ -49,7 +49,7 @@ class CustomerSelectElement extends React.Component<Props> {
   }
 
   public render() {
-    const {customers} = this.props;
+    const {customers, customersRequests} = this.props;
     const pickerItems = customers.data.map(customer => (
       <Picker.Item
         label={customer.name}
@@ -61,18 +61,21 @@ class CustomerSelectElement extends React.Component<Props> {
     return (
       <View style={style.container}>
         <RegularText>Select customer, please:</RegularText>
-        <Picker
-          selectedValue={customers.activeCustomerId ? customers.activeCustomerId : 'none'}
-          style={style.picker}
-          onValueChange={this.handleChange}
-        >
-          <Picker.Item
-            label='None'
-            value={null}
-            key='None'
-          />
-          {pickerItems}
-        </Picker>
+        <View style={style.pickerWraper}>
+          {customersRequests.customersGet.loading && <ActivityIndicator/>}
+          <Picker
+            selectedValue={customers.activeCustomerId ? customers.activeCustomerId : 'none'}
+            style={style.picker}
+            onValueChange={this.handleChange}
+          >
+            <Picker.Item
+              label='None'
+              value={null}
+              key='None'
+            />
+            {pickerItems}
+          </Picker>
+        </View>
       </View>
     );
   }

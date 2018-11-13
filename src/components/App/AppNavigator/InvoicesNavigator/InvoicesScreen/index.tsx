@@ -121,10 +121,12 @@ class InvoicesScreen extends Component<Props, State> {
 
     return (
       <View style={style.container}>
-        <CustomerSelectElement/>
+        <View style={style.customerSelectWraper}>
+          <CustomerSelectElement/>
+        </View>
         {
           activeCustomerId &&
-          <View>
+          <View style={style.contentWraper}>
               <View style={style.list}>
                   <InvoiceList
                       invoicesRequest={invoicesRequests.invoicesGet}

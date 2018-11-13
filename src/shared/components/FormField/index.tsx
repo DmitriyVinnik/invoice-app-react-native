@@ -21,6 +21,7 @@ export const FormField: React.SFC<Props> = (props: Props) => {
   return (
     <View>
       <RegularText>{labelText}</RegularText>
+      {touched && (error && <Text style={style.errorText}>{error}</Text>)}
       <TextInput
         placeholder={placeholder}
         editable={editable}
@@ -31,7 +32,6 @@ export const FormField: React.SFC<Props> = (props: Props) => {
         value={input.value}
         style={style.textInput}
       />
-      {touched && (error && <Text style={style.errorText}>{error}</Text>)}
     </View>
   );
 };

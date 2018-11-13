@@ -41,10 +41,11 @@ const InvoiceDeleteForm: React.SFC<Props> = (props: Props) => {
           {errors && <ErrorRequestView errors={errors}/>}
           {
             _id &&
-            <RegularText>
-              You really want to delete the invoice - ID:
-              <Text style={style.textTitle}> {_id}</Text>
-            </RegularText>
+            <View style={style.contentWraper}>
+                <RegularText>
+                    You really want to delete the invoice?
+                </RegularText>
+            </View>
           }
         </View>
         <View style={style.buttonWraper}>

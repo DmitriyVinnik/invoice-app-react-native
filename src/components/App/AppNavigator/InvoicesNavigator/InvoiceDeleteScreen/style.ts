@@ -23,7 +23,6 @@ const style = StyleSheet.create({
     marginRight: 30,
   },
   contentWraper: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
