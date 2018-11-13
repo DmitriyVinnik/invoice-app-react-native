@@ -1,5 +1,7 @@
 import React from 'react';
+import { View } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
+import RootToaster from './RootToaster';
 import CustomersNavigator from './CustomersNavigator';
 import ProductsNavigator from './ProductsNavigator';
 import InvoicesNavigator from './InvoicesNavigator';
@@ -30,6 +32,11 @@ const Navigator = createBottomTabNavigator({
 
 export default class AppNavigator extends React.Component {
   render() {
-    return <Navigator/>;
+    return (
+      <View style={{flex: 1}}>
+        <Navigator/>
+        <RootToaster/>
+      </View>
+    );
   }
 }
