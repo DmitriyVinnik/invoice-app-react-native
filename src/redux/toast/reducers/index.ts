@@ -8,15 +8,13 @@ export function reducer(state = initialState, action: fromActions.Actions): Toas
             const {message, error} = action.payload;
 
             return {
-                isOpen: true,
                 message,
                 error,
             };
         }
 
-        case fromActions.ActionTypes.TOAST_HIDE: {
+        case fromActions.ActionTypes.TOAST_RESET: {
             return {
-                isOpen: false,
                 message: null,
                 error: null,
             };

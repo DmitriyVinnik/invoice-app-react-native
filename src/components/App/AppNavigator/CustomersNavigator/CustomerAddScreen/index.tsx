@@ -10,6 +10,7 @@ import style from './style';
 
 import { CustomerDataForServer } from '../../../../../redux/customers/states';
 import { Error } from '../../../../../shared/types/Request';
+import { ToastState } from '../../../../../redux/toast/states';
 
 type FormData = CustomerDataForServer;
 
@@ -17,6 +18,7 @@ export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
   errors: Error | null;
+  toast: ToastState;
   handleClose(): void;
   submitForm(values: FormData): void;
 }
@@ -24,7 +26,7 @@ export interface OwnProps {
 type Props = OwnProps & InjectedFormProps<FormData, OwnProps>;
 
 const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
-  const {isVisible, handleSubmit, isLoading, errors, handleClose, pristine, submitForm} = props;
+  const {isVisible, handleSubmit, isLoading, toast, handleClose, pristine, submitForm} = props;
 
   return (
     <Modal
@@ -40,7 +42,13 @@ const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
           </RegularText>
         </View>
         <View style={style.fieldWraper}>
-          {errors && <ErrorRequestView errors={errors}/>}
+          {
+            (toast.error || toast.message) &&
+            <ErrorRequestView
+                errors={toast.error}
+                messageSuccess={toast.message}
+            />
+          }
           <Field
             name='name'
             component={FormField}
