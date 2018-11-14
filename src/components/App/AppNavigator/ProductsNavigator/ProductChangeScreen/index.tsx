@@ -64,30 +64,40 @@ class ProductChangeForm extends React.Component<Props> {
             </RegularText>
           </View>
           <View style={style.fieldWraper}>
-            <ToastRequest/>
-            <Field
-              name='name'
-              component={FormField}
-              labelText='Product`s name: '
-            />
-            <Field
-              name='price'
-              component={FormField}
-              keyboard='numeric'
-              labelText='Product`s price: '
-              placeholder='decimal'
-            />
+            <View style={style.field}>
+              <Field
+                name='name'
+                component={FormField}
+                labelText='Product`s name: '
+              />
+            </View>
+            <View style={style.field}>
+              <Field
+                name='price'
+                component={FormField}
+                keyboard='numeric'
+                labelText='Product`s price: '
+                placeholder='decimal'
+              />
+            </View>
           </View>
           <View style={style.buttonWraper}>
-            <RegularButton
-              onPress={handleClose}
-              title='Cancel'
-            />
-            <RegularButton
-              onPress={handleSubmit(submitForm)}
-              title='Submit'
-              disabled={pristine || isLoading}
-            />
+            <View style={style.button}>
+              <RegularButton
+                onPress={handleClose}
+                title='Cancel'
+              />
+            </View>
+            <View style={style.button}>
+              <RegularButton
+                onPress={handleSubmit(submitForm)}
+                title='Submit'
+                disabled={pristine || isLoading}
+              />
+            </View>
+          </View>
+          <View style={style.toastWraper}>
+            <ToastRequest/>
           </View>
         </View>
       </Modal>

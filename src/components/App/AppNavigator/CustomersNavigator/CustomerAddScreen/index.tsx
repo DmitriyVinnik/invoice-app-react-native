@@ -38,35 +38,47 @@ const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
           </RegularText>
         </View>
         <View style={style.fieldWraper}>
-          <ToastRequest/>
-          <Field
-            name='name'
-            component={FormField}
-            labelText='Customer`s name: '
-          />
-          <Field
-            name='address'
-            component={FormField}
-            labelText='Customer`s address: '
-          />
-          <Field
-            name='phone'
-            component={FormField}
-            keyboard='numeric'
-            placeholder='+380999999999'
-            labelText='Customer`s phone: '
-          />
+          <View style={style.field}>
+            <Field
+              name='name'
+              component={FormField}
+              labelText='Customer`s name: '
+            />
+          </View>
+          <View style={style.field}>
+            <Field
+              name='address'
+              component={FormField}
+              labelText='Customer`s address: '
+            />
+          </View>
+          <View style={style.field}>
+            <Field
+              name='phone'
+              component={FormField}
+              keyboard='numeric'
+              placeholder='+380999999999'
+              labelText='Customer`s phone: '
+            />
+          </View>
         </View>
         <View style={style.buttonWraper}>
-          <RegularButton
-            onPress={handleClose}
-            title='Cancel'
-          />
-          <RegularButton
-            onPress={handleSubmit(submitForm)}
-            title='Submit'
-            disabled={pristine || isLoading}
-          />
+          <View style={style.button}>
+            <RegularButton
+              onPress={handleClose}
+              title='Cancel'
+            />
+          </View>
+          <View style={style.button}>
+            <RegularButton
+              onPress={handleSubmit(submitForm)}
+              title='Submit'
+              disabled={pristine || isLoading}
+            />
+          </View>
+        </View>
+        <View style={style.toastWraper}>
+          <ToastRequest/>
         </View>
       </View>
     </Modal>

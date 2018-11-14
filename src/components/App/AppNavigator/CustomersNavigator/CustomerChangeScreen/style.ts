@@ -4,10 +4,9 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
+    alignItems: 'center',
   },
   headerWraper: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: 10,
@@ -15,17 +14,30 @@ const style = StyleSheet.create({
   textTitle: {
     fontWeight: '700',
   },
+  fieldWraper: {
+    width: '60%',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  field: {
+    marginBottom: 15,
+  },
   buttonWraper: {
-    flex: 1,
+    width: '60%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
     marginLeft: 30,
     marginRight: 30,
+    marginBottom: 10,
   },
-  fieldWraper: {
-    flex: 1,
-    marginLeft: 125,
+  button: {
+    width: '30%',
+    height: 30,
+  },
+  toastWraper: {
+    width: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
 

@@ -1,11 +1,12 @@
 import React from 'react';
-import { GestureResponderEvent, View } from 'react-native';
+import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import CustomerList from './CustomerList';
 import EditPanel from '../../../../../shared/components/EditPanel/index';
-import CustomerDeleteScreen from '../CustomerDeleteScreen';
 import CustomerAddScreen from '../CustomerAddScreen';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomerDeleteScreen from '../CustomerDeleteScreen';
 import CustomerChangeScreen from '../CustomerChangeScreen';
 import style from './style';
 
@@ -151,33 +152,41 @@ class CustomersScreen extends React.Component<Props, State> {
           />
         </View>
         <View style={style.editPanel}>
-          <EditPanel
-            labelButton='customer'
-            activeId={customers.activeCustomerId}
-            onAddButtonClick={this.toggleCustomerAddForm}
-            onChangeButtonClick={this.toggleCustomerChangeform}
-            onDeleteButtonClick={this.toggleCustomerDeleteForm}
-          />
+          <TouchableOpacity
+            onPress={this.toggleCustomerAddForm}
+            style={style.addButton}
+          >
+            <View>
+              <Icon name='person-add' size={40} color='#fff'/>
+            </View>
+          </TouchableOpacity>
+          {/*<EditPanel*/}
+            {/*labelButton='customer'*/}
+            {/*activeId={customers.activeCustomerId}*/}
+            {/*onAddButtonClick={this.toggleCustomerAddForm}*/}
+            {/*onChangeButtonClick={this.toggleCustomerChangeform}*/}
+            {/*onDeleteButtonClick={this.toggleCustomerDeleteForm}*/}
+          {/*/>*/}
           <CustomerAddScreen
             isVisible={isVisibleAddForm}
             handleClose={this.toggleCustomerAddForm}
             isLoading={customersRequests.customersPost.loading}
             submitForm={this.handleSubmitCustomerAddForm}
           />
-          <CustomerChangeScreen
-            isVisible={isVisibleChangeForm}
-            handleClose={this.toggleCustomerChangeform}
-            isLoading={customersRequests.customersPut.loading}
-            submitForm={this.handleSubmitCustomerChangeForm}
-            activeCustomer={activeCustomer}
-          />
-          <CustomerDeleteScreen
-            isVisible={isVisibleDeleteForm}
-            handleClose={this.toggleCustomerDeleteForm}
-            isLoading={customersRequests.customersDelete.loading}
-            name={activeCustomer ? activeCustomer.name : null}
-            handleSubmit={this.handleSubmitCustomerDeleteForm}
-          />
+          {/*<CustomerChangeScreen*/}
+            {/*isVisible={isVisibleChangeForm}*/}
+            {/*handleClose={this.toggleCustomerChangeform}*/}
+            {/*isLoading={customersRequests.customersPut.loading}*/}
+            {/*submitForm={this.handleSubmitCustomerChangeForm}*/}
+            {/*activeCustomer={activeCustomer}*/}
+          {/*/>*/}
+          {/*<CustomerDeleteScreen*/}
+            {/*isVisible={isVisibleDeleteForm}*/}
+            {/*handleClose={this.toggleCustomerDeleteForm}*/}
+            {/*isLoading={customersRequests.customersDelete.loading}*/}
+            {/*name={activeCustomer ? activeCustomer.name : null}*/}
+            {/*handleSubmit={this.handleSubmitCustomerDeleteForm}*/}
+          {/*/>*/}
         </View>
       </View>
     );

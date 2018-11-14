@@ -2,12 +2,19 @@ import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
   button: {
-    flex: 1,
-    padding: 3,
-    borderWidth: 2,
-    borderColor: '#5d0756',
-    backgroundColor: '#cf0ec1',
-    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  buttonDisabled: {
+    opacity: 0.2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   titleWraper: {
     flex: 1,

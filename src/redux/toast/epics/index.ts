@@ -117,7 +117,7 @@ const showErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
     const requestError = Array.isArray(action.payload.errors.message) ?
       action.payload.errors.message.join(', ') :
       action.payload.errors.message;
-    const error = `Error: ${requestError}`;
+    const error = `${requestError}`;
 
     return fromActions.Actions.showToast(null, error);
   }),

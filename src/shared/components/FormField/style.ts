@@ -2,14 +2,16 @@ import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
   errorText: {
-    width: '50%',
     color: 'red',
     fontSize: 10,
   },
+  label: {
+    height: 34,
+    justifyContent: 'flex-start',
+  },
   textInput: {
-    width: '50%',
+    width: '100%',
     height: 30,
-    marginBottom: 10,
     padding: 3,
     paddingLeft: 10,
     borderWidth: 2,

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { GestureResponderEvent, View } from 'react-native';
+import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import ProductList from './ProductList';
 import ProductAddScreen from '../ProductAddScreen';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import ProductChangeScreen from '../ProductChangeScreen';
 import ProductDeleteScreen from '../ProductDeleteScreen';
 import EditPanel from '../../../../../shared/components/EditPanel';
@@ -161,33 +162,41 @@ class ProductsScreen extends Component<Props, State> {
           />
         </View>
         <View style={style.editPanel}>
-          <EditPanel
-            labelButton='product'
-            onAddButtonClick={this.toggleProductAddForm}
-            onChangeButtonClick={this.toggleProductChangeForm}
-            onDeleteButtonClick={this.toggleProductDeleteForm}
-            activeId={products.activeProductId}
-          />
+          <TouchableOpacity
+            onPress={this.toggleProductAddForm}
+            style={style.addButton}
+          >
+            <View>
+              <Icon name='add-circle-outline' size={40} color='#fff'/>
+            </View>
+          </TouchableOpacity>
+          {/*<EditPanel*/}
+          {/*labelButton='product'*/}
+          {/*onAddButtonClick={this.toggleProductAddForm}*/}
+          {/*onChangeButtonClick={this.toggleProductChangeForm}*/}
+          {/*onDeleteButtonClick={this.toggleProductDeleteForm}*/}
+          {/*activeId={products.activeProductId}*/}
+          {/*/>*/}
           <ProductAddScreen
             isVisible={isVisibleAddForm}
             handleClose={this.toggleProductAddForm}
             isLoading={productsRequests.productsPost.loading}
             submitForm={this.handleSubmitProductAddForm}
           />
-          <ProductChangeScreen
-            isVisible={isVisibleChangeForm}
-            handleClose={this.toggleProductChangeForm}
-            isLoading={productsRequests.productsPut.loading}
-            submitForm={this.handleSubmitProductChangeForm}
-            activeProduct={activeProduct}
-          />
-          <ProductDeleteScreen
-            isVisible={isVisibleDeleteForm}
-            handleClose={this.toggleProductDeleteForm}
-            isLoading={productsRequests.productsDelete.loading}
-            name={activeProduct ? activeProduct.name : null}
-            handleSubmit={this.handleSubmitProductDeleteForm}
-          />
+          {/*<ProductChangeScreen*/}
+          {/*isVisible={isVisibleChangeForm}*/}
+          {/*handleClose={this.toggleProductChangeForm}*/}
+          {/*isLoading={productsRequests.productsPut.loading}*/}
+          {/*submitForm={this.handleSubmitProductChangeForm}*/}
+          {/*activeProduct={activeProduct}*/}
+          {/*/>*/}
+          {/*<ProductDeleteScreen*/}
+          {/*isVisible={isVisibleDeleteForm}*/}
+          {/*handleClose={this.toggleProductDeleteForm}*/}
+          {/*isLoading={productsRequests.productsDelete.loading}*/}
+          {/*name={activeProduct ? activeProduct.name : null}*/}
+          {/*handleSubmit={this.handleSubmitProductDeleteForm}*/}
+          {/*/>*/}
         </View>
       </View>
     );
