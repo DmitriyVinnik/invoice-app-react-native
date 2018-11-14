@@ -1,12 +1,10 @@
 import { createStackNavigator } from 'react-navigation';
 import InvoicesScreen from '../InvoicesNavigator/InvoicesScreen';
-// import CustomerSelectScreen from '../InvoicesNavigator/CustomerSelectScreen';
+import HeaderServise from '../../../../shared/services/header.service';
 
 export default createStackNavigator({
   InvoicesScreen: {
     screen: InvoicesScreen,
-    navigationOptions: {
-      title: 'Invoices',
-    },
+    navigationOptions: HeaderServise.initNavOpt('Invoices'),
   },
 });
