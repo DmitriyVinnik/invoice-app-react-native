@@ -1,7 +1,19 @@
-import { NavigationScreenConfig } from 'react-navigation';
+import { TextStyle, ViewStyle } from 'react-native';
+
+export interface NavOptions {
+  title?: string;
+  headerTitleStyle?: TextStyle;
+  headerTitleContainerStyle?: ViewStyle;
+  headerTintColor?: string;
+  headerBackTitle?: string;
+  headerTransparent?: boolean;
+  headerRight?: JSX.Element;
+  headerLeft?: JSX.Element;
+  headerStyle?: ViewStyle;
+}
 
 interface IHeaderService {
-  initNavOpt(title: string): NavigationScreenConfig<any>;
+  initNavOpt(title: string): NavOptions;
 }
 
 class HeaderService implements IHeaderService {
@@ -15,7 +27,6 @@ class HeaderService implements IHeaderService {
       headerTitleStyle: {
         fontFamily: 'Arial',
         fontSize: 20,
-        fontWeight: '700',
         color: '#fff',
       },
     };
