@@ -44,23 +44,6 @@ const showCustomerSuccessRequestToastEpic = (action$: Observable<Action>) => act
   }),
 );
 
-const showCustomerErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<customers.RequestActionsFail>(
-    customers.customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_FAIL,
-    customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_FAIL,
-    customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_FAIL,
-    customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_FAIL,
-  ),
-  map((action) => {
-    const requestError = Array.isArray(action.payload.errors.message) ?
-      action.payload.errors.message.join(', ') :
-      action.payload.errors.message;
-    const error = `something went wrong while processing customers request! Error: ${requestError}`;
-
-    return fromActions.Actions.showToast(null, error);
-  }),
-);
-
 const showProductSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<products.RequestActionsSuccess>(
     products.productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_SUCCESS,
@@ -97,23 +80,6 @@ const showProductSuccessRequestToastEpic = (action$: Observable<Action>) => acti
   }),
 );
 
-const showProductErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<products.RequestActionsFail>(
-    products.productsRequestAC.productsGet.ActionTypes.PRODUCTS_GET_FAIL,
-    products.productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_FAIL,
-    products.productsRequestAC.productsPut.ActionTypes.PRODUCTS_PUT_FAIL,
-    products.productsRequestAC.productsDelete.ActionTypes.PRODUCTS_DELETE_FAIL,
-  ),
-  map((action) => {
-    const requestError = Array.isArray(action.payload.errors.message) ?
-      action.payload.errors.message.join(', ') :
-      action.payload.errors.message;
-    const error = `something went wrong while processing products request! Error: ${requestError}`;
-
-    return fromActions.Actions.showToast(null, error);
-  }),
-);
-
 const showInvoiceSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<invoiceItems.RequestActionsSuccess>(
     invoiceItems.invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_SUCCESS,
@@ -125,8 +91,19 @@ const showInvoiceSuccessRequestToastEpic = (action$: Observable<Action>) => acti
   }),
 );
 
-const showInvoiceErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<invoiceItems.RequestActionsFail | invoices.RequestActionsFail>(
+const showErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<invoiceItems.RequestActionsFail |
+    invoices.RequestActionsFail |
+    customers.RequestActionsFail |
+    products.RequestActionsFail>(
+    customers.customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_FAIL,
+    customers.customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_FAIL,
+    customers.customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_FAIL,
+    customers.customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_FAIL,
+    products.productsRequestAC.productsGet.ActionTypes.PRODUCTS_GET_FAIL,
+    products.productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_FAIL,
+    products.productsRequestAC.productsPut.ActionTypes.PRODUCTS_PUT_FAIL,
+    products.productsRequestAC.productsDelete.ActionTypes.PRODUCTS_DELETE_FAIL,
     invoices.invoicesRequestAC.invoicesGet.ActionTypes.INVOICES_GET_FAIL,
     invoices.invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_FAIL,
     invoices.invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_FAIL,
@@ -140,7 +117,7 @@ const showInvoiceErrorRequestToastEpic = (action$: Observable<Action>) => action
     const requestError = Array.isArray(action.payload.errors.message) ?
       action.payload.errors.message.join(', ') :
       action.payload.errors.message;
-    const error = `something went wrong while processing invoiceItems request! Error: ${requestError}`;
+    const error = `Error: ${requestError}`;
 
     return fromActions.Actions.showToast(null, error);
   }),
@@ -148,9 +125,7 @@ const showInvoiceErrorRequestToastEpic = (action$: Observable<Action>) => action
 
 export const toastEpics = [
   showCustomerSuccessRequestToastEpic,
-  showCustomerErrorRequestToastEpic,
   showProductSuccessRequestToastEpic,
-  showProductErrorRequestToastEpic,
   showInvoiceSuccessRequestToastEpic,
-  showInvoiceErrorRequestToastEpic,
+  showErrorRequestToastEpic,
 ];

@@ -3,17 +3,14 @@ import {
   View, Text, Modal,
   GestureResponderEvent,
 } from 'react-native';
-import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import style from './style';
 
-import { Error } from '../../../../../shared/types/Request';
-
 export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
-  errors: Error | null;
   name: string | null;
   handleSubmit(evt: GestureResponderEvent): void;
   handleClose(): void;
@@ -22,7 +19,7 @@ export interface OwnProps {
 type Props = OwnProps;
 
 const CustomerDeleteScreen: React.SFC<Props> = (props: Props) => {
-  const {name, isVisible, isLoading, errors, handleSubmit, handleClose} = props;
+  const {name, isVisible, isLoading, handleSubmit, handleClose} = props;
 
   return (
     <Modal
@@ -38,7 +35,7 @@ const CustomerDeleteScreen: React.SFC<Props> = (props: Props) => {
           </RegularText>
         </View>
         <View style={style.contentWraper}>
-          {errors && <ErrorRequestView errors={errors}/>}
+          <ToastRequest/>
           {
             name &&
             <RegularText>

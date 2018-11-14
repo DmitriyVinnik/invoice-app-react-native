@@ -2,23 +2,19 @@ import React from 'react';
 
 import { View, Text, Modal } from 'react-native';
 import { reduxForm, Field, InjectedFormProps, FormErrors } from 'redux-form';
-import FormField from '../../../../../shared/components/FormField/index';
-import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import FormField from '../../../../../shared/components/FormField';
+import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import style from './style';
 
 import { CustomerDataForServer } from '../../../../../redux/customers/states';
-import { Error } from '../../../../../shared/types/Request';
-import { ToastState } from '../../../../../redux/toast/states';
 
 type FormData = CustomerDataForServer;
 
 export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
-  errors: Error | null;
-  toast: ToastState;
   handleClose(): void;
   submitForm(values: FormData): void;
 }
@@ -26,7 +22,7 @@ export interface OwnProps {
 type Props = OwnProps & InjectedFormProps<FormData, OwnProps>;
 
 const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
-  const {isVisible, handleSubmit, isLoading, toast, handleClose, pristine, submitForm} = props;
+  const {isVisible, handleSubmit, isLoading, handleClose, pristine, submitForm} = props;
 
   return (
     <Modal
@@ -42,13 +38,7 @@ const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
           </RegularText>
         </View>
         <View style={style.fieldWraper}>
-          {
-            (toast.error || toast.message) &&
-            <ErrorRequestView
-                errors={toast.error}
-                messageSuccess={toast.message}
-            />
-          }
+          <ToastRequest/>
           <Field
             name='name'
             component={FormField}

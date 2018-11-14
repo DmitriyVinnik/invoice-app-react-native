@@ -6,7 +6,7 @@ import style from './style';
 
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/customers/states';
-import ErrorRequestView from '../../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../../shared/components/ToastRequest/index';
 
 export interface OwnProps {
   customersData: CustomerInterface[];
@@ -34,36 +34,27 @@ export default class CustomerList extends Component<OwnProps> {
   )
 
   public render() {
-    const {customersRequest: {errors, loading, loaded}, customersData} = this.props;
+    const {customersRequest: {loading}, customersData} = this.props;
 
-    if (errors) {
-      return (
-        <View>
-          <ErrorRequestView errors={errors}/>
-        </View>
-      );
-    } else if (loading) {
+    if (loading) {
       return (
         <View style={style.loader}>
           <RegularText>Wait a second, loading...</RegularText>
           <ActivityIndicator/>
         </View>
       );
-    } else if (!loaded) {
-      return (
-        <View>
-          <RegularText>Something went wrong! Customers have not loaded, try reloading app</RegularText>
-        </View>
-      );
     }
 
     return (
-      <FlatList
-        style={style.list}
-        data={customersData}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-      />
+      <View>
+        <ToastRequest/>
+        <FlatList
+          style={style.list}
+          data={customersData}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
+      </View>
     );
   }
 }

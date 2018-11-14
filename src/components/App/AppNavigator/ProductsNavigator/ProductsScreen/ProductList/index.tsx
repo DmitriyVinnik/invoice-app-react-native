@@ -6,7 +6,7 @@ import style from './style';
 
 import { Product as ProductInterface } from '../../../../../../redux/products/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/products/states';
-import ErrorRequestView from '../../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../../shared/components/ToastRequest/index';
 
 export interface OwnProps {
   productsData: ProductInterface[];
@@ -33,36 +33,27 @@ export default class ProductList extends Component<OwnProps> {
   )
 
   public render() {
-    const {productsRequest: {errors, loading, loaded}, productsData} = this.props;
+    const {productsRequest: {loading}, productsData} = this.props;
 
-    if (errors) {
-      return (
-        <View>
-          <ErrorRequestView errors={errors}/>
-        </View>
-      );
-    } else if (loading) {
+    if (loading) {
       return (
         <View style={style.loader}>
           <RegularText>Wait a second, loading...</RegularText>
           <ActivityIndicator/>
         </View>
       );
-    } else if (!loaded) {
-      return (
-        <View>
-          <RegularText>Something went wrong! Products have not loaded, try reloading app</RegularText>
-        </View>
-      );
     }
 
     return (
-      <FlatList
-        style={style.list}
-        data={productsData}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-      />
+      <View>
+        <ToastRequest/>
+        <FlatList
+          style={style.list}
+          data={productsData}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
+      </View>
     );
   }
 }

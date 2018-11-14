@@ -5,19 +5,17 @@ import { connect } from 'react-redux';
 import { View, Text, Modal } from 'react-native';
 import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField/index';
-import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import style from './style';
 
 import { Product } from '../../../../../redux/products/states';
 import { ProductsFormData } from '../../../../../redux/form/states';
-import { Error } from '../../../../../shared/types/Request';
 
 export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
-  errors: Error | null;
   activeProduct?: Product;
   handleClose(): void;
   submitForm(values: ProductsFormData): void;
@@ -50,7 +48,7 @@ class ProductChangeForm extends React.Component<Props> {
   }
 
   public render() {
-    const {isVisible, handleSubmit, isLoading, errors, pristine, handleClose, submitForm} = this.props;
+    const {isVisible, handleSubmit, isLoading, pristine, handleClose, submitForm} = this.props;
 
     return (
       <Modal
@@ -66,7 +64,7 @@ class ProductChangeForm extends React.Component<Props> {
             </RegularText>
           </View>
           <View style={style.fieldWraper}>
-            {errors && <ErrorRequestView errors={errors}/>}
+            <ToastRequest/>
             <Field
               name='name'
               component={FormField}

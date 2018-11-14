@@ -3,18 +3,16 @@ import { reduxForm, Field, InjectedFormProps, FormErrors } from 'redux-form';
 
 import { View, Text, Modal } from 'react-native';
 import FormField from '../../../../../shared/components/FormField/index';
-import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import style from './style';
 
 import { ProductsFormData } from '../../../../../redux/form/states';
-import { Error } from '../../../../../shared/types/Request';
 
 export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
-  errors: Error | null;
   handleClose(): void;
   submitForm(values: ProductsFormData): void;
 }
@@ -22,7 +20,7 @@ export interface OwnProps {
 type Props = OwnProps & InjectedFormProps<ProductsFormData, OwnProps>;
 
 const ProductAddForm: React.SFC<Props> = (props: Props) => {
-  const {isVisible, handleSubmit, isLoading, errors, handleClose, pristine, submitForm} = props;
+  const {isVisible, handleSubmit, isLoading, handleClose, pristine, submitForm} = props;
 
   return (
     <Modal
@@ -38,7 +36,7 @@ const ProductAddForm: React.SFC<Props> = (props: Props) => {
           </RegularText>
         </View>
         <View style={style.fieldWraper}>
-          {errors && <ErrorRequestView errors={errors}/>}
+          <ToastRequest/>
           <Field
             name='name'
             component={FormField}

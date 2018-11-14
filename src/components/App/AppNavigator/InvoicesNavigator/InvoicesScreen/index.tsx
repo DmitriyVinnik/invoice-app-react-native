@@ -13,6 +13,7 @@ import style from './style';
 import { Actions } from '../../../../../redux/invoices/AC';
 import * as productsActions from '../../../../../redux/products/AC';
 import { destroy } from 'redux-form';
+import { Actions as toastActions } from '../../../../../redux/toast/AC';
 
 import { Dispatch } from 'redux';
 import { RootState } from '../../../../../redux/store';
@@ -31,6 +32,7 @@ interface DispatchProps {
   loadInvoices(): void;
   submitDeleteForm(_id: number): void;
   destroyForm(form: string): void;
+  resetToast(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
@@ -40,7 +42,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps = (
-  dispatch: Dispatch<Actions | productsActions.Actions>,
+  dispatch: Dispatch<Actions | productsActions.Actions | toastActions>,
 ): DispatchProps => (
   {
     loadInvoices: () => {
@@ -54,6 +56,9 @@ const mapDispatchToProps = (
     },
     destroyForm: (form) => {
       dispatch(destroy(form));
+    },
+    resetToast: () => {
+      dispatch(toastActions.hideToast());
     },
   }
 );
@@ -81,6 +86,7 @@ class InvoicesScreen extends Component<Props, State> {
 
     evt.preventDefault();
     if (activeInvoiceId) {
+      this.props.resetToast();
       submitDeleteForm(activeInvoiceId);
       this.setState({isVisibleDeleteForm: false});
     }
@@ -93,6 +99,7 @@ class InvoicesScreen extends Component<Props, State> {
 
     if (this.state.isVisibleAddForm) {
       this.props.destroyForm('invoiceAdd');
+      this.props.resetToast();
     }
   }
 
@@ -100,12 +107,20 @@ class InvoicesScreen extends Component<Props, State> {
     this.setState({
       isVisibleChangeForm: !this.state.isVisibleChangeForm,
     });
+
+    if (this.state.isVisibleChangeForm) {
+      this.props.resetToast();
+    }
   }
 
   public toggleInvoiceDeleteForm = (): void => {
     this.setState({
       isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
     });
+
+    if (this.state.isVisibleDeleteForm) {
+      this.props.resetToast();
+    }
   }
 
   public render() {
@@ -148,7 +163,6 @@ class InvoicesScreen extends Component<Props, State> {
                       isVisible={isVisibleAddForm}
                       handleClose={this.toggleInvoiceAddForm}
                       isLoading={invoicesRequests.invoicesPost.loading}
-                      errors={invoicesRequests.invoicesPost.errors}
                       activeCustomerId={activeCustomerId}
                   />
                 {
@@ -158,7 +172,6 @@ class InvoicesScreen extends Component<Props, State> {
                           isVisible={isVisibleChangeForm}
                           handleClose={this.toggleInvoiceChangeForm}
                           isLoading={invoicesRequests.invoicesPut.loading}
-                          errors={invoicesRequests.invoicesPut.errors}
                           activeInvoice={activeInvoice}
                           activeCustomerId={activeCustomerId}
                       />
@@ -166,7 +179,6 @@ class InvoicesScreen extends Component<Props, State> {
                           isVisible={isVisibleDeleteForm}
                           handleClose={this.toggleInvoiceDeleteForm}
                           isLoading={invoicesRequests.invoicesDelete.loading}
-                          errors={invoicesRequests.invoicesDelete.errors}
                           _id={activeInvoice._id}
                           handleSubmit={this.handleSubmitInvoiceDeleteForm}
                       />

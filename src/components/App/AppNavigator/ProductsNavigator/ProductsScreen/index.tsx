@@ -11,6 +11,7 @@ import style from './style';
 
 import { destroy } from 'redux-form';
 import { Actions } from '../../../../../redux/products/AC';
+import { Actions as toastActions } from '../../../../../redux/toast/AC';
 
 import { Dispatch } from 'redux';
 import { RootState } from '../../../../../redux/store';
@@ -29,6 +30,7 @@ interface DispatchProps {
   submitChangeForm(data: ProductDataForServer, _id: number): void;
   submitDeleteForm(_id: number): void;
   destroyForm(form: string): void;
+  resetToast(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
@@ -36,7 +38,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
   productsRequests: state.request.products,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): DispatchProps => (
   {
     loadProducts: () => {
       dispatch(Actions.loadAllProducts());
@@ -52,6 +54,9 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     },
     destroyForm: (form: string) => {
       dispatch(destroy(form));
+    },
+    resetToast: () => {
+      dispatch(toastActions.hideToast());
     },
   }
 );
@@ -80,6 +85,7 @@ class ProductsScreen extends Component<Props, State> {
       price: +values.price,
     };
 
+    this.props.resetToast();
     this.props.submitAddForm(valuesForServer);
   }
 
@@ -91,6 +97,7 @@ class ProductsScreen extends Component<Props, State> {
     };
 
     if (activeProductId) {
+      this.props.resetToast();
       submitChangeForm(valuesForServer, activeProductId);
     }
   }
@@ -100,6 +107,7 @@ class ProductsScreen extends Component<Props, State> {
 
     evt.preventDefault();
     if (activeProductId) {
+      this.props.resetToast();
       submitDeleteForm(activeProductId);
       this.setState({isVisibleDeleteForm: false});
     }
@@ -111,6 +119,7 @@ class ProductsScreen extends Component<Props, State> {
     });
 
     if (this.state.isVisibleAddForm) {
+      this.props.resetToast();
       this.props.destroyForm('productAdd');
     }
   }
@@ -119,12 +128,20 @@ class ProductsScreen extends Component<Props, State> {
     this.setState({
       isVisibleChangeForm: !this.state.isVisibleChangeForm,
     });
+
+    if (this.state.isVisibleChangeForm) {
+      this.props.resetToast();
+    }
   }
 
   public toggleProductDeleteForm = (): void => {
     this.setState({
       isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
     });
+
+    if (this.state.isVisibleDeleteForm) {
+      this.props.resetToast();
+    }
   }
 
   public render() {
@@ -155,14 +172,12 @@ class ProductsScreen extends Component<Props, State> {
             isVisible={isVisibleAddForm}
             handleClose={this.toggleProductAddForm}
             isLoading={productsRequests.productsPost.loading}
-            errors={productsRequests.productsPost.errors}
             submitForm={this.handleSubmitProductAddForm}
           />
           <ProductChangeScreen
             isVisible={isVisibleChangeForm}
             handleClose={this.toggleProductChangeForm}
             isLoading={productsRequests.productsPut.loading}
-            errors={productsRequests.productsPut.errors}
             submitForm={this.handleSubmitProductChangeForm}
             activeProduct={activeProduct}
           />
@@ -170,7 +185,6 @@ class ProductsScreen extends Component<Props, State> {
             isVisible={isVisibleDeleteForm}
             handleClose={this.toggleProductDeleteForm}
             isLoading={productsRequests.productsDelete.loading}
-            errors={productsRequests.productsDelete.errors}
             name={activeProduct ? activeProduct.name : null}
             handleSubmit={this.handleSubmitProductDeleteForm}
           />

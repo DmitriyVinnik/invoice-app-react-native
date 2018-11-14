@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, ActivityIndicator, ListRenderItem } from 'react-native';
 import Invoice from '../Invoice';
 import RegularText from '../../../../../../shared/components/RegularText';
-import ErrorRequestView from '../../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../../shared/components/ToastRequest/index';
 import style from './style';
 
 import { Invoice as InvoiceInterface } from '../../../../../../redux/invoices/states';
@@ -35,39 +35,30 @@ export default class InvoiceList extends Component<OwnProps> {
   )
 
   public render() {
-    const {invoicesRequest: {errors, loading, loaded}, invoicesData, activeCustomerId} = this.props;
+    const {invoicesRequest: {loading}, invoicesData, activeCustomerId} = this.props;
     const filteredInvoices = invoicesData.filter(
       (invoice) => invoice.customer_id === activeCustomerId,
     );
 
-    if (errors) {
-      return (
-        <View>
-          <ErrorRequestView errors={errors}/>
-        </View>
-      );
-    } else if (loading) {
+    if (loading) {
       return (
         <View style={style.loader}>
           <RegularText>Wait a second, loading...</RegularText>
           <ActivityIndicator/>
         </View>
       );
-    } else if (!loaded) {
-      return (
-        <View>
-          <RegularText>Something went wrong! Customers have not loaded, try reloading app</RegularText>
-        </View>
-      );
     }
 
     return (
-      <FlatList
-        style={style.list}
-        data={filteredInvoices}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-      />
+      <View>
+        <ToastRequest/>
+        <FlatList
+          style={style.list}
+          data={filteredInvoices}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
+      </View>
     );
   }
 }

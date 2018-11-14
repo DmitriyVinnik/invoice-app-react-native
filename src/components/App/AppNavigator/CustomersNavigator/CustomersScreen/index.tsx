@@ -10,7 +10,6 @@ import CustomerChangeScreen from '../CustomerChangeScreen';
 import style from './style';
 
 import { CustomerDataForServer, CustomersState } from '../../../../../redux/customers/states';
-import { ToastState } from '../../../../../redux/toast/states';
 import { CustomersRequestState } from '../../../../../redux/request/nested-states/customers/states';
 import { RootState } from '../../../../../redux/store';
 import { Dispatch } from 'redux';
@@ -22,7 +21,6 @@ import { Actions as toastActions } from '../../../../../redux/toast/AC';
 interface StateProps {
   customers: CustomersState;
   customersRequests: CustomersRequestState;
-  toast: ToastState;
 }
 
 interface DispatchProps {
@@ -37,7 +35,6 @@ interface DispatchProps {
 const mapStateToProps = (state: RootState): StateProps => ({
   customers: state.customers,
   customersRequests: state.request.customers,
-  toast: state.toast,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): DispatchProps => (
@@ -113,6 +110,7 @@ class CustomersScreen extends React.Component<Props, State> {
   }
 
   public handleSubmitCustomerAddForm = (values: CustomerDataForServer): void => {
+    this.props.resetToast();
     this.props.submitAddForm(values);
   }
 
@@ -120,6 +118,7 @@ class CustomersScreen extends React.Component<Props, State> {
     const {customers: {activeCustomerId}, submitChangeForm} = this.props;
 
     if (activeCustomerId) {
+      this.props.resetToast();
       submitChangeForm(values, activeCustomerId);
     }
   }
@@ -129,13 +128,14 @@ class CustomersScreen extends React.Component<Props, State> {
 
     evt.preventDefault();
     if (activeCustomerId) {
+      this.props.resetToast();
       submitDeleteForm(activeCustomerId);
       this.setState({isVisibleDeleteForm: false});
     }
   }
 
   render() {
-    const {customers, customersRequests, loadCustomers, toast} = this.props;
+    const {customers, customersRequests, loadCustomers} = this.props;
     const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
     const activeCustomer = customers.data.find(
       (elem) => elem._id === customers.activeCustomerId,
@@ -162,15 +162,12 @@ class CustomersScreen extends React.Component<Props, State> {
             isVisible={isVisibleAddForm}
             handleClose={this.toggleCustomerAddForm}
             isLoading={customersRequests.customersPost.loading}
-            errors={customersRequests.customersPost.errors}
             submitForm={this.handleSubmitCustomerAddForm}
-            toast={toast}
           />
           <CustomerChangeScreen
             isVisible={isVisibleChangeForm}
             handleClose={this.toggleCustomerChangeform}
             isLoading={customersRequests.customersPut.loading}
-            errors={customersRequests.customersPut.errors}
             submitForm={this.handleSubmitCustomerChangeForm}
             activeCustomer={activeCustomer}
           />
@@ -178,7 +175,6 @@ class CustomersScreen extends React.Component<Props, State> {
             isVisible={isVisibleDeleteForm}
             handleClose={this.toggleCustomerDeleteForm}
             isLoading={customersRequests.customersDelete.loading}
-            errors={customersRequests.customersDelete.errors}
             name={activeCustomer ? activeCustomer.name : null}
             handleSubmit={this.handleSubmitCustomerDeleteForm}
           />

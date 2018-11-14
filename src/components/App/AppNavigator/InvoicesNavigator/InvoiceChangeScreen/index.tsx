@@ -10,13 +10,14 @@ import {
 } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField';
 import InvoiceItemFieldsArray from '../../../../../shared/components/InvoiceItemFieldsArray';
-import ErrorRequestView from '../../../../../shared/components/ErrorRequestView';
+import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import style from './style';
 
 import { Actions } from '../../../../../redux/invoices/AC';
 import { Actions as invoiceItemsActions } from '../../../../../redux/invoiceItems/AC';
+import { Actions as toastActions } from '../../../../../redux/toast/AC';
 
 import { Invoice, InvoiceDataForServer } from '../../../../../redux/invoices/states';
 import {
@@ -25,12 +26,10 @@ import {
 import { Product, ProductsState } from '../../../../../redux/products/states';
 import { RootState } from '../../../../../redux/store';
 import { InvoicesFormData, InvoiceItemsFormData } from '../../../../../redux/form/states';
-import { Error } from '../../../../../shared/types/Request';
 
 export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
-  errors: Error | null;
   activeInvoice: Invoice;
   activeCustomerId: number;
   handleClose(): void;
@@ -48,6 +47,7 @@ interface DispatchProps {
   submitAddInvoiceItem(data: InvoiceItemDataForServer[], invoice_id: number): void;
   submitPutInvoiceItem(data: InvoiceItem[], invoice_id: number): void;
   submitDeleteInvoiceItem(_id: number[], invoice_id: number): void;
+  resetToast(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
@@ -56,7 +56,9 @@ const mapStateToProps = (state: RootState): StateProps => ({
   formValues: getFormValues('invoiceChange')(state) as InvoicesFormData,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
+const mapDispatchToProps = (
+  dispatch: Dispatch<FormAction | invoiceItemsActions | toastActions | Actions>,
+): DispatchProps => (
   {
     initializeForm: (values) => {
       dispatch(initialize('invoiceChange', values));
@@ -72,6 +74,9 @@ const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
     },
     submitDeleteInvoiceItem: (_id, invoice_id) => {
       dispatch(invoiceItemsActions.submitDeleteInvoiceItem(_id, invoice_id));
+    },
+    resetToast: () => {
+      dispatch(toastActions.hideToast());
     },
   }
 );
@@ -140,6 +145,7 @@ class InvoiceChangeForm extends React.Component<Props> {
       discount: +values.discount,
     };
 
+    this.props.resetToast();
     submitForm(invoiceValuesForServer, this.getTotalPrice(), activeInvoice._id);
 
     if (forPostInvoiceItems) {
@@ -159,7 +165,7 @@ class InvoiceChangeForm extends React.Component<Props> {
 
   public render() {
     const {
-      isVisible, handleSubmit, isLoading, errors, products, activeCustomerId, pristine,
+      isVisible, handleSubmit, isLoading, products, activeCustomerId, pristine,
       handleClose,
     } = this.props;
 
@@ -178,7 +184,7 @@ class InvoiceChangeForm extends React.Component<Props> {
             <RegularText>{`Invoice's customer ID: ${activeCustomerId}`}</RegularText>
           </View>
           <View style={style.fieldWraper}>
-            {errors && <ErrorRequestView errors={errors}/>}
+            <ToastRequest/>
             <View>
               <RegularText>
                 <Text style={style.textTitle}>{`Invoice's total: ${this.getTotalPrice()}`}</Text>
