@@ -13,7 +13,7 @@ export default RegularText;
 
 const style = StyleSheet.create({
   text: {
-    fontFamily: 'Arial',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 20,

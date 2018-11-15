@@ -20,7 +20,7 @@ const Navigator = createBottomTabNavigator({
       height: 30,
     },
     labelStyle: {
-      fontFamily: 'Arial',
+      fontFamily: 'CrimsonText-Bold',
       fontSize: 16,
       fontWeight: '700',
     },

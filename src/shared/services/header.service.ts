@@ -25,7 +25,7 @@ class HeaderService implements IHeaderService {
         backgroundColor: '#4e0747',
       },
       headerTitleStyle: {
-        fontFamily: 'Arial',
+        fontFamily: 'CrimsonText-Regular',
         fontSize: 20,
         color: '#fff',
       },

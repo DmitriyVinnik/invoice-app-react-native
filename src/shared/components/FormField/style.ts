@@ -17,6 +17,8 @@ const style = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#5d0756',
     borderRadius: 5,
+    fontFamily: 'CrimsonText-Regular',
+    color: '#5d0756',
   },
 });
 

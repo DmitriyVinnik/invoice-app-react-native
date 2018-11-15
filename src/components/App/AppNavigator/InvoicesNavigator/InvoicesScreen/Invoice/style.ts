@@ -9,7 +9,7 @@ const style = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 2,
     borderStyle: 'solid',
-    borderColor: '#cf0ec1',
+    borderColor: '#5d0756',
     borderRadius: 5,
   },
   active: {

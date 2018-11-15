@@ -7,6 +7,11 @@
     "test": "jest",
     "basicstart": "node node_modules/react-native/local-cli/cli.js start"
   },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
+  },
   "dependencies": {
     "exit-on-double-back": "^1.0.1",
     "lodash": "latest",
