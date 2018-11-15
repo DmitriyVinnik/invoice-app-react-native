@@ -4,22 +4,13 @@
   "private": true,
   "scripts": {
     "start": "react-native run-android",
-    "server": "node backend/app.js",
     "test": "jest",
     "basicstart": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.3",
-    "core-js": "^2.4.1",
-    "cors": "2.8.1",
-    "dotenv": "^4.0.0",
-    "express": "^4.16.3",
-    "jsonwebtoken": "^8.3.0",
+    "exit-on-double-back": "^1.0.1",
     "lodash": "latest",
     "lodash-es": "^4.17.11",
-    "mongoose": "^4.10.4",
-    "morgan": "^1.8.2",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
     "react-native-easy-toast": "^1.1.0",
@@ -29,9 +20,7 @@
     "redux": "^4.0.1",
     "redux-form": "^7.4.2",
     "redux-observable": "^1.0.0",
-    "rxjs": "^6.3.3",
-    "sequelize": "^3.20.0",
-    "sqlite3": "latest"
+    "rxjs": "^6.3.3"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.1",
