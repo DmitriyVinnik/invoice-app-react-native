@@ -3,11 +3,8 @@ import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import CustomerList from './CustomerList';
-import EditPanel from '../../../../../shared/components/EditPanel/index';
 import CustomerAddScreen from '../CustomerAddScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CustomerDeleteScreen from '../CustomerDeleteScreen';
-import CustomerChangeScreen from '../CustomerChangeScreen';
 import style from './style';
 
 import { CustomerDataForServer, CustomersState } from '../../../../../redux/customers/states';
@@ -27,7 +24,6 @@ interface StateProps {
 interface DispatchProps {
   loadCustomers(): void;
   submitAddForm(data: CustomerDataForServer): void;
-  submitChangeForm(data: CustomerDataForServer, _id: number): void;
   submitDeleteForm(_id: number): void;
   destroyForm(form: string): void;
   resetToast(): void;
@@ -46,9 +42,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): Dispatc
     submitAddForm: (data) => {
       dispatch(Actions.submitCustomerAddForm(data));
     },
-    submitChangeForm: (data, _id) => {
-      dispatch(Actions.submitCustomerChangeForm(data, _id));
-    },
     submitDeleteForm: (_id) => {
       dispatch(Actions.submitCustomerDeleteForm(_id));
     },
@@ -65,8 +58,6 @@ type Props = StateProps & DispatchProps;
 
 interface State {
   isVisibleAddForm: boolean;
-  isVisibleChangeForm: boolean;
-  isVisibleDeleteForm: boolean;
 }
 
 class CustomersScreen extends React.Component<Props, State> {
@@ -74,8 +65,6 @@ class CustomersScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       isVisibleAddForm: false,
-      isVisibleChangeForm: false,
-      isVisibleDeleteForm: false,
     };
   }
 
@@ -90,38 +79,19 @@ class CustomersScreen extends React.Component<Props, State> {
     }
   }
 
-  public toggleCustomerChangeform = (): void => {
-    this.setState({
-      isVisibleChangeForm: !this.state.isVisibleChangeForm,
-    });
-
-    if (this.state.isVisibleChangeForm) {
-      this.props.resetToast();
-    }
-  }
-
-  public toggleCustomerDeleteForm = (): void => {
-    this.setState({
-      isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
-    });
-
-    if (this.state.isVisibleDeleteForm) {
-      this.props.resetToast();
-    }
-  }
+  // public toggleCustomerDeleteForm = (): void => {
+  //   this.setState({
+  //     isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
+  //   });
+  //
+  //   if (this.state.isVisibleDeleteForm) {
+  //     this.props.resetToast();
+  //   }
+  // }
 
   public handleSubmitCustomerAddForm = (values: CustomerDataForServer): void => {
     this.props.resetToast();
     this.props.submitAddForm(values);
-  }
-
-  public handleSubmitCustomerChangeForm = (values: CustomerDataForServer): void => {
-    const {customers: {activeCustomerId}, submitChangeForm} = this.props;
-
-    if (activeCustomerId) {
-      this.props.resetToast();
-      submitChangeForm(values, activeCustomerId);
-    }
   }
 
   public handleSubmitCustomerDeleteForm = (evt: GestureResponderEvent): void => {
@@ -131,16 +101,12 @@ class CustomersScreen extends React.Component<Props, State> {
     if (activeCustomerId) {
       this.props.resetToast();
       submitDeleteForm(activeCustomerId);
-      this.setState({isVisibleDeleteForm: false});
     }
   }
 
   render() {
     const {customers, customersRequests, loadCustomers} = this.props;
-    const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
-    const activeCustomer = customers.data.find(
-      (elem) => elem._id === customers.activeCustomerId,
-    );
+    const {isVisibleAddForm} = this.state;
 
     return (
       <View style={style.container}>
@@ -173,20 +139,6 @@ class CustomersScreen extends React.Component<Props, State> {
             isLoading={customersRequests.customersPost.loading}
             submitForm={this.handleSubmitCustomerAddForm}
           />
-          {/*<CustomerChangeScreen*/}
-            {/*isVisible={isVisibleChangeForm}*/}
-            {/*handleClose={this.toggleCustomerChangeform}*/}
-            {/*isLoading={customersRequests.customersPut.loading}*/}
-            {/*submitForm={this.handleSubmitCustomerChangeForm}*/}
-            {/*activeCustomer={activeCustomer}*/}
-          {/*/>*/}
-          {/*<CustomerDeleteScreen*/}
-            {/*isVisible={isVisibleDeleteForm}*/}
-            {/*handleClose={this.toggleCustomerDeleteForm}*/}
-            {/*isLoading={customersRequests.customersDelete.loading}*/}
-            {/*name={activeCustomer ? activeCustomer.name : null}*/}
-            {/*handleSubmit={this.handleSubmitCustomerDeleteForm}*/}
-          {/*/>*/}
         </View>
       </View>
     );

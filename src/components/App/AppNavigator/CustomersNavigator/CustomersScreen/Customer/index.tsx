@@ -7,34 +7,20 @@ import style from './style';
 
 import { Dispatch } from 'redux';
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
-import { RootState } from '../../../../../../redux/store';
+import { NavigationInjectedProps } from 'react-navigation';
 
 type OwnProps = CustomerInterface;
 
-interface StateProps {
-  activeCustomerId: number | null;
-  customersData: CustomerInterface[];
-}
-
 interface DispatchProps {
   selectActiveCustomer(_id: number): void;
-  resetSelectionActiveCustomer(): void;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
-
-const mapStateToProps = (state: RootState): StateProps => ({
-  activeCustomerId: state.customers.activeCustomerId,
-  customersData: state.customers.data,
-});
+type Props = DispatchProps & OwnProps & NavigationInjectedProps;
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
   {
     selectActiveCustomer: (_id) => {
       dispatch(Actions.selectCustomer(_id));
-    },
-    resetSelectionActiveCustomer: () => {
-      dispatch(Actions.resetSelectionCustomer());
     },
   }
 );
@@ -42,25 +28,28 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
 class Customer extends React.Component<Props> {
   render() {
     const {
-      _id, name, address, phone, activeCustomerId, /*customersData,*/
-      resetSelectionActiveCustomer, selectActiveCustomer,
+      _id, name, address, phone, selectActiveCustomer,
     } = this.props;
     const onClickCustomer = (): void => {
       selectActiveCustomer(_id);
-    };
-    const isCustomerActive = activeCustomerId === _id;
-    const onReClickCustomer = (): void => {
-      resetSelectionActiveCustomer();
+
+      const customer: CustomerInterface = {
+        _id,
+        name,
+        address,
+        phone,
+      };
+
+      this.props.navigation.navigate('CustomerDetailScreen', {
+        customer,
+      });
+
     };
 
     return (
       <TouchableOpacity
-        style={
-          isCustomerActive ?
-            [style.container, style.active] :
-            style.container
-        }
-        onPress={!isCustomerActive ? onClickCustomer : onReClickCustomer}
+        style={style.container}
+        onPress={onClickCustomer}
       >
         <View>
           <RegularText>
@@ -85,6 +74,6 @@ class Customer extends React.Component<Props> {
   }
 }
 
-export default connect<StateProps, DispatchProps, OwnProps, RootState>(
-  mapStateToProps, mapDispatchToProps,
+export default connect<DispatchProps>(
+  null, mapDispatchToProps,
 )(Customer);

@@ -10,7 +10,7 @@ const OkButton: React.SFC<Props> = (props) => {
     <TouchableOpacity
       onPress={props.onPress}
       disabled={props.disabled}
-      style={props.disabled ? style.buttonDisabled : style.button}
+      style={props.disabled ? [style.button, style.disabled] : style.button}
     >
       <View>
         <Icon name='done' size={40} color='#5d0756'/>

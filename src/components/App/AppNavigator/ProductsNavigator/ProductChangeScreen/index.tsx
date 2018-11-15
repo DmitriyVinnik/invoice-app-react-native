@@ -7,7 +7,8 @@ import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize
 import FormField from '../../../../../shared/components/FormField/index';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
-import RegularButton from '../../../../../shared/components/RegularButton';
+import OkButton from '../../../../../shared/components/OkButton';
+import CancelButton from '../../../../../shared/components/CancelButton';
 import style from './style';
 
 import { Product } from '../../../../../redux/products/states';
@@ -83,15 +84,13 @@ class ProductChangeForm extends React.Component<Props> {
           </View>
           <View style={style.buttonWraper}>
             <View style={style.button}>
-              <RegularButton
+              <CancelButton
                 onPress={handleClose}
-                title='Cancel'
               />
             </View>
             <View style={style.button}>
-              <RegularButton
+              <OkButton
                 onPress={handleSubmit(submitForm)}
-                title='Submit'
                 disabled={pristine || isLoading}
               />
             </View>

@@ -10,7 +10,7 @@ const CancelButton: React.SFC<Props> = (props) => {
     <TouchableOpacity
       onPress={props.onPress}
       disabled={props.disabled}
-      style={style.button}
+      style={props.disabled ? [style.button, style.disabled] : style.button}
     >
       <View>
         <Icon name='clear' size={40} color='#5d0756'/>

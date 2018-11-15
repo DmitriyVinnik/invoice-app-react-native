@@ -5,7 +5,6 @@ import { View, Text, Modal } from 'react-native';
 import FormField from '../../../../../shared/components/FormField/index';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
-import RegularButton from '../../../../../shared/components/RegularButton';
 import OkButton from '../../../../../shared/components/OkButton';
 import CancelButton from '../../../../../shared/components/CancelButton';
 import style from './style';
@@ -60,21 +59,12 @@ const ProductAddForm: React.SFC<Props> = (props: Props) => {
             <CancelButton
               onPress={handleClose}
             />
-            {/*<RegularButton*/}
-              {/*onPress={handleClose}*/}
-              {/*title='Cancel'*/}
-            {/*/>*/}
           </View>
           <View style={style.button}>
             <OkButton
               onPress={handleSubmit(submitForm)}
               disabled={pristine || isLoading}
             />
-            {/*<RegularButton*/}
-              {/*onPress={handleSubmit(submitForm)}*/}
-              {/*title='Submit'*/}
-              {/*disabled={pristine || isLoading}*/}
-            {/*/>*/}
           </View>
         </View>
         <View style={style.toastWraper}>

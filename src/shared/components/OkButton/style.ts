@@ -7,24 +7,12 @@ const style = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#5d0756',
+    borderStyle: 'solid',
   },
-  buttonDisabled: {
+  disabled: {
     opacity: 0.2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  titleWraper: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 12,
-    lineHeight: 14,
-    color: '#fff',
   },
 });
 

@@ -5,7 +5,8 @@ import { reduxForm, Field, InjectedFormProps, FormErrors } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
-import RegularButton from '../../../../../shared/components/RegularButton';
+import OkButton from '../../../../../shared/components/OkButton';
+import CancelButton from '../../../../../shared/components/CancelButton';
 import style from './style';
 
 import { CustomerDataForServer } from '../../../../../redux/customers/states';
@@ -64,15 +65,13 @@ const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
         </View>
         <View style={style.buttonWraper}>
           <View style={style.button}>
-            <RegularButton
+            <CancelButton
               onPress={handleClose}
-              title='Cancel'
             />
           </View>
           <View style={style.button}>
-            <RegularButton
+            <OkButton
               onPress={handleSubmit(submitForm)}
-              title='Submit'
               disabled={pristine || isLoading}
             />
           </View>
