@@ -5,7 +5,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   textContainer: {
-    height: 150,
+    height: 120,
     justifyContent: 'space-between',
     paddingTop: 20,
     paddingLeft: 20,

@@ -1,38 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
-import { Actions } from '../../../../../../redux/customers/AC';
+import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import RegularText from '../../../../../../shared/components/RegularText';
 import style from './style';
 
-import { Dispatch } from 'redux';
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
-import { NavigationInjectedProps } from 'react-navigation';
 
 type OwnProps = CustomerInterface;
 
-interface DispatchProps {
-  selectActiveCustomer(_id: number): void;
-}
-
-type Props = DispatchProps & OwnProps & NavigationInjectedProps;
-
-const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
-  {
-    selectActiveCustomer: (_id) => {
-      dispatch(Actions.selectCustomer(_id));
-    },
-  }
-);
+type Props = OwnProps & NavigationInjectedProps;
 
 class Customer extends React.Component<Props> {
   render() {
     const {
-      _id, name, address, phone, selectActiveCustomer,
+      _id, name, address, phone,
     } = this.props;
     const onClickCustomer = (): void => {
-      selectActiveCustomer(_id);
-
       const customer: CustomerInterface = {
         _id,
         name,
@@ -40,7 +23,7 @@ class Customer extends React.Component<Props> {
         phone,
       };
 
-      this.props.navigation.navigate('CustomerDetailScreen', {
+      this.props.navigation.navigate('CustomerDetail', {
         customer,
       });
 
@@ -74,6 +57,4 @@ class Customer extends React.Component<Props> {
   }
 }
 
-export default connect<DispatchProps>(
-  null, mapDispatchToProps,
-)(Customer);
+export default withNavigation(Customer);

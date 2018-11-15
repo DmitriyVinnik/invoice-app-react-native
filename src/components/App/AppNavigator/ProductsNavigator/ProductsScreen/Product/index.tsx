@@ -1,66 +1,33 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import RegularText from '../../../../../../shared/components/RegularText';
+import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import style from './style';
 
-import { connect } from 'react-redux';
-import { Actions } from '../../../../../../redux/products/AC';
-
-import { Dispatch } from 'redux';
 import { Product as ProductInterface } from '../../../../../../redux/products/states';
-import { RootState } from '../../../../../../redux/store';
 
 type OwnProps = ProductInterface;
 
-interface StateProps {
-  activeProductId: number | null;
-  productsData: ProductInterface[];
-}
-
-interface DispatchProps {
-  selectActiveProduct(data: ProductInterface[], _id: number): void;
-  resetSelectionActiveProduct(): void;
-}
-
-const mapStateToProps = (state: RootState): StateProps => ({
-  activeProductId: state.products.activeProductId,
-  productsData: state.products.data,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
-  {
-    selectActiveProduct: (data, _id) => {
-      dispatch(Actions.selectProduct(data, _id));
-    },
-    resetSelectionActiveProduct: () => {
-      dispatch(Actions.resetSelectionProduct());
-    },
-  }
-);
-
-type Props = StateProps & DispatchProps & OwnProps;
+type Props = OwnProps & NavigationInjectedProps;
 
 const Product: React.SFC<Props> = (props: Props) => {
-  const {
-    _id, name, price, activeProductId, productsData,
-    resetSelectionActiveProduct, selectActiveProduct,
-  } = props;
+  const {_id, name, price} = props;
   const onClickProduct = (): void => {
-    selectActiveProduct(productsData, _id);
-  };
-  const isProductActive = activeProductId === _id;
-  const onReClickProduct = (): void => {
-    resetSelectionActiveProduct();
+    const product: ProductInterface = {
+      _id,
+      name,
+      price,
+    };
+
+    props.navigation.navigate('ProductDetail', {
+      product,
+    });
   };
 
   return (
     <TouchableOpacity
-      style={
-        isProductActive ?
-          [style.container, style.active] :
-          style.container
-      }
-      onPress={!isProductActive ? onClickProduct : onReClickProduct}
+      style={style.container}
+      onPress={onClickProduct}
     >
       <View>
         <RegularText>
@@ -80,6 +47,4 @@ const Product: React.SFC<Props> = (props: Props) => {
   );
 };
 
-export default connect<StateProps, DispatchProps>(
-  mapStateToProps, mapDispatchToProps,
-)(Product);
+export default withNavigation(Product);

@@ -6,7 +6,7 @@ import style from './style';
 
 import { Customer as CustomerInterface } from '../../../../../../redux/customers/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/customers/states';
-import ToastRequest from '../../../../../../shared/components/ToastRequest/index';
+import ToastRequest from '../../../../../../shared/components/ToastRequest';
 
 export interface OwnProps {
   customersData: CustomerInterface[];

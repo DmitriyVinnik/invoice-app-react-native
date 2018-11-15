@@ -79,16 +79,6 @@ class CustomersScreen extends React.Component<Props, State> {
     }
   }
 
-  // public toggleCustomerDeleteForm = (): void => {
-  //   this.setState({
-  //     isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
-  //   });
-  //
-  //   if (this.state.isVisibleDeleteForm) {
-  //     this.props.resetToast();
-  //   }
-  // }
-
   public handleSubmitCustomerAddForm = (values: CustomerDataForServer): void => {
     this.props.resetToast();
     this.props.submitAddForm(values);
