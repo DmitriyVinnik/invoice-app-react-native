@@ -13,7 +13,6 @@
     ]
   },
   "dependencies": {
-    "exit-on-double-back": "^1.0.1",
     "lodash": "latest",
     "lodash-es": "^4.17.11",
     "react": "16.6.0-alpha.8af6728",
