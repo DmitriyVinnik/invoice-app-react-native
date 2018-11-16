@@ -79,14 +79,6 @@ class ProductsScreen extends Component<Props, State> {
     this.props.submitAddForm(valuesForServer);
   }
 
-  // public handleSubmitProductDeleteForm = (evt: GestureResponderEvent): void => {
-  //   const {products: {activeProductId}, submitDeleteForm} = this.props;
-  //
-  //   evt.preventDefault();
-  //   this.props.resetToast();
-  //   submitDeleteForm(activeProductId);
-  // }
-
   public toggleProductAddForm = (): void => {
     this.setState({
       isVisibleAddForm: !this.state.isVisibleAddForm,
@@ -99,7 +91,7 @@ class ProductsScreen extends Component<Props, State> {
   }
 
   public render() {
-    const {products, productsRequests, loadProducts} = this.props;
+    const {products, productsRequests, loadProducts, submitDeleteForm} = this.props;
     const {isVisibleAddForm} = this.state;
 
     return (
@@ -109,6 +101,7 @@ class ProductsScreen extends Component<Props, State> {
             productsRequest={productsRequests.productsGet}
             productsData={products.data}
             loadProducts={loadProducts}
+            deleteProduct={submitDeleteForm}
           />
         </View>
         <View style={style.editPanel}>

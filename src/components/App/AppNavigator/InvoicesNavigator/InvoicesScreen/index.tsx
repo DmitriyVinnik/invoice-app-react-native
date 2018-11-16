@@ -75,16 +75,6 @@ class InvoicesScreen extends Component<Props, State> {
     };
   }
 
-  // public handleSubmitInvoiceDeleteForm = (evt: GestureResponderEvent): void => {
-  //   const {invoices: {activeInvoiceId}, submitDeleteForm} = this.props;
-  //
-  //   evt.preventDefault();
-  //   if (activeInvoiceId) {
-  //     this.props.resetToast();
-  //     submitDeleteForm(activeInvoiceId);
-  //   }
-  // }
-
   public toggleInvoiceAddForm = (): void => {
     this.setState({
       isVisibleAddForm: !this.state.isVisibleAddForm,
@@ -99,7 +89,7 @@ class InvoicesScreen extends Component<Props, State> {
   public render() {
     const {
       invoicesRequests, invoices,
-      loadInvoices, loadProducts,
+      loadInvoices, loadProducts, submitDeleteForm,
       customers: {activeCustomerId},
     } = this.props;
     const {isVisibleAddForm} = this.state;
@@ -119,6 +109,7 @@ class InvoicesScreen extends Component<Props, State> {
                       activeCustomerId={activeCustomerId}
                       loadInvoices={loadInvoices}
                       loadProducts={loadProducts}
+                      deleteInvoice={submitDeleteForm}
                   />
               </View>
               <View style={style.editPanel}>

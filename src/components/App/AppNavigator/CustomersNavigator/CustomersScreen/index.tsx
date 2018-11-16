@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import CustomerList from './CustomerList';
@@ -84,18 +84,8 @@ class CustomersScreen extends React.Component<Props, State> {
     this.props.submitAddForm(values);
   }
 
-  public handleSubmitCustomerDeleteForm = (evt: GestureResponderEvent): void => {
-    const {customers: {activeCustomerId}, submitDeleteForm} = this.props;
-
-    evt.preventDefault();
-    if (activeCustomerId) {
-      this.props.resetToast();
-      submitDeleteForm(activeCustomerId);
-    }
-  }
-
   render() {
-    const {customers, customersRequests, loadCustomers} = this.props;
+    const {customers, customersRequests, loadCustomers, submitDeleteForm} = this.props;
     const {isVisibleAddForm} = this.state;
 
     return (
@@ -105,6 +95,7 @@ class CustomersScreen extends React.Component<Props, State> {
             customersRequest={customersRequests.customersGet}
             customersData={customers.data}
             loadCustomers={loadCustomers}
+            deleteCustomer={submitDeleteForm}
           />
         </View>
         <View style={style.editPanel}>

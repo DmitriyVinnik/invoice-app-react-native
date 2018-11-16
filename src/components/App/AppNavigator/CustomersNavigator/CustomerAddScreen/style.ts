@@ -36,8 +36,7 @@ const style = StyleSheet.create({
   },
   toastWraper: {
     width: '100%',
-    paddingLeft: 20,
-    paddingRight: 20,
+    padding: 20,
   },
 });
 
