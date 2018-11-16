@@ -10,6 +10,9 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 20,
   },
+  indicator: {
+    paddingTop: 10,
+  },
 });
 
 export default style;

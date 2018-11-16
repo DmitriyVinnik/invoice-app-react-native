@@ -4,33 +4,45 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingTop: 20,
+    minHeight: 560,
   },
   headerWraper: {
     alignItems: 'center',
-    marginTop: 30,
     marginBottom: 10,
   },
   discountWraper: {
     alignItems: 'center',
-    marginTop: 10,
-    // marginBottom: 10,
+    marginBottom: 15,
   },
   textTitle: {
     fontWeight: '700',
   },
+  fieldWraper: {
+    width: '60%',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  field: {
+    marginBottom: 15,
+  },
   buttonWraper: {
-    // flex: 1,
+    width: '60%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
     marginBottom: 10,
-    marginLeft: 30,
-    marginRight: 30,
   },
-  fieldWraper: {
-    flex: 1,
-    alignItems: 'center',
-    // marginLeft: 125,
+  button: {
+    width: '30%',
+    height: 30,
+  },
+  toastWraper: {
+    width: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
 

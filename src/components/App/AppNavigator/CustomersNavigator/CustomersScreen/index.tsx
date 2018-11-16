@@ -116,13 +116,6 @@ class CustomersScreen extends React.Component<Props, State> {
               <Icon name='person-add' size={40} color='#fff'/>
             </View>
           </TouchableOpacity>
-          {/*<EditPanel*/}
-            {/*labelButton='customer'*/}
-            {/*activeId={customers.activeCustomerId}*/}
-            {/*onAddButtonClick={this.toggleCustomerAddForm}*/}
-            {/*onChangeButtonClick={this.toggleCustomerChangeform}*/}
-            {/*onDeleteButtonClick={this.toggleCustomerDeleteForm}*/}
-          {/*/>*/}
           <CustomerAddScreen
             isVisible={isVisibleAddForm}
             handleClose={this.toggleCustomerAddForm}

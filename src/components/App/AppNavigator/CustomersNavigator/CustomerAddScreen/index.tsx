@@ -1,17 +1,18 @@
 import React from 'react';
 
 import { View, Text, Modal } from 'react-native';
-import { reduxForm, Field, InjectedFormProps, FormErrors } from 'redux-form';
+import { reduxForm, Field, InjectedFormProps } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import OkButton from '../../../../../shared/components/OkButton';
 import CancelButton from '../../../../../shared/components/CancelButton';
+import {validate} from '../../../../../shared/validation/customersForm';
 import style from './style';
 
 import { CustomerDataForServer } from '../../../../../redux/customers/states';
 
-type FormData = CustomerDataForServer;
+export type FormData = CustomerDataForServer;
 
 export interface OwnProps {
   isVisible: boolean;
@@ -82,24 +83,6 @@ const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
       </View>
     </Modal>
   );
-};
-
-const validate = (values: FormData) => {
-  const error: FormErrors<FormData> = {};
-
-  if (!values.name) {
-    error.name = 'Required';
-  }
-
-  if (!values.address) {
-    error.address = 'Required';
-  }
-
-  if (!values.phone) {
-    error.phone = 'Required';
-  }
-
-  return error;
 };
 
 export default reduxForm<FormData, OwnProps>({

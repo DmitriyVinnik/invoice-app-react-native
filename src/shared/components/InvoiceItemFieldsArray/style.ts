@@ -1,39 +1,35 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
 
 const style = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
+    maxHeight: 330,
     alignItems: 'center',
     padding: 10,
+  },
+  headerWraper: {
+    alignItems: 'center',
+    marginBottom: 10,
   },
   buttonAddWraper: {
     width: '100%',
     alignItems: 'center',
     marginBottom: 10,
   },
-  buttonAdd: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '60%',
-    height: 30,
-    padding: 6,
-    borderWidth: 2,
-    borderColor: '#5d0756',
-    backgroundColor: '#cf0ec1',
-    borderRadius: 15,
-  },
   buttonAddTitle: {
     color: '#fff',
   },
   invoiceItemsList: {
-    paddingTop: 10,
+    // paddingTop: 10,
   },
   invoiceItemWraper: {
     width: '100%',
-    height: 60,
+    height: 70,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignContent: 'flex-start',
+    alignContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
     marginRight: 10,
@@ -42,24 +38,23 @@ const style = StyleSheet.create({
     borderBottomColor: '#5d0756',
     borderStyle: 'solid',
   },
-  invoiceItemsCountWraper: {
-    width: 60,
-  },
   productWraper: {
-    width: '50%',
-    marginRight: 10,
+    width: screenWidth - 130,
+  },
+  quantityWraper: {
+    width: 60,
   },
   buttonRemoveWraper: {
     width: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   errorText: {
     color: 'red',
+    fontSize: 14,
   },
   textTitle: {
     fontWeight: '700',
-  },
-  iconTrashWraper: {
-    paddingTop: 10,
   },
 });
 

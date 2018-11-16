@@ -53,6 +53,7 @@ class CustomerSelectElement extends React.Component<Props> {
     const pickerItems = customers.data.map(customer => (
       <Picker.Item
         label={customer.name}
+        color='#5d0756'
         value={customer._id}
         key={customer._id}
       />
@@ -62,7 +63,6 @@ class CustomerSelectElement extends React.Component<Props> {
       <View style={style.container}>
         <RegularText>Select customer, please:</RegularText>
         <View style={style.pickerWraper}>
-          {customersRequests.customersGet.loading && <ActivityIndicator/>}
           <Picker
             selectedValue={customers.activeCustomerId ? customers.activeCustomerId : 'none'}
             style={style.picker}
@@ -71,10 +71,12 @@ class CustomerSelectElement extends React.Component<Props> {
             <Picker.Item
               label='None'
               value={null}
+              color='#5d0756'
               key='None'
             />
             {pickerItems}
           </Picker>
+          {customersRequests.customersGet.loading && <ActivityIndicator color='#5d0756'/>}
         </View>
       </View>
     );

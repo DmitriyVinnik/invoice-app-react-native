@@ -4,6 +4,7 @@ const style = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 10,
+    lineHeight: 14,
   },
   label: {
     height: 34,

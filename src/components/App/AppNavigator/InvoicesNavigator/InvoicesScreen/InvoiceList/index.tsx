@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, ActivityIndicator, ListRenderItem } from 'react-native';
 import Invoice from '../Invoice';
 import RegularText from '../../../../../../shared/components/RegularText';
-import ToastRequest from '../../../../../../shared/components/ToastRequest/index';
+import ToastRequest from '../../../../../../shared/components/ToastRequest';
 import style from './style';
 
 import { Invoice as InvoiceInterface } from '../../../../../../redux/invoices/states';
@@ -44,7 +44,10 @@ export default class InvoiceList extends Component<OwnProps> {
       return (
         <View style={style.loader}>
           <RegularText>Wait a second, loading...</RegularText>
-          <ActivityIndicator/>
+          <ActivityIndicator
+            color='#5d0756'
+            style={style.indicator}
+          />
         </View>
       );
     }

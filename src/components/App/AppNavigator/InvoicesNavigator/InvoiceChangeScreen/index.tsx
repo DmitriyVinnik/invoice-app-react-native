@@ -3,16 +3,18 @@ import { isEqual } from 'lodash-es';
 import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { View, Text, Modal } from 'react-native';
+import { View, Text, Modal, ScrollView } from 'react-native';
 import {
   reduxForm, Field, FieldArray, initialize,
-  InjectedFormProps, FormErrors, FormAction, getFormValues,
+  InjectedFormProps, FormAction, getFormValues,
 } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField';
 import InvoiceItemFieldsArray from '../../../../../shared/components/InvoiceItemFieldsArray';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
-import RegularButton from '../../../../../shared/components/RegularButton';
+import CancelButton from '../../../../../shared/components/CancelButton';
+import OkButton from '../../../../../shared/components/OkButton';
+import {validate} from '../../../../../shared/validation/invoicesForm';
 import style from './style';
 
 import { Actions } from '../../../../../redux/invoices/AC';
@@ -21,7 +23,7 @@ import { Actions as toastActions } from '../../../../../redux/toast/AC';
 
 import { Invoice, InvoiceDataForServer } from '../../../../../redux/invoices/states';
 import {
-  InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState,
+InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState,
 } from '../../../../../redux/invoiceItems/states';
 import { Product, ProductsState } from '../../../../../redux/products/states';
 import { RootState } from '../../../../../redux/store';
@@ -31,7 +33,6 @@ export interface OwnProps {
   isVisible: boolean;
   isLoading: boolean;
   activeInvoice: Invoice;
-  activeCustomerId: number;
   handleClose(): void;
 }
 
@@ -165,7 +166,7 @@ class InvoiceChangeForm extends React.Component<Props> {
 
   public render() {
     const {
-      isVisible, handleSubmit, isLoading, products, activeCustomerId, pristine,
+      isVisible, handleSubmit, isLoading, products, pristine,
       handleClose,
     } = this.props;
 
@@ -176,29 +177,29 @@ class InvoiceChangeForm extends React.Component<Props> {
         visible={isVisible}
         onRequestClose={handleClose}
       >
-        <View style={style.container}>
+        <ScrollView contentContainerStyle={style.container}>
           <View style={style.headerWraper}>
             <RegularText>
               <Text style={style.textTitle}>Change invoice.</Text>
             </RegularText>
-            <RegularText>{`Invoice's customer ID: ${activeCustomerId}`}</RegularText>
           </View>
           <View style={style.fieldWraper}>
-            <ToastRequest/>
-            <View>
+            <View style={style.headerWraper}>
               <RegularText>
                 <Text style={style.textTitle}>{`Invoice's total: ${this.getTotalPrice()}`}</Text>
               </RegularText>
-              <View style={style.discountWraper}>
-                <Field
-                  name='discount'
-                  component={FormField}
-                  keyboard='numeric'
-                  labelText='Discount:  '
-                  placeholder='0 to 99'
-                />
-              </View>
             </View>
+            <View style={style.discountWraper}>
+              <Field
+                name='discount'
+                component={FormField}
+                keyboard='numeric'
+                labelText='Discount:  '
+                placeholder='0 to 99'
+              />
+            </View>
+          </View>
+          <View>
             <FieldArray
               name='invoiceItems'
               component={InvoiceItemFieldsArray}
@@ -206,17 +207,22 @@ class InvoiceChangeForm extends React.Component<Props> {
             />
           </View>
           <View style={style.buttonWraper}>
-            <RegularButton
-              onPress={handleClose}
-              title='Cancel'
-            />
-            <RegularButton
-              onPress={handleSubmit(this.handleSubmitForm)}
-              title='Submit'
-              disabled={pristine || isLoading}
-            />
+            <View style={style.button}>
+              <CancelButton
+                onPress={handleClose}
+              />
+            </View>
+            <View style={style.button}>
+              <OkButton
+                onPress={handleSubmit(this.handleSubmitForm)}
+                disabled={pristine || isLoading}
+              />
+            </View>
           </View>
-        </View>
+          <View style={style.toastWraper}>
+            <ToastRequest/>
+          </View>
+        </ScrollView>
       </Modal>
     );
   }
@@ -271,44 +277,6 @@ class InvoiceChangeForm extends React.Component<Props> {
     return dirty ? priceTotal : activeInvoice.total;
   }
 }
-
-const validate = (values: InvoicesFormData) => {
-  const errors: FormErrors<InvoicesFormData, any> = {};
-
-  if (!values.discount) {
-    errors.discount = 'Required';
-  } else if (+values.discount > 100 || +values.discount < 0) {
-    errors.discount = 'Discount must be in range from 0 to 1';
-  }
-
-  if (!values.invoiceItems || !values.invoiceItems.length) {
-    errors.invoiceItems = {_error: 'At least one member must be entered'};
-  } else {
-    const invoiceItemsArrayErrors: Array<FormErrors<InvoiceItemsFormData>> = [];
-
-    values.invoiceItems.forEach((invoiceItem, invoiceItemIndex) => {
-      const invoiceItemErrors: FormErrors<InvoiceItemsFormData> = {};
-
-      if (!invoiceItem || !invoiceItem.quantity) {
-        invoiceItemErrors.quantity = 'Required';
-        invoiceItemsArrayErrors[invoiceItemIndex] = invoiceItemErrors;
-      } else if (+invoiceItem.quantity % 1 !== 0) {
-        invoiceItemErrors.quantity = 'Value must be an integer';
-        invoiceItemsArrayErrors[invoiceItemIndex] = invoiceItemErrors;
-      }
-
-      if (!invoiceItem || !invoiceItem.product_id) {
-        invoiceItemErrors.product_id = 'Required';
-        invoiceItemsArrayErrors[invoiceItemIndex] = invoiceItemErrors;
-      }
-    });
-
-    if (invoiceItemsArrayErrors.length) {
-      errors.invoiceItems = invoiceItemsArrayErrors;
-    }
-  }
-  return errors;
-};
 
 export default compose(
   reduxForm<InvoicesFormData, OwnProps>({

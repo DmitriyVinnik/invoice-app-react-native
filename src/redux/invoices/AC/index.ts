@@ -23,8 +23,8 @@ export const Actions = {
     loadAllInvoices: () => {
         return createAction(ActionTypes.INVOICES_LOAD_ALL)
     },
-    selectInvoice: (data: Invoice[], _id: number) => {
-        return createAction(ActionTypes.INVOICES_SELECT_ACTIVE, {data, _id})
+    selectInvoice: (_id: number) => {
+        return createAction(ActionTypes.INVOICES_SELECT_ACTIVE, {_id})
     },
     resetSelectionInvoice: () => {
         return createAction(ActionTypes.INVOICES_RESET_SELECTION_ACTIVE)

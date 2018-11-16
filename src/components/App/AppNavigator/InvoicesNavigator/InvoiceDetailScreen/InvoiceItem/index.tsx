@@ -20,10 +20,6 @@ const InvoiceItem: React.SFC<OwnProps> = (props: OwnProps) => {
         InvoiceItem _id:
         <Text style={style.text}> {_id}</Text>
       </RegularText>
-      {/*<RegularText>*/}
-      {/*Invoice _id:*/}
-      {/*<Text style={style.text}> {invoice_id}</Text>*/}
-      {/*</RegularText>*/}
       <RegularText>
         Product:
         <Text style={style.text}> {productName}</Text>

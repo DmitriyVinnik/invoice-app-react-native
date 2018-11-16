@@ -1,10 +1,13 @@
 import { createStackNavigator } from 'react-navigation';
-import InvoicesScreen from '../InvoicesNavigator/InvoicesScreen';
+import InvoicesScreen from './InvoicesScreen';
+import InvoiceDetailScreen from './InvoiceDetailScreen';
 import HeaderServise from '../../../../shared/services/header.service';
 
 export default createStackNavigator({
-  InvoicesScreen: {
-    screen: InvoicesScreen,
-    navigationOptions: HeaderServise.initNavOpt('Invoices'),
+    Invoices: InvoicesScreen,
+    InvoiceDetail: InvoiceDetailScreen,
   },
-});
+  {
+    initialRouteName: 'Invoices',
+    navigationOptions: HeaderServise.initNavOpt('Invoices'),
+  });

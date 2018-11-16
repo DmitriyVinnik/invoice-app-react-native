@@ -3,12 +3,13 @@ import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import { View, Text, Modal } from 'react-native';
-import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize } from 'redux-form';
+import { reduxForm, Field, InjectedFormProps, FormAction, initialize } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField/index';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import OkButton from '../../../../../shared/components/OkButton';
 import CancelButton from '../../../../../shared/components/CancelButton';
+import {validate} from '../../../../../shared/validation/productsForm';
 import style from './style';
 
 import { Product } from '../../../../../redux/products/states';
@@ -116,22 +117,6 @@ class ProductChangeForm extends React.Component<Props> {
     }
   }
 }
-
-const validate = (values: ProductsFormData): FormErrors => {
-  const error: FormErrors<ProductsFormData> = {};
-
-  if (!values.name) {
-    error.name = 'Required';
-  }
-
-  if (!values.price) {
-    error.price = 'Required';
-  } else if (((+values.price * 100) % 100) % 1 !== 0) {
-    error.price = 'Price must be in decimal format';
-  }
-
-  return error;
-};
 
 export default compose(
   reduxForm<ProductsFormData, OwnProps>({

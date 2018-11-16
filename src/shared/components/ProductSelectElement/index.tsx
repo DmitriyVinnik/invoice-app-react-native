@@ -23,6 +23,7 @@ const ProductSelectElement: React.SFC<Props> = (props: Props) => {
     <Picker.Item
       label={`${product.name} - price ${product.price}`}
       value={product._id}
+      color='#5d0756'
       key={product._id}
     />
   ));
@@ -31,9 +32,10 @@ const ProductSelectElement: React.SFC<Props> = (props: Props) => {
     <View style={style.container}>
       <View>
         <View>
-          <RegularText>Product:</RegularText>
+          <RegularText>
+            Product: {touched && (error && <Text style={style.errorText}>{error}</Text>)}
+          </RegularText>
         </View>
-        {touched && (error && <Text style={style.errorText}>{error}</Text>)}
       </View>
       <Picker
         selectedValue={input.value}
@@ -43,6 +45,7 @@ const ProductSelectElement: React.SFC<Props> = (props: Props) => {
         <Picker.Item
           label='None'
           value={null}
+          color='#5d0756'
           key='None'
         />
         {pickerItems}

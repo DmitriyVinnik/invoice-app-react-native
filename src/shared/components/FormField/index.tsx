@@ -23,7 +23,9 @@ export const FormField: React.SFC<Props> = (props: Props) => {
       <View style={style.label}>
         <RegularText>{labelText}</RegularText>
         {touched && (error &&
-            <Text style={style.errorText}>{error}</Text>
+            <RegularText>
+                <Text style={style.errorText}>{error}</Text>
+            </RegularText>
         )}
       </View>
       <TextInput

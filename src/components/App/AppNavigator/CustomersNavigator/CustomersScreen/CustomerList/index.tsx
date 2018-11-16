@@ -40,7 +40,9 @@ export default class CustomerList extends Component<OwnProps> {
       return (
         <View style={style.loader}>
           <RegularText>Wait a second, loading...</RegularText>
-          <ActivityIndicator/>
+          <ActivityIndicator
+            color='#5d0756'
+          />
         </View>
       );
     }

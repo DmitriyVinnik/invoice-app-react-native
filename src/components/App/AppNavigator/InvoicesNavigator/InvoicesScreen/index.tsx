@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { GestureResponderEvent, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import InvoiceList from './InvoiceList';
 import InvoiceAddForm from '../InvoiceAddScreen';
-import InvoiceChangeForm from '../InvoiceChangeScreen';
-import InvoiceDeleteForm from '../InvoiceDeleteScreen';
-import EditPanel from '../../../../../shared/components/EditPanel';
 import CustomerSelectElement from '../CustomerSelectScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import style from './style';
 
 import { Actions } from '../../../../../redux/invoices/AC';
@@ -67,8 +65,6 @@ type Props = StateProps & DispatchProps;
 
 interface State {
   isVisibleAddForm: boolean;
-  isVisibleChangeForm: boolean;
-  isVisibleDeleteForm: boolean;
 }
 
 class InvoicesScreen extends Component<Props, State> {
@@ -76,21 +72,18 @@ class InvoicesScreen extends Component<Props, State> {
     super(props);
     this.state = {
       isVisibleAddForm: false,
-      isVisibleChangeForm: false,
-      isVisibleDeleteForm: false,
     };
   }
 
-  public handleSubmitInvoiceDeleteForm = (evt: GestureResponderEvent): void => {
-    const {invoices: {activeInvoiceId}, submitDeleteForm} = this.props;
-
-    evt.preventDefault();
-    if (activeInvoiceId) {
-      this.props.resetToast();
-      submitDeleteForm(activeInvoiceId);
-      this.setState({isVisibleDeleteForm: false});
-    }
-  }
+  // public handleSubmitInvoiceDeleteForm = (evt: GestureResponderEvent): void => {
+  //   const {invoices: {activeInvoiceId}, submitDeleteForm} = this.props;
+  //
+  //   evt.preventDefault();
+  //   if (activeInvoiceId) {
+  //     this.props.resetToast();
+  //     submitDeleteForm(activeInvoiceId);
+  //   }
+  // }
 
   public toggleInvoiceAddForm = (): void => {
     this.setState({
@@ -103,36 +96,13 @@ class InvoicesScreen extends Component<Props, State> {
     }
   }
 
-  public toggleInvoiceChangeForm = (): void => {
-    this.setState({
-      isVisibleChangeForm: !this.state.isVisibleChangeForm,
-    });
-
-    if (this.state.isVisibleChangeForm) {
-      this.props.resetToast();
-    }
-  }
-
-  public toggleInvoiceDeleteForm = (): void => {
-    this.setState({
-      isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
-    });
-
-    if (this.state.isVisibleDeleteForm) {
-      this.props.resetToast();
-    }
-  }
-
   public render() {
     const {
-      invoices: {activeInvoiceId}, invoicesRequests, invoices,
+      invoicesRequests, invoices,
       loadInvoices, loadProducts,
       customers: {activeCustomerId},
     } = this.props;
-    const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
-    const activeInvoice = invoices.data.find(
-      (elem) => elem._id === activeInvoiceId,
-    );
+    const {isVisibleAddForm} = this.state;
 
     return (
       <View style={style.container}>
@@ -152,38 +122,39 @@ class InvoicesScreen extends Component<Props, State> {
                   />
               </View>
               <View style={style.editPanel}>
-                  <EditPanel
-                      labelButton='invoice'
-                      onAddButtonClick={this.toggleInvoiceAddForm}
-                      onChangeButtonClick={this.toggleInvoiceChangeForm}
-                      onDeleteButtonClick={this.toggleInvoiceDeleteForm}
-                      activeId={activeInvoiceId}
-                  />
+                  <TouchableOpacity
+                      onPress={this.toggleInvoiceAddForm}
+                      style={style.addButton}
+                  >
+                      <View>
+                          <Icon name='cart-plus' size={30} color='#fff'/>
+                      </View>
+                  </TouchableOpacity>
                   <InvoiceAddForm
                       isVisible={isVisibleAddForm}
                       handleClose={this.toggleInvoiceAddForm}
                       isLoading={invoicesRequests.invoicesPost.loading}
                       activeCustomerId={activeCustomerId}
                   />
-                {
-                  activeInvoice &&
-                  <View>
-                      <InvoiceChangeForm
-                          isVisible={isVisibleChangeForm}
-                          handleClose={this.toggleInvoiceChangeForm}
-                          isLoading={invoicesRequests.invoicesPut.loading}
-                          activeInvoice={activeInvoice}
-                          activeCustomerId={activeCustomerId}
-                      />
-                      <InvoiceDeleteForm
-                          isVisible={isVisibleDeleteForm}
-                          handleClose={this.toggleInvoiceDeleteForm}
-                          isLoading={invoicesRequests.invoicesDelete.loading}
-                          _id={activeInvoice._id}
-                          handleSubmit={this.handleSubmitInvoiceDeleteForm}
-                      />
-                  </View>
-                }
+                {/*{*/}
+                {/*activeInvoice &&*/}
+                {/*<View>*/}
+                {/*<InvoiceChangeForm*/}
+                {/*isVisible={isVisibleChangeForm}*/}
+                {/*handleClose={this.toggleInvoiceChangeForm}*/}
+                {/*isLoading={invoicesRequests.invoicesPut.loading}*/}
+                {/*activeInvoice={activeInvoice}*/}
+                {/*activeCustomerId={activeCustomerId}*/}
+                {/*/>*/}
+                {/*<InvoiceDeleteForm*/}
+                {/*isVisible={isVisibleDeleteForm}*/}
+                {/*handleClose={this.toggleInvoiceDeleteForm}*/}
+                {/*isLoading={invoicesRequests.invoicesDelete.loading}*/}
+                {/*_id={activeInvoice._id}*/}
+                {/*handleSubmit={this.handleSubmitInvoiceDeleteForm}*/}
+                {/*/>*/}
+                {/*</View>*/}
+                {/*}*/}
               </View>
           </View>
         }

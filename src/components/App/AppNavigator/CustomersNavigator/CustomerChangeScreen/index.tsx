@@ -3,12 +3,13 @@ import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import { View, Text, Modal } from 'react-native';
-import { reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize } from 'redux-form';
+import { reduxForm, Field, InjectedFormProps, FormAction, initialize } from 'redux-form';
 import FormField from '../../../../../shared/components/FormField/index';
 import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import OkButton from '../../../../../shared/components/OkButton';
 import CancelButton from '../../../../../shared/components/CancelButton';
+import {validate} from '../../../../../shared/validation/customersForm';
 import style from './style';
 
 import { CustomerDataForServer, Customer } from '../../../../../redux/customers/states';
@@ -124,24 +125,6 @@ class CustomerChangeForm extends React.Component<Props> {
     }
   }
 }
-
-const validate = (values: FormData): FormErrors => {
-  const error: FormErrors<FormData> = {};
-
-  if (!values.name) {
-    error.name = 'Required';
-  }
-
-  if (!values.address) {
-    error.address = 'Required';
-  }
-
-  if (!values.phone) {
-    error.phone = 'Required';
-  }
-
-  return error;
-};
 
 export default compose(
   reduxForm<FormData, OwnProps>({

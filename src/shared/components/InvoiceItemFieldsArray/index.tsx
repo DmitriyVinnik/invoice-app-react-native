@@ -21,16 +21,23 @@ const InvoiceItemFieldsArray: React.SFC<Props> = (props: Props) => {
 
   return (
     <View style={style.container}>
-      <RegularText>
-        <Text style={style.textTitle}>Invoice Items (II): </Text>
-      </RegularText>
+      <View style={style.headerWraper}>
+        <RegularText>
+          <Text style={style.textTitle}>Invoice Items (II): </Text>
+        </RegularText>
+      </View>
       <View style={style.buttonAddWraper}>
-        <TouchableOpacity
+        <Icon.Button
+          name='plus'
+          backgroundColor='#5d0756'
+          color='#fff'
+          size={20}
           onPress={handleAddButtonClick}
-          style={style.buttonAdd}
         >
-          <Text style={style.buttonAddTitle}>Add new invoice item</Text>
-        </TouchableOpacity>
+          <RegularText>
+            <Text style={style.buttonAddTitle}>Add new invoice item</Text>
+          </RegularText>
+        </Icon.Button>
       </View>
       <ScrollView contentContainerStyle={style.invoiceItemsList}>
         {fields.map((productItem, index) => {
@@ -41,9 +48,6 @@ const InvoiceItemFieldsArray: React.SFC<Props> = (props: Props) => {
               key={index}
               style={style.invoiceItemWraper}
             >
-              <View style={style.invoiceItemsCountWraper}>
-                <RegularText>{`II №${index + 1}: `}</RegularText>
-              </View>
               <View style={style.productWraper}>
                 <Field
                   name={`${productItem}.product_id`}
@@ -51,25 +55,36 @@ const InvoiceItemFieldsArray: React.SFC<Props> = (props: Props) => {
                   products={products}
                 />
               </View>
-              <Field
-                name={`${productItem}.quantity`}
-                component={FormField}
-                keyboard='numeric'
-                labelText='Quantity: '
-              />
+              <View style={style.quantityWraper}>
+                <Field
+                  name={`${productItem}.quantity`}
+                  component={FormField}
+                  keyboard='numeric'
+                  labelText='Quantity: '
+                />
+              </View>
               <View style={style.buttonRemoveWraper}>
                 <TouchableOpacity
                   onPress={handleRemoveButtonClick}
                 >
-                  <View style={style.iconTrashWraper}>
-                    <Icon name='trash' size={25}/>
+                  <View>
+                    <Icon
+                      name='trash'
+                      color='#5d0756'
+                      size={25}
+                    />
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
           );
         })}
-        {error && <Text style={style.errorText}>{error}</Text>}
+        {
+          error &&
+          <RegularText>
+              <Text style={style.errorText}>{error}</Text>
+          </RegularText>
+        }
       </ScrollView>
     </View>
   );
