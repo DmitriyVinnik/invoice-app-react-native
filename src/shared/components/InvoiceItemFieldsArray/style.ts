@@ -39,10 +39,10 @@ const style = StyleSheet.create({
     borderStyle: 'solid',
   },
   productWraper: {
-    width: screenWidth - 130,
+    width: screenWidth - 140,
   },
   quantityWraper: {
-    width: 60,
+    width: 70,
   },
   buttonRemoveWraper: {
     width: 50,
