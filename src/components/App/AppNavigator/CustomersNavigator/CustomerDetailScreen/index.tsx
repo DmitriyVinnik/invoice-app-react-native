@@ -30,8 +30,6 @@ interface StateProps {
 
 interface DispatchProps {
   submitChangeForm(data: CustomerDataForServer, _id: number): void;
-  selectActiveCustomer(_id: number): void;
-  resetSelectionActiveCustomer(): void;
   resetToast(): void;
 }
 
@@ -44,12 +42,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): Dispatc
   {
     submitChangeForm: (data, _id) => {
       dispatch(Actions.submitCustomerChangeForm(data, _id));
-    },
-    selectActiveCustomer: (_id) => {
-      dispatch(Actions.selectCustomer(_id));
-    },
-    resetSelectionActiveCustomer: () => {
-      dispatch(Actions.resetSelectionCustomer());
     },
     resetToast: () => {
       dispatch(toastActions.hideToast());
@@ -81,30 +73,20 @@ class CustomerDetailsScreen extends React.Component<Props, State> {
     };
   }
 
-  public componentDidMount() {
-    this.props.selectActiveCustomer(this.customer._id);
-  }
-
   public componentDidUpdate() {
-    const {activeCustomerId, data} = this.props.customers;
+    const {data} = this.props.customers;
 
-    if (activeCustomerId) {
-      const activeCustomer: Customer | undefined = data.find((customer) => customer._id === activeCustomerId);
+    const activeCustomer: Customer | undefined = data.find((customer) => customer._id === this.customer._id);
 
-      if (activeCustomer && !isEqual(this.customer, activeCustomer)) {
-        this.customer = {
-          ...activeCustomer,
-        };
+    if (activeCustomer && !isEqual(this.customer, activeCustomer)) {
+      this.customer = {
+        ...activeCustomer,
+      };
 
-        this.props.navigation.setParams({
-          customerDetailTitle: activeCustomer.name,
-        });
-      }
+      this.props.navigation.setParams({
+        customerDetailTitle: activeCustomer.name,
+      });
     }
-  }
-
-  public componentWillUnmount() {
-    this.props.resetSelectionActiveCustomer();
   }
 
   private customer: Customer = this.props.navigation.getParam('customer');
