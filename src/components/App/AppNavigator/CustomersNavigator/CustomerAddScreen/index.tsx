@@ -58,7 +58,7 @@ const CustomerAddScreen: React.SFC<Props> = (props: Props) => {
             <Field
               name='phone'
               component={FormField}
-              keyboard='numeric'
+              keyboard='phone-pad'
               placeholder='+380999999999'
               labelText='Customer`s phone: '
             />

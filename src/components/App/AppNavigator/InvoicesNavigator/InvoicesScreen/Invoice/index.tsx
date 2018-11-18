@@ -8,7 +8,12 @@ import { Invoice as InvoiceInterface } from '../../../../../../redux/invoices/st
 
 type OwnProps = InvoiceInterface;
 
-type Props = OwnProps & NavigationInjectedProps;
+export interface InvoiceNavigationParams {
+  invoice: InvoiceInterface;
+  invoiceDetailTitle: number;
+}
+
+type Props = OwnProps & NavigationInjectedProps<InvoiceNavigationParams>;
 
 const Invoice: React.SFC<Props> = (props: Props) => {
   const {
@@ -21,10 +26,12 @@ const Invoice: React.SFC<Props> = (props: Props) => {
       discount,
       total,
     };
-
-    navigation.navigate('InvoiceDetail', {
+    const params: InvoiceNavigationParams = {
       invoice,
-    });
+      invoiceDetailTitle: invoice._id,
+    };
+
+    navigation.navigate('InvoiceDetail', params);
   };
 
   return (

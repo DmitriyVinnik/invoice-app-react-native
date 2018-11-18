@@ -8,7 +8,12 @@ import { Customer as CustomerInterface } from '../../../../../../redux/customers
 
 type OwnProps = CustomerInterface;
 
-type Props = OwnProps & NavigationInjectedProps;
+export interface CustomerNavigationParams {
+  customer: CustomerInterface;
+  customerDetailTitle: string;
+}
+
+type Props = OwnProps & NavigationInjectedProps<CustomerNavigationParams>;
 
 class Customer extends React.Component<Props> {
   render() {
@@ -22,11 +27,12 @@ class Customer extends React.Component<Props> {
         address,
         phone,
       };
-
-      this.props.navigation.navigate('CustomerDetail', {
+      const params: CustomerNavigationParams = {
         customer,
-      });
+        customerDetailTitle: customer.name,
+      };
 
+      this.props.navigation.navigate('CustomerDetail', params);
     };
 
     return (

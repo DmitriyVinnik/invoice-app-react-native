@@ -143,7 +143,7 @@ class InvoiceChangeForm extends React.Component<Props> {
 
     const invoiceValuesForServer: InvoiceDataForServer = {
       ...values,
-      discount: +values.discount,
+      discount: values.discount ? +values.discount : 0,
     };
 
     this.props.resetToast();
@@ -271,7 +271,9 @@ class InvoiceChangeForm extends React.Component<Props> {
         return 0;
       }, 0);
 
-      priceTotal = Math.round(priceWithoutDiscount * (100 - +formValues.discount)) / 100;
+      priceTotal = Math.round(
+        priceWithoutDiscount * (100 - (formValues.discount ? +formValues.discount : 0)),
+      ) / 100;
     }
 
     return dirty ? priceTotal : activeInvoice.total;

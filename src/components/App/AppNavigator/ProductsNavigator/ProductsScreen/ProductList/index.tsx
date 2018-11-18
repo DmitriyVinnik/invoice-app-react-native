@@ -8,7 +8,6 @@ import style from './style';
 
 import { Product as ProductInterface } from '../../../../../../redux/products/states';
 import { RequestNestedState } from '../../../../../../redux/request/nested-states/products/states';
-import ToastRequest from '../../../../../../shared/components/ToastRequest/index';
 
 export interface OwnProps {
   productsData: ProductInterface[];
@@ -81,7 +80,6 @@ export default class ProductList extends Component<OwnProps> {
 
     return (
       <View>
-        <ToastRequest/>
         <FlatList
           style={style.list}
           data={productsData}

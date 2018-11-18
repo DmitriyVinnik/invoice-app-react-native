@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { isEqual } from 'lodash-es';
 
 import CustomerChangeScreen from '../CustomerChangeScreen';
 import RegularText from '../../../../../shared/components/RegularText';
@@ -11,7 +12,8 @@ import { CustomerDataForServer } from '../../../../../redux/customers/states';
 import { CustomersRequestState } from '../../../../../redux/request/nested-states/customers/states';
 import { RootState } from '../../../../../redux/store';
 import { Dispatch } from 'redux';
-import { Customer } from '../../../../../redux/customers/states';
+import { Customer, CustomersState } from '../../../../../redux/customers/states';
+import { CustomerNavigationParams } from '../CustomersScreen/Customer';
 import {
   NavigationInjectedProps,
   NavigationScreenConfig,
@@ -23,6 +25,7 @@ import { Actions as toastActions } from '../../../../../redux/toast/AC';
 
 interface StateProps {
   customersRequests: CustomersRequestState;
+  customers: CustomersState;
 }
 
 interface DispatchProps {
@@ -34,6 +37,7 @@ interface DispatchProps {
 
 const mapStateToProps = (state: RootState): StateProps => ({
   customersRequests: state.request.customers,
+  customers: state.customers,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): DispatchProps => (
@@ -53,7 +57,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): Dispatc
   }
 );
 
-type Props = StateProps & DispatchProps & NavigationInjectedProps;
+type Props = StateProps & DispatchProps & NavigationInjectedProps<CustomerNavigationParams>;
 
 interface State {
   isVisibleChangeForm: boolean;
@@ -70,16 +74,33 @@ class CustomerDetailsScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = (
     {navigation},
   ) => {
-    const {params} = navigation.state;
 
     return {
-      title: params ? params.customer.name : 'Customer',
+      title: navigation.getParam('customerDetailTitle', 'Customer'),
       headerTintColor: '#fff',
     };
   }
 
   public componentDidMount() {
     this.props.selectActiveCustomer(this.customer._id);
+  }
+
+  public componentDidUpdate() {
+    const {activeCustomerId, data} = this.props.customers;
+
+    if (activeCustomerId) {
+      const activeCustomer: Customer | undefined = data.find((customer) => customer._id === activeCustomerId);
+
+      if (activeCustomer && !isEqual(this.customer, activeCustomer)) {
+        this.customer = {
+          ...activeCustomer,
+        };
+
+        this.props.navigation.setParams({
+          customerDetailTitle: activeCustomer.name,
+        });
+      }
+    }
   }
 
   public componentWillUnmount() {

@@ -1,29 +1,32 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { isEqual } from 'lodash-es';
 
 import ProductChangeScreen from '../ProductChangeScreen';
 import RegularText from '../../../../../shared/components/RegularText';
 import EditButton from '../../../../../shared/components/EditButton';
 import style from './style';
 
+import { Actions } from '../../../../../redux/products/AC';
+import { Actions as toastActions } from '../../../../../redux/toast/AC';
+
 import { ProductDataForServer } from '../../../../../redux/products/states';
 import { ProductsRequestState } from '../../../../../redux/request/nested-states/products/states';
 import { RootState } from '../../../../../redux/store';
 import { Dispatch } from 'redux';
-import { Product } from '../../../../../redux/products/states';
+import { Product, ProductsState } from '../../../../../redux/products/states';
 import {
   NavigationInjectedProps,
   NavigationScreenConfig,
   NavigationStackScreenOptions,
 } from 'react-navigation';
-
-import { Actions } from '../../../../../redux/products/AC';
-import { Actions as toastActions } from '../../../../../redux/toast/AC';
+import { ProductNavigationParams } from '../ProductsScreen/Product';
 import { ProductsFormData } from '../../../../../redux/form/states';
 
 interface StateProps {
   productsRequests: ProductsRequestState;
+  products: ProductsState;
 }
 
 interface DispatchProps {
@@ -35,6 +38,7 @@ interface DispatchProps {
 
 const mapStateToProps = (state: RootState): StateProps => ({
   productsRequests: state.request.products,
+  products: state.products,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): DispatchProps => (
@@ -54,7 +58,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): Dispatc
   }
 );
 
-type Props = StateProps & DispatchProps & NavigationInjectedProps;
+type Props = StateProps & DispatchProps & NavigationInjectedProps<ProductNavigationParams>;
 
 interface State {
   isVisibleChangeForm: boolean;
@@ -71,16 +75,32 @@ class ProductDetailsScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = (
     {navigation},
   ) => {
-    const {params} = navigation.state;
 
     return {
-      title: params ? params.product.name : 'Product',
+      title: navigation.getParam('productDetailTitle', 'Product'),
       headerTintColor: '#fff',
     };
   }
 
   public componentDidMount() {
     this.props.selectActiveProduct(this.product._id);
+  }
+
+  public componentDidUpdate() {
+    const {activeProductId, data} = this.props.products;
+    if (activeProductId) {
+      const activeProduct: Product | undefined = data.find((product) => product._id === activeProductId);
+
+      if (activeProduct && !isEqual(this.product, activeProduct)) {
+        this.product = {
+          ...activeProduct,
+        };
+
+        this.props.navigation.setParams({
+          productDetailTitle: activeProduct.name,
+        });
+      }
+    }
   }
 
   public componentWillUnmount() {

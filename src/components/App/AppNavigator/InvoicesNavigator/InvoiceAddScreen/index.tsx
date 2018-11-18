@@ -78,7 +78,7 @@ class InvoiceAddForm extends React.Component<Props> {
   public handleSubmitForm = (values: InvoicesFormData): void => {
     const valuesForServer: InvoiceDataForServer = {
       ...values,
-      discount: +values.discount,
+      discount: values.discount ? +values.discount : 0,
     };
 
     this.props.resetToast();
@@ -187,7 +187,9 @@ class InvoiceAddForm extends React.Component<Props> {
         return 0;
       }, 0);
 
-      priceTotal = Math.round(priceWithoutDiscount * (100 - +formValues.discount)) / 100;
+      priceTotal = Math.round(
+        priceWithoutDiscount * (100 - (formValues.discount ? +formValues.discount : 0)),
+      ) / 100;
     }
 
     return priceTotal;

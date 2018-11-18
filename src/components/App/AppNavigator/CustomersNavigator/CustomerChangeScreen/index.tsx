@@ -85,7 +85,7 @@ class CustomerChangeForm extends React.Component<Props> {
               <Field
                 name='phone'
                 component={FormField}
-                keyboard='numeric'
+                keyboard='phone-pad'
                 labelText='Customer`s phone: '
               />
             </View>

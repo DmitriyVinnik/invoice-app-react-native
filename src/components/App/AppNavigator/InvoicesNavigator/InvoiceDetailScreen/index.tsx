@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { isEqual } from 'lodash-es';
 
 import InvoiceChangeScreen from '../InvoiceChangeScreen';
 import InvoiceItemsList from './InvoiceItemsList';
@@ -11,7 +12,7 @@ import style from './style';
 import { InvoicesRequestState } from '../../../../../redux/request/nested-states/invoices/states';
 import { RootState } from '../../../../../redux/store';
 import { Dispatch } from 'redux';
-import { Invoice } from '../../../../../redux/invoices/states';
+import { Invoice, InvoicesState } from '../../../../../redux/invoices/states';
 import {
   NavigationInjectedProps,
   NavigationScreenConfig,
@@ -20,6 +21,7 @@ import {
 import { Product as ProductInterface } from '../../../../../redux/products/states';
 import { InvoiceItemsState } from '../../../../../redux/invoiceItems/states';
 import { InvoiceItemsRequestState } from '../../../../../redux/request/nested-states/invoiceItems/states';
+import { InvoiceNavigationParams } from '../InvoicesScreen/Invoice';
 
 import { Actions } from '../../../../../redux/invoices/AC';
 import { Actions as toastActions } from '../../../../../redux/toast/AC';
@@ -28,6 +30,7 @@ import * as invoiceItemsActions from '../../../../../redux/invoiceItems/AC';
 interface StateProps {
   invoicesRequests: InvoicesRequestState;
   productsData: ProductInterface[];
+  invoices: InvoicesState;
   invoiceItems: InvoiceItemsState;
   invoiceItemsRequests: InvoiceItemsRequestState;
 }
@@ -42,12 +45,13 @@ interface DispatchProps {
 const mapStateToProps = (state: RootState): StateProps => ({
   invoicesRequests: state.request.invoices,
   productsData: state.products.data,
+  invoices: state.invoices,
   invoiceItems: state.invoiceItems,
   invoiceItemsRequests: state.request.invoiceItems,
 });
 
 const mapDispatchToProps = (
-  dispatch: Dispatch<Actions | toastActions | invoiceItemsActions.Actions>
+  dispatch: Dispatch<Actions | toastActions | invoiceItemsActions.Actions>,
 ): DispatchProps => (
   {
     selectActiveInvoice: (_id) => {
@@ -65,7 +69,7 @@ const mapDispatchToProps = (
   }
 );
 
-type Props = StateProps & DispatchProps & NavigationInjectedProps;
+type Props = StateProps & DispatchProps & NavigationInjectedProps<InvoiceNavigationParams>;
 
 interface State {
   isVisibleChangeForm: boolean;
@@ -82,16 +86,28 @@ class InvoiceDetailsScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = (
     {navigation},
   ) => {
-    const {params} = navigation.state;
 
     return {
-      title: params ? params.invoice._id : 'Invoice',
+      title: navigation.getParam('invoiceDetailTitle', 'Invoice'),
       headerTintColor: '#fff',
     };
   }
 
   public componentDidMount() {
     this.props.selectActiveInvoice(this.invoice._id);
+  }
+
+  public componentDidUpdate() {
+    const {activeInvoiceId, data} = this.props.invoices;
+    if (activeInvoiceId) {
+      const activeInvoice: Invoice | undefined = data.find((invoice) => invoice._id === activeInvoiceId);
+
+      if (activeInvoice && !isEqual(this.invoice, activeInvoice)) {
+        this.invoice = {
+          ...activeInvoice,
+        };
+      }
+    }
   }
 
   public componentWillUnmount() {
@@ -112,10 +128,9 @@ class InvoiceDetailsScreen extends React.Component<Props, State> {
 
   render() {
     const {
-      invoicesRequests, invoiceItemsRequests, productsData, invoiceItems, loadInvoiceItems, navigation,
+      invoicesRequests, invoiceItemsRequests, productsData, invoiceItems, loadInvoiceItems,
     } = this.props;
     const {isVisibleChangeForm} = this.state;
-    const activeInvoice: Invoice = navigation.getParam('invoice');
 
     return (
       <View style={style.container}>
@@ -146,7 +161,7 @@ class InvoiceDetailsScreen extends React.Component<Props, State> {
               invoiceItemsRequest={invoiceItemsRequests.invoiceItemsGet}
               invoiceItemsData={invoiceItems.data}
               products={productsData}
-              activeInvoiceId={activeInvoice._id}
+              activeInvoiceId={this.invoice._id}
               loadInvoiceItems={loadInvoiceItems}
             />
           </View>

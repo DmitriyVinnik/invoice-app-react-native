@@ -8,7 +8,12 @@ import { Product as ProductInterface } from '../../../../../../redux/products/st
 
 type OwnProps = ProductInterface;
 
-type Props = OwnProps & NavigationInjectedProps;
+export interface ProductNavigationParams {
+  product: ProductInterface;
+  productDetailTitle: string;
+}
+
+type Props = OwnProps & NavigationInjectedProps<ProductNavigationParams>;
 
 const Product: React.SFC<Props> = (props: Props) => {
   const {_id, name, price} = props;
@@ -18,10 +23,12 @@ const Product: React.SFC<Props> = (props: Props) => {
       name,
       price,
     };
-
-    props.navigation.navigate('ProductDetail', {
+    const params: ProductNavigationParams = {
       product,
-    });
+      productDetailTitle: product.name,
+    };
+
+    props.navigation.navigate('ProductDetail', params);
   };
 
   return (
