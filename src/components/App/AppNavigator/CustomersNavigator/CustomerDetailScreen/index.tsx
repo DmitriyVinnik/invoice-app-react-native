@@ -76,7 +76,9 @@ class CustomerDetailsScreen extends React.Component<Props, State> {
   public componentDidUpdate() {
     const {data} = this.props.customers;
 
-    const activeCustomer: Customer | undefined = data.find((customer) => customer._id === this.customer._id);
+    const activeCustomer: Customer | undefined = data.find(
+      (customer) => customer._id === this.customer._id,
+    );
 
     if (activeCustomer && !isEqual(this.customer, activeCustomer)) {
       this.customer = {

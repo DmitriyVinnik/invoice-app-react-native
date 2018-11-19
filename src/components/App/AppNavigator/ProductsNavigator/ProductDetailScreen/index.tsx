@@ -31,8 +31,6 @@ interface StateProps {
 
 interface DispatchProps {
   submitChangeForm(data: ProductDataForServer, _id: number): void;
-  selectActiveProduct(_id: number): void;
-  resetSelectionActiveProduct(): void;
   resetToast(): void;
 }
 
@@ -45,12 +43,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions | toastActions>): Dispatc
   {
     submitChangeForm: (data, _id) => {
       dispatch(Actions.submitProductChangeForm(data, _id));
-    },
-    selectActiveProduct: (_id) => {
-      dispatch(Actions.selectProduct(_id));
-    },
-    resetSelectionActiveProduct: () => {
-      dispatch(Actions.resetSelectionProduct());
     },
     resetToast: () => {
       dispatch(toastActions.hideToast());
@@ -82,29 +74,21 @@ class ProductDetailsScreen extends React.Component<Props, State> {
     };
   }
 
-  public componentDidMount() {
-    this.props.selectActiveProduct(this.product._id);
-  }
-
   public componentDidUpdate() {
-    const {activeProductId, data} = this.props.products;
-    if (activeProductId) {
-      const activeProduct: Product | undefined = data.find((product) => product._id === activeProductId);
+    const {data} = this.props.products;
+    const activeProduct: Product | undefined = data.find(
+      (product) => product._id === this.product._id,
+    );
 
-      if (activeProduct && !isEqual(this.product, activeProduct)) {
-        this.product = {
-          ...activeProduct,
-        };
+    if (activeProduct && !isEqual(this.product, activeProduct)) {
+      this.product = {
+        ...activeProduct,
+      };
 
-        this.props.navigation.setParams({
-          productDetailTitle: activeProduct.name,
-        });
-      }
+      this.props.navigation.setParams({
+        productDetailTitle: activeProduct.name,
+      });
     }
-  }
-
-  public componentWillUnmount() {
-    this.props.resetSelectionActiveProduct();
   }
 
   private product: Product = this.props.navigation.getParam('product');
