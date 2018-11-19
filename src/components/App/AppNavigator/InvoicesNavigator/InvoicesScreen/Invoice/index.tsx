@@ -46,7 +46,7 @@ const Invoice: React.SFC<Props> = (props: Props) => {
         </RegularText>
         <RegularText>
           Discount:
-          <Text style={style.text}> {discount}</Text>
+          <Text style={style.text}> {discount ? discount : '0'}</Text>
         </RegularText>
         <RegularText>
           Total:

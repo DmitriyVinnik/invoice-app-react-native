@@ -240,7 +240,7 @@ class InvoiceChangeForm extends React.Component<Props> {
       });
 
     const initialFormValue: InvoicesFormData = {
-      discount: `${activeInvoice.discount}`,
+      discount: activeInvoice.discount ? `${activeInvoice.discount}` : ``,
       customer_id: activeInvoice.customer_id,
       total: activeInvoice.total,
       invoiceItems: initialInvoiceItems,

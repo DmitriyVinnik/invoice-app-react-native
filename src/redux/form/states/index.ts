@@ -24,7 +24,7 @@ export interface InvoiceItemsFormData {
 }
 
 export interface InvoicesFormData {
-  discount: string;
+  discount?: string;
   total: number;
   customer_id: number;
   invoiceItems: InvoiceItemsFormData[];

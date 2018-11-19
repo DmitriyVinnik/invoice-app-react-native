@@ -4,7 +4,7 @@ import { FormErrors } from 'redux-form';
 export const validate = (values: InvoicesFormData) => {
   const errors: FormErrors<InvoicesFormData, any> = {};
 
-  if (+values.discount > 100 || +values.discount < 0) {
+  if (values.discount && (+values.discount > 100 || +values.discount < 0)) {
     errors.discount = 'Must be in range from 0 to 99';
   }
 

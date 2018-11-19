@@ -127,25 +127,6 @@ class InvoicesScreen extends Component<Props, State> {
                       isLoading={invoicesRequests.invoicesPost.loading}
                       activeCustomerId={activeCustomerId}
                   />
-                {/*{*/}
-                {/*activeInvoice &&*/}
-                {/*<View>*/}
-                {/*<InvoiceChangeForm*/}
-                {/*isVisible={isVisibleChangeForm}*/}
-                {/*handleClose={this.toggleInvoiceChangeForm}*/}
-                {/*isLoading={invoicesRequests.invoicesPut.loading}*/}
-                {/*activeInvoice={activeInvoice}*/}
-                {/*activeCustomerId={activeCustomerId}*/}
-                {/*/>*/}
-                {/*<InvoiceDeleteForm*/}
-                {/*isVisible={isVisibleDeleteForm}*/}
-                {/*handleClose={this.toggleInvoiceDeleteForm}*/}
-                {/*isLoading={invoicesRequests.invoicesDelete.loading}*/}
-                {/*_id={activeInvoice._id}*/}
-                {/*handleSubmit={this.handleSubmitInvoiceDeleteForm}*/}
-                {/*/>*/}
-                {/*</View>*/}
-                {/*}*/}
               </View>
           </View>
         }

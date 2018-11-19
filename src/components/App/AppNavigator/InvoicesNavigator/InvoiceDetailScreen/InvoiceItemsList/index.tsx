@@ -49,7 +49,7 @@ export default class InvoiceItemsList extends Component<OwnProps> {
     const filteredInvoiceItems = invoiceItemsData.filter(
       (invoiceItem) => invoiceItem.invoice_id === activeInvoiceId,
     );
-
+    // console.log(invoiceItemsData)
     if (loading) {
       return (
         <View style={style.loader}>

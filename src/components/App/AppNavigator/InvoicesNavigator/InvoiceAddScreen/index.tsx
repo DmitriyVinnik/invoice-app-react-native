@@ -13,7 +13,7 @@ import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import OkButton from '../../../../../shared/components/OkButton';
 import CancelButton from '../../../../../shared/components/CancelButton';
-import {validate} from '../../../../../shared/validation/invoicesForm';
+import { validate } from '../../../../../shared/validation/invoicesForm';
 import style from './style';
 
 import { Actions } from '../../../../../redux/invoices/AC';
@@ -38,7 +38,7 @@ interface StateProps {
 
 interface DispatchProps {
   initializeForm(values: InvoicesFormData): void;
-  submitForm(data: InvoiceDataForServer, total: number): void;
+  submitForm(data: InvoiceDataForServer): void;
   resetToast(): void;
 }
 
@@ -52,8 +52,8 @@ const mapDispatchToProps = (dispatch: Dispatch<FormAction | Actions | toastActio
     initializeForm: (values) => {
       dispatch(initialize('invoiceAdd', values));
     },
-    submitForm: (data, total) => {
-      dispatch(Actions.submitInvoiceAddForm(data, total));
+    submitForm: (data) => {
+      dispatch(Actions.submitInvoiceAddForm(data));
     },
     resetToast: () => {
       dispatch(toastActions.hideToast());
@@ -76,13 +76,17 @@ class InvoiceAddForm extends React.Component<Props> {
   }
 
   public handleSubmitForm = (values: InvoicesFormData): void => {
-    const valuesForServer: InvoiceDataForServer = {
+    const valuesForServer: InvoiceDataForServer = values.discount ? {
       ...values,
-      discount: values.discount ? +values.discount : 0,
+      total: this.getTotalPrice(),
+      discount: +values.discount,
+    } : {
+      customer_id: values.customer_id,
+      total: this.getTotalPrice(),
     };
 
     this.props.resetToast();
-    this.props.submitForm(valuesForServer, this.getTotalPrice());
+    this.props.submitForm(valuesForServer);
   }
 
   public render() {
@@ -156,7 +160,7 @@ class InvoiceAddForm extends React.Component<Props> {
     if (activeCustomerId) {
       const initialFormValue: InvoicesFormData = {
         customer_id: activeCustomerId,
-        discount: '0',
+        discount: '',
         total: 0,
         invoiceItems: [],
       };

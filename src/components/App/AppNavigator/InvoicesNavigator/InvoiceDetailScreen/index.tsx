@@ -23,7 +23,6 @@ import { InvoiceItemsState } from '../../../../../redux/invoiceItems/states';
 import { InvoiceItemsRequestState } from '../../../../../redux/request/nested-states/invoiceItems/states';
 import { InvoiceNavigationParams } from '../InvoicesScreen/Invoice';
 
-import { Actions } from '../../../../../redux/invoices/AC';
 import { Actions as toastActions } from '../../../../../redux/toast/AC';
 import * as invoiceItemsActions from '../../../../../redux/invoiceItems/AC';
 
@@ -36,8 +35,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  selectActiveInvoice(_id: number): void;
-  resetSelectionActiveInvoice(): void;
   resetToast(): void;
   loadInvoiceItems(invoice_id: number): void;
 }
@@ -51,15 +48,9 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps = (
-  dispatch: Dispatch<Actions | toastActions | invoiceItemsActions.Actions>,
+  dispatch: Dispatch<toastActions | invoiceItemsActions.Actions>,
 ): DispatchProps => (
   {
-    selectActiveInvoice: (_id) => {
-      dispatch(Actions.selectInvoice(_id));
-    },
-    resetSelectionActiveInvoice: () => {
-      dispatch(Actions.resetSelectionInvoice());
-    },
     resetToast: () => {
       dispatch(toastActions.hideToast());
     },
@@ -93,25 +84,17 @@ class InvoiceDetailsScreen extends React.Component<Props, State> {
     };
   }
 
-  public componentDidMount() {
-    this.props.selectActiveInvoice(this.invoice._id);
-  }
-
   public componentDidUpdate() {
-    const {activeInvoiceId, data} = this.props.invoices;
-    if (activeInvoiceId) {
-      const activeInvoice: Invoice | undefined = data.find((invoice) => invoice._id === activeInvoiceId);
+    const {data} = this.props.invoices;
+    const activeInvoice: Invoice | undefined = data.find(
+      (invoice) => invoice._id === this.invoice._id,
+    );
 
-      if (activeInvoice && !isEqual(this.invoice, activeInvoice)) {
-        this.invoice = {
-          ...activeInvoice,
-        };
-      }
+    if (activeInvoice && !isEqual(this.invoice, activeInvoice)) {
+      this.invoice = {
+        ...activeInvoice,
+      };
     }
-  }
-
-  public componentWillUnmount() {
-    this.props.resetSelectionActiveInvoice();
   }
 
   private invoice: Invoice = this.props.navigation.getParam('invoice');
@@ -131,25 +114,26 @@ class InvoiceDetailsScreen extends React.Component<Props, State> {
       invoicesRequests, invoiceItemsRequests, productsData, invoiceItems, loadInvoiceItems,
     } = this.props;
     const {isVisibleChangeForm} = this.state;
+    const {_id, total, discount, customer_id} = this.invoice;
 
     return (
       <View style={style.container}>
         <View style={style.textContainer}>
           <RegularText>
             ID:
-            <Text style={style.text}> {this.invoice._id}</Text>
+            <Text style={style.text}> {_id}</Text>
           </RegularText>
           <RegularText>
             Customer id:
-            <Text style={style.text}> {this.invoice.customer_id}</Text>
+            <Text style={style.text}> {customer_id}</Text>
           </RegularText>
           <RegularText>
             Total:
-            <Text style={style.text}> {this.invoice.total}</Text>
+            <Text style={style.text}> {total}</Text>
           </RegularText>
           <RegularText>
             Discount:
-            <Text style={style.text}> {this.invoice.discount}</Text>
+            <Text style={style.text}> {discount ? discount : '0'}</Text>
           </RegularText>
           <View>
             <View style={style.headerWraper}>
