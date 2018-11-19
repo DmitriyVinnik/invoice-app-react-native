@@ -1,5 +1,4 @@
 import React from 'react';
-import { isEqual } from 'lodash-es';
 import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
@@ -14,7 +13,7 @@ import ToastRequest from '../../../../../shared/components/ToastRequest/index';
 import RegularText from '../../../../../shared/components/RegularText';
 import CancelButton from '../../../../../shared/components/CancelButton';
 import OkButton from '../../../../../shared/components/OkButton';
-import {validate} from '../../../../../shared/validation/invoicesForm';
+import { validate } from '../../../../../shared/validation/invoicesForm';
 import style from './style';
 
 import { Actions } from '../../../../../redux/invoices/AC';
@@ -23,7 +22,7 @@ import { Actions as toastActions } from '../../../../../redux/toast/AC';
 
 import { Invoice, InvoiceDataForServer } from '../../../../../redux/invoices/states';
 import {
-InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState,
+  InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState,
 } from '../../../../../redux/invoiceItems/states';
 import { Product, ProductsState } from '../../../../../redux/products/states';
 import { RootState } from '../../../../../redux/store';
@@ -40,6 +39,7 @@ interface StateProps {
   products: ProductsState;
   invoiceItems: InvoiceItemsState;
   formValues: InvoicesFormData;
+  state: RootState;
 }
 
 interface DispatchProps {
@@ -55,6 +55,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
   products: state.products,
   invoiceItems: state.invoiceItems,
   formValues: getFormValues('invoiceChange')(state) as InvoicesFormData,
+  state,
 });
 
 const mapDispatchToProps = (
@@ -132,7 +133,10 @@ class InvoiceChangeForm extends React.Component<Props> {
           (stateElem) => formElem._id === stateElem._id,
         );
 
-        return !(formElemInState && isEqual(formElemInState, formElem));
+        return formElemInState && (
+            formElemInState.product_id !== formElem.product_id ||
+            formElemInState.quantity !== +formElem.quantity)
+        ;
       })
       .map<InvoiceItem>((invoiceItem) => {
         return {
@@ -145,7 +149,7 @@ class InvoiceChangeForm extends React.Component<Props> {
       ...values,
       discount: values.discount ? +values.discount : 0,
     };
-
+    console.log('post', forPostInvoiceItems, 'put', forPutInvoiceItems, 'delete', forDeleteInvoiceItems);
     this.props.resetToast();
     submitForm(invoiceValuesForServer, this.getTotalPrice(), activeInvoice._id);
 
@@ -165,6 +169,8 @@ class InvoiceChangeForm extends React.Component<Props> {
   }
 
   public render() {
+    // console.log('state', this.props.state);
+
     const {
       isVisible, handleSubmit, isLoading, products, pristine,
       handleClose,
