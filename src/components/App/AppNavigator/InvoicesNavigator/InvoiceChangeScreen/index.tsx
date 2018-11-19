@@ -39,7 +39,6 @@ interface StateProps {
   products: ProductsState;
   invoiceItems: InvoiceItemsState;
   formValues: InvoicesFormData;
-  state: RootState;
 }
 
 interface DispatchProps {
@@ -55,7 +54,6 @@ const mapStateToProps = (state: RootState): StateProps => ({
   products: state.products,
   invoiceItems: state.invoiceItems,
   formValues: getFormValues('invoiceChange')(state) as InvoicesFormData,
-  state,
 });
 
 const mapDispatchToProps = (
@@ -145,11 +143,15 @@ class InvoiceChangeForm extends React.Component<Props> {
         };
       });
 
-    const invoiceValuesForServer: InvoiceDataForServer = {
+    const invoiceValuesForServer: InvoiceDataForServer = values.discount ? {
       ...values,
-      discount: values.discount ? +values.discount : 0,
+      total: this.getTotalPrice(),
+      discount: +values.discount,
+    } : {
+      customer_id: values.customer_id,
+      total: this.getTotalPrice(),
     };
-    console.log('post', forPostInvoiceItems, 'put', forPutInvoiceItems, 'delete', forDeleteInvoiceItems);
+
     this.props.resetToast();
     submitForm(invoiceValuesForServer, this.getTotalPrice(), activeInvoice._id);
 
@@ -169,7 +171,6 @@ class InvoiceChangeForm extends React.Component<Props> {
   }
 
   public render() {
-    // console.log('state', this.props.state);
 
     const {
       isVisible, handleSubmit, isLoading, products, pristine,

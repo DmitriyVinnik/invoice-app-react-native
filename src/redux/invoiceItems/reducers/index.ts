@@ -6,8 +6,11 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
 
   switch (action.type) {
     case fromActions.ActionTypes.INVOICE_ITEMS_SET_DATA: {
-      const newData = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
+      if (!action.payload.data) {
+        return state;
+      }
 
+      const newData = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
       return {
         ...state,
         data: unionBy(newData, state.data, '_id'),
