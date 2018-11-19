@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
 import { apiEndpoint } from '../constants/env.constants';
-import { RequestPayloadInvoices, RequestServiceInvoices } from '../types/Request'
+import { RequestPayloadInvoices, RequestServiceInvoices } from '../types/Request';
 
 class InvoicesService implements RequestServiceInvoices {
 
@@ -10,12 +10,12 @@ class InvoicesService implements RequestServiceInvoices {
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
-      }
-    )
+      },
+    );
   }
 
   public getInvoice() {
-    return ajax.get(apiEndpoint + 'invoices/')
+    return ajax.get(apiEndpoint + 'invoices/');
   }
 
   public putInvoice(payload: RequestPayloadInvoices) {
@@ -24,12 +24,12 @@ class InvoicesService implements RequestServiceInvoices {
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
-      }
-    )
+      },
+    );
   }
 
   public deleteInvoice(payload: RequestPayloadInvoices) {
-    return ajax.delete(apiEndpoint + 'invoices/' + payload._id)
+    return ajax.delete(apiEndpoint + 'invoices/' + payload._id);
   }
 }
 

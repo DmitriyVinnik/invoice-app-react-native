@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
-import {apiEndpoint} from '../constants/env.constants';
-import { RequestServiceCustomers, RequestPayloadCustomers } from '../types/Request'
+import { apiEndpoint } from '../constants/env.constants';
+import { RequestServiceCustomers, RequestPayloadCustomers } from '../types/Request';
 
 class CustomersService implements RequestServiceCustomers {
 
@@ -10,12 +10,12 @@ class CustomersService implements RequestServiceCustomers {
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
-      }
-    )
+      },
+    );
   }
 
   public getCustomer() {
-    return ajax.get(apiEndpoint + 'customers/')
+    return ajax.get(apiEndpoint + 'customers/');
   }
 
   public putCustomer(payload: RequestPayloadCustomers) {
@@ -24,12 +24,12 @@ class CustomersService implements RequestServiceCustomers {
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
-      }
-    )
+      },
+    );
   }
 
   public deleteCustomer(payload: RequestPayloadCustomers) {
-    return ajax.delete(apiEndpoint + 'customers/' + payload._id)
+    return ajax.delete(apiEndpoint + 'customers/' + payload._id);
   }
 }
 

@@ -1,8 +1,8 @@
-import {RequestNestedState} from '../../../states';
+import { RequestNestedState } from '../../../states';
 
 export const initialState: RequestNestedState = {
-    loading: false,
-    loaded: false,
-    errors: null,
-    data: null
+  loading: false,
+  loaded: false,
+  errors: null,
+  data: null,
 };

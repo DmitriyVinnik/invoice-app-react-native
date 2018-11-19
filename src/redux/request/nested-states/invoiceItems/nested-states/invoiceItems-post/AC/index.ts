@@ -25,4 +25,3 @@ const postAction = {post: Actions.invoiceItemsPost};
 
 export type Actions = ActionsUnion<typeof Actions>;
 export type PostAction = ActionsUnion<typeof postAction>;
-

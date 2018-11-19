@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
 import { apiEndpoint } from '../constants/env.constants';
-import { RequestPayloadProducts, RequestServiceProducts } from '../types/Request'
+import { RequestPayloadProducts, RequestServiceProducts } from '../types/Request';
 
 class ProductsService implements RequestServiceProducts {
 
@@ -10,12 +10,12 @@ class ProductsService implements RequestServiceProducts {
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
-      }
-    )
+      },
+    );
   }
 
   public getProduct() {
-    return ajax.get(apiEndpoint + 'products/')
+    return ajax.get(apiEndpoint + 'products/');
   }
 
   public putProduct(payload: RequestPayloadProducts) {
@@ -24,12 +24,12 @@ class ProductsService implements RequestServiceProducts {
       JSON.stringify(payload.data),
       {
         'Content-Type': 'application/json; charset=utf-8',
-      }
-    )
+      },
+    );
   }
 
   public deleteProduct(payload: RequestPayloadProducts) {
-    return ajax.delete(apiEndpoint + 'products/' + payload._id)
+    return ajax.delete(apiEndpoint + 'products/' + payload._id);
   }
 }
 
